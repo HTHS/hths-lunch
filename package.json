@@ -1,0 +1,25 @@
+{
+  "name": "hths-lunch",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Better Lunch form management for HTHS",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ilanbiala/hths-lunch.git"
+  },
+  "author": "Ilan Biala <ilan.biala@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/ilanbiala/hths-lunch/issues"
+  },
+  "homepage": "https://github.com/ilanbiala/hths-lunch",
+  "dependencies": {
+    "express": "~4.9.5"
+  },
+  "devDependencies": {
+    "mocha": "^1.21.4"
+  }
+}
