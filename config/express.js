@@ -119,11 +119,12 @@ module.exports = function(db) {
 		});
 	});
 
-	// Assume 404 since no middleware responded
+	/**
+	 * Instead of a 404, we'll respond with index.html
+	 */
 	app.use(function(req, res) {
-		res.status(404).render('404', {
-			url: req.originalUrl,
-			error: 'Not Found'
+		res.render('index', {
+			url: req.originalUrl
 		});
 	});
 

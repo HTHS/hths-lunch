@@ -18,6 +18,10 @@ var ItemSchema = new Schema({
 	price: {
 		type: Number,
 		required: true
+	},
+	active: {
+		type: Boolean,
+		default: true
 	}
 });
 

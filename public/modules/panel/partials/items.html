@@ -1,0 +1,22 @@
+<link rel="stylesheet" href="/modules/panel/styles/items.css">
+
+<h2>Items</h2>
+<table rules="none"><!-- get rid of border between cells -->
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th>Description</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="item" ng-repeat="item in items" ng-class="{
+      active: item.active,
+      inactive: !item.active
+    }">
+      <td>{{item.title}}</td>
+      <td>{{item.description}}</td>
+      <td>{{item.price | currency}}</td>
+    </tr>
+  </tbody>
+</table>

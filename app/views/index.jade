@@ -1,6 +1,9 @@
 doctype html
-html(lang='en')
+html(lang='en', ng-app='hthsLunch')
   head
     title= pageTitle
+    link(rel='stylesheet', href='/lib/foundation/css/foundation.css')
+    script(src='/app.js')
   body
-    h1 HTHS Lunch order form
+    base(href='/')
+    div(ui-view='main')
