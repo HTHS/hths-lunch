@@ -1,3 +1,6 @@
+/**
+ * Module dependencies.
+ */
 exports.index = function(req, res) {
-	res.send('index');
+	res.render('index');
 };

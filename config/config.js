@@ -7,12 +7,6 @@ var _ = require('lodash'),
 /**
  * Load app configurations
  */
-
-if (!process.env.NODE_ENV) {
-	console.log('No environment set, defaulting to development');
-	process.env.NODE_ENV = 'development';
-}
-
 module.exports = _.extend(
 	require('./env/all'),
 	require('./env/' + process.env.NODE_ENV) || {}
@@ -26,7 +20,7 @@ module.exports.getGlobbedFiles = function(globPatterns, removeRoot) {
 	var _this = this;
 
 	// URL paths regex
-	var urlRegex = /^(?:[a-z]+:)?\/\//i;
+	var urlRegex = new RegExp('^(?:[a-z]+:)?\/\/', 'i');
 
 	// The output array
 	var output = [];

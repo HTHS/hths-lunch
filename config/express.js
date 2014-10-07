@@ -2,13 +2,14 @@
  * Module dependencies.
  */
 var express = require('express'),
-	logger = require('morgan'),
+	morgan = require('morgan'),
 	bodyParser = require('body-parser'),
 	session = require('express-session'),
 	compress = require('compression'),
 	methodOverride = require('method-override'),
 	cookieParser = require('cookie-parser'),
 	helmet = require('helmet'),
+	passport = require('passport'),
 	mongoStore = require('connect-mongo')({
 		session: session
 	}),
@@ -26,13 +27,14 @@ module.exports = function(db) {
 		require(path.resolve(modelPath));
 	});
 
-	// config for accessing API version in routes
-	app.config = config;
-	app.locals.mandrill = config.mandrill;
+	// Setting application local variables
+	app.locals.title = config.app.title;
+	app.locals.description = config.app.description;
+	app.locals.keywords = config.app.keywords;
 
 	// Passing the request url to environment locals
 	app.use(function(req, res, next) {
-		res.locals.url = req.protocol + ':// ' + req.headers.host + req.url;
+		res.locals.url = req.protocol + '://' + req.headers.host + req.url;
 		next();
 	});
 
@@ -48,13 +50,13 @@ module.exports = function(db) {
 	app.set('showStackError', true);
 
 	// Set views path and view engine
-	app.set('views', path.join(__dirname, '../app/views'));
+	app.set('views', './app/views');
 	app.set('view engine', 'jade');
 
 	// Environment dependent middleware
 	if (process.env.NODE_ENV === 'development') {
 		// Enable logger (morgan)
-		app.use(logger('dev'));
+		app.use(morgan('dev'));
 
 		// Disable views cache
 		app.set('view cache', false);
@@ -76,15 +78,19 @@ module.exports = function(db) {
 	app.use(cookieParser());
 
 	// Express MongoDB session storage
-	// app.use(session({
-	// 	secret: config.sessionSecret,
-	// 	store: new mongoStore({
-	// 		db: db.connection.db,
-	// 		collection: config.sessionCollection
-	// 	}),
-	// 	resave: false,
-	// 	saveUninitialized: false
-	// }));
+	app.use(session({
+		saveUninitialized: true,
+		resave: true,
+		secret: config.sessionSecret,
+		store: new mongoStore({
+			db: db.connection.db,
+			collection: config.sessionCollection
+		})
+	}));
+
+	// use passport session
+	app.use(passport.initialize());
+	app.use(passport.session());
 
 	// connect flash for flash messages
 	app.use(flash());
@@ -93,8 +99,7 @@ module.exports = function(db) {
 	app.use(helmet.xframe());
 	app.use(helmet.xssFilter());
 	app.use(helmet.nosniff());
-	app
-		.use(helmet.ienoopen());
+	app.use(helmet.ienoopen());
 	app.disable('x-powered-by');
 
 	// Setting the app router and static folder
@@ -108,9 +113,7 @@ module.exports = function(db) {
 	// Assume 'not found' in the error msgs is a 404. this is somewhat silly, but valid, you can do whatever you like, set properties, use instanceof etc.
 	app.use(function(err, req, res, next) {
 		// If the error object doesn't exists
-		if (!err) {
-			return next();
-		}
+		if (!err) return next();
 
 		// Log it
 		console.error(err.stack);
@@ -121,22 +124,13 @@ module.exports = function(db) {
 		});
 	});
 
-	// // Assume 404 since no middleware responded
-	// app.use(function(req, res) {
-	// 	res.status(404).render('404', {
-	// 		url: req.originalUrl,
-	// 		error: 'Not Found'
-	// 	});
-	// });
-	//
-	// app.use(function(req, res) {
-	// 	/**
-	// 	 * no 404 as final middleware, just render index and let Angular do the real routing
-	// 	 */
-	// 	res.render('index', {
-	// 		url: req.originalUrl
-	// 	});
-	// });
+	// Assume 404 since no middleware responded
+	app.use(function(req, res) {
+		res.status(404).render('404', {
+			url: req.originalUrl,
+			error: 'Not Found'
+		});
+	});
 
 	return app;
 };
