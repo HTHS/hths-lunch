@@ -2,7 +2,7 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope',
 	function($scope) {
 
 	}
-]).controller('DashboardItemsController', ['$scope', 'Item',
+]).controller('DashboardItemsController', ['$scope', 'PanelItem',
 	function($scope, Item) {
 		$scope.createItem = function() {
 			Item
@@ -29,7 +29,7 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope',
 				$scope.items = items;
 			});
 	}
-]).controller('DashboardOrdersController', ['$scope', 'Order',
+]).controller('DashboardOrdersController', ['$scope', 'PanelOrder',
 	function($scope, Order) {
 		$scope.deleteOrder = function(index) {
 			$scope.orders[index]

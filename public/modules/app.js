@@ -3,9 +3,7 @@ $(document).foundation();
 angular.module('hthsLunch.order', ['hthsLunch.core.itemService',
 	'hthsLunch.core.orderService'
 ]);
-angular.module('hthsLunch.panel', ['hthsLunch.core.itemService',
-	'hthsLunch.core.orderService'
-]);
+angular.module('hthsLunch.panel', ['ngResource']);
 
 angular.module('hthsLunch', [
 	'ui.router',

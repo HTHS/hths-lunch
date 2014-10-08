@@ -31,7 +31,7 @@
                 <td>{{item.title}}</td>
                 <td>{{item.description}}</td>
                 <td>{{item.price | currency}}</td>
-                <td><input type="number" required disabled="{{!newOrder[$index]}}" ng-model="item.quantity"></td>
+                <td><input type="number" required ng-disabled="newOrder.items[$index].toString() !== '[object Object]'" ng-model="item.quantity" ng-blur="recalculateTotal()"></td>
               </tr>
             </tbody>
           </table>
@@ -42,12 +42,20 @@
           <label class="right inline">Total</label>
         </div>
         <div class="small-9 columns">
-          <span ng-model="newOrder.total">
+          <span>{{newOrder.total | currency}}</span>
         </div>
       </div>
       <div class="row">
         <div class="small-9 small-offset-3 columns">
-          <a class="button" ng-click="submitOrder()">Submit Order!</a>
+          <button class="button" type="submit" ng-click="submitOrder()">Submit Order!</button>
+        </div>
+      </div>
+      <div class="row" ng-show="orderProcessed">
+        <div class="small-9 small-offset-3 columns">
+          <div data-alert class="alert-box">
+            <p>Your order has been processed!</p>
+            <a href="#" class="close">&times;</a>
+          </div>
         </div>
       </div>
     </div>
