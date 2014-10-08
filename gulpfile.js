@@ -26,15 +26,19 @@ gulp.task('concat', function() {
 
 gulp.task('sass', function() {
 	gulp.src([
-			'!public/lib/**/*.scss',
-			'public/**/*.scss'
+			'public/sass/**/*.scss'
+		])
+		.pipe(sass())
+		.pipe(gulp.dest('public/styles'));
+
+	gulp.src([
+			'public/modules/**/*.scss'
 		])
 		.pipe(sass())
 		.pipe(rename(function(path) {
-			path.dirname = path.dirname.substring(0, path.dirname.lastIndexOf('/')) +
-				'/styles';
+			path.dirname = path.dirname.replace('sass', 'styles');
 		}))
-		.pipe(gulp.dest('./public'));
+		.pipe(gulp.dest('public/modules/'));
 });
 
 gulp.task('build', function() {
@@ -46,7 +50,7 @@ gulp.task('build', function() {
 	});
 
 	var sassWatcher = gulp.watch('**/*.scss', {
-		cwd: 'public/modules/'
+		cwd: 'public/'
 	}, ['sass']);
 	sassWatcher.on('change', function(event) {
 		// event.path = event.path.replace('sass', 'styles');

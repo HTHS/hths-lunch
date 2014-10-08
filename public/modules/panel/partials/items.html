@@ -13,10 +13,46 @@
     <tr class="item" ng-repeat="item in items" ng-class="{
       active: item.active,
       inactive: !item.active
-    }">
+    }" ng-click="toggleActivity(item)">
       <td>{{item.title}}</td>
       <td>{{item.description}}</td>
       <td>{{item.price | currency}}</td>
     </tr>
   </tbody>
 </table>
+
+<form>
+  <div class="row">
+    <div class="small-8">
+      <div class="row">
+        <div class="small-3 columns">
+          <label for="item-title" class="right inline">Title</label>
+        </div>
+        <div class="small-9 columns">
+          <input type="text" id="item-title" placeholder="Pizza" required ng-model="newItem.title">
+        </div>
+      </div>
+      <div class="row">
+        <div class="small-3 columns">
+          <label for="item-description" class="right inline">Description</label>
+        </div>
+        <div class="small-9 columns">
+          <input type="text" id="item-description" placeholder="2 hot slices" required ng-model="newItem.description">
+        </div>
+      </div>
+      <div class="row">
+        <div class="small-3 columns">
+          <label for="item-price" class="right inline">Price</label>
+        </div>
+        <div class="small-9 columns">
+          <input type="number" id="item-price" placeholder="4.00" required ng-model="newItem.price">
+        </div>
+      </div>
+      <div class="row">
+        <div class="small-9 small-offset-3 columns">
+          <a class="button" ng-click="createItem()">Create Item!</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
