@@ -282,16 +282,68 @@ var c=b.delta_x<0?r+1:r-1;b.active=!0,p._goto(c)}}}).on("touchend.fndtn.orbit",f
 if(d.settings.sticky_topbar&&d.is_sticky(this.settings.sticky_topbar,this.settings.sticky_topbar.parent(),this.settings)){var e=this.settings.sticky_topbar.data("stickyoffset");d.S(a).hasClass("expanded")||(c.scrollTop()>e?d.S(a).hasClass("fixed")||(d.S(a).addClass("fixed"),d.S("body").addClass("f-topbar-fixed")):c.scrollTop()<=e&&d.S(a).hasClass("fixed")&&(d.S(a).removeClass("fixed"),d.S("body").removeClass("f-topbar-fixed")))}},off:function(){this.S(this.scope).off(".fndtn.topbar"),this.S(b).off(".fndtn.topbar")},reflow:function(){}}}(jQuery,window,window.document);
 $(document).foundation();
 
+angular.module('hthsLunch.order', ['hthsLunch.core.itemService',
+	'hthsLunch.core.orderService'
+]);
 angular.module('hthsLunch.panel', ['hthsLunch.core.itemService',
 	'hthsLunch.core.orderService'
 ]);
 
 angular.module('hthsLunch', [
 	'ui.router',
+	'hthsLunch.order',
 	'hthsLunch.panel'
 ]).config(['$locationProvider', function($locationProvider) {
 	$locationProvider.html5Mode(true).hashPrefix('!');
 }]);
+
+angular.module('hthsLunch.order')
+	.config(['$stateProvider', '$urlRouterProvider',
+		function($stateProvider, $urlRouterProvider) {
+			$stateProvider
+				.state('order', {
+					url: '/',
+					views: {
+						'main': {
+							controller: 'OrderController',
+							templateUrl: '/modules/order/partials/order.html'
+						}
+					}
+				});
+		}
+	]);
+
+angular.module('hthsLunch.order').controller('OrderController', ['$scope',
+	'Item', 'Order',
+	function($scope, Item, Order) {
+		$scope.newOrder = {
+			'total': 0,
+			'items': [],
+			'customer': ''
+		};
+		Item.query().$promise.then(function(items) {
+			$scope.menu = items.map(function(item) {
+				item.quantity = 0;
+				return item;
+			});
+		});
+
+		$scope.toggleItemInOrder = function(index) {
+			if ($scope.newOrder[index]) {
+				delete $scope.newOrder.items[index];
+			} else {
+				debugger;
+				$scope.newOrder.items[index] = $scope.menu[index];
+			}
+		};
+
+		$scope.submitOrder = function() {
+
+		};
+	}
+]);
+
+angular.module('hthsLunch.order');
 
 angular.module('hthsLunch.panel')
 	.config(['$stateProvider', '$urlRouterProvider',
