@@ -329,7 +329,7 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope',
 		});
 
 		$scope.toggleItemInOrder = function(index) {
-			if ($scope.newOrder[index]) {
+			if ($scope.newOrder.items[index]) {
 				delete $scope.newOrder.items[index];
 			} else {
 				debugger;
