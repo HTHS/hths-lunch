@@ -1,0 +1,16 @@
+<table>
+  <thead>
+    <tr>
+      <th>Mon.</th>
+      <th>Tues.</th>
+      <th>Wed.</th>
+      <th>Thurs.</th>
+      <th>Fri.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="week in schedule">
+      <td ng-repeat="day in week">{{day | date: 'fullDate'}}</td>
+    </tr>
+  </tbody>
+</table>

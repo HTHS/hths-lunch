@@ -38,6 +38,18 @@ angular.module('hthsLunch.panel')
 							templateUrl: '/modules/panel/partials/orders.html'
 						}
 					}
+				}).state('dashboard.schedule', {
+					url: '/schedule',
+					views: {
+						'main': {
+							controller: 'DashboardController',
+							templateUrl: '/modules/panel/partials/dashboard.html'
+						},
+						'dashboard': {
+							controller: 'DashboardScheduleController',
+							templateUrl: '/modules/panel/partials/schedule.html'
+						}
+					}
 				}).state('dashboard.analytics', {
 					url: '/analytics',
 					views: {

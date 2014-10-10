@@ -19,6 +19,9 @@ module.exports = function(app) {
 		.get(panel.getOrder)
 		.delete(panel.deleteOrder);
 
+	app.route('/api/panel/schedule')
+		.get(panel.getSchedule);
+
 	app.param('itemId', panel.itemByID);
 	app.param('orderId', panel.orderByID);
 };

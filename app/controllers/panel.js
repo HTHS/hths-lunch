@@ -1,7 +1,8 @@
 var mongoose = require('mongoose'),
 	Item = mongoose.model('Item'),
 	item = require('./item'),
-	order = require('./order');
+	order = require('./order'),
+	schedule = require('./schedule');
 
 exports.getItems = function(req, res) {
 	/**
@@ -44,6 +45,10 @@ exports.getOrder = function(req, res) {
 
 exports.deleteOrder = function(req, res) {
 	order.delete(req, res);
+};
+
+exports.getSchedule = function(req, res) {
+	schedule.read(req, res);
 };
 
 exports.itemByID = function(req, res, next, id) {

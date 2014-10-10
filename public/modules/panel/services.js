@@ -21,6 +21,19 @@ angular.module('hthsLunch.panel').factory(
 			}
 		});
 	}
+]).factory('PanelSchedule', [
+	'$resource',
+	function($resource) {
+		return $resource('/api/panel/schedule', {}, {
+			// query: {
+			// 	method: 'GET',
+			// 	isArray: false
+			// },
+			update: {
+				method: 'PUT'
+			}
+		});
+	}
 ]).filter('prettyprint', function() {
 	return function(items) {
 		var prettyPrint = '';

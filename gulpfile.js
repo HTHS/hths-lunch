@@ -41,7 +41,7 @@ gulp.task('sass', function() {
 		.pipe(gulp.dest('public/modules/'));
 });
 
-gulp.task('build', function() {
+gulp.task('watch', function() {
 	var jsWatcher = gulp.watch('**/*.js', {
 		cwd: 'public/'
 	}, ['concat']);
@@ -56,4 +56,8 @@ gulp.task('build', function() {
 		// event.path = event.path.replace('sass', 'styles');
 		console.log('File %s was %s, running tasks...', event.path, event.type);
 	});
+});
+
+gulp.task('build', ['sass', 'concat'], function() {
+
 });

@@ -45,4 +45,41 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope',
 				$scope.orders = orders;
 			});
 	}
-]);
+]).controller('DashboardScheduleController', ['$scope', 'PanelSchedule', function($scope, Schedule) {
+	$scope.daysInMonth = function(month, year) {
+		return new Date(year, month, 0).getDate();
+	};
+
+	$scope.today = {
+		'date': new Date()
+	};
+	$scope.today.month = $scope.today.date.getMonth();
+	$scope.today.year = $scope.today.date.getFullYear();
+	$scope.today.daysInMonth = $scope.daysInMonth($scope.today.month, $scope.today.year);
+
+	Schedule
+		.query()
+		.$promise.then(function(schedule) {
+			var weeks = schedule.length / 4 + schedule.length % 4;
+			var schoolDays = 5;
+			$scope.schedule = [];
+			for (var i = 0; i < weeks; i++) {
+				$scope.schedule[i] = [];
+				for (var z = 0; z < schoolDays; z++) {
+					$scope.schedule[i][z] = new Date(schedule[i * (schoolDays - 1) + z]);
+				}
+			}
+
+			/**
+			 * var weeks = schedule.week.length / 6 + schedule.week.length % 6;
+			var schoolDays = 7;
+			$scope.schedule = [];
+			for (var i = 0; i < weeks; i++) {
+				$scope.schedule[i] = [];
+				for (var z = 0; z < schoolDays; z++) {
+					$scope.schedule[i][z] = new Date(schedule[i * (schoolDays - 1) + z]);
+				}
+			}
+			 */
+		});
+}]);
