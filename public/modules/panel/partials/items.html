@@ -7,16 +7,22 @@
       <th>Item</th>
       <th>Description</th>
       <th>Price</th>
+      <th>Active</th>
+      <th>Edit</th>
+      <th>Delete</th>
     </tr>
   </thead>
   <tbody>
-    <tr class="item" ng-repeat="item in items" ng-class="{
-      active: item.active,
-      inactive: !item.active
-    }" ng-click="toggleActivity(item)">
+    <tr class="item" ng-repeat="item in items" >
       <td>{{item.title}}</td>
       <td>{{item.description}}</td>
       <td>{{item.price | currency}}</td>
+      <td ng-class="{
+        active: item.active,
+        inactive: !item.active
+      }" ng-click="toggleActivity(item, $index)">{{ item.active ? 'Yes' : 'No' }}</td>
+      <td data-reveal-id="editItemModal" ng-click="editItem(item)"><span class="icon-pencil"></span></td>
+      <td><span class="icon-close" ng-click="deleteItem(item)"></span></td>
     </tr>
   </tbody>
 </table>
@@ -29,7 +35,7 @@
           <label for="item-title" class="right inline">Title</label>
         </div>
         <div class="small-9 columns">
-          <input type="text" id="item-title" placeholder="Pizza" required ng-model="newItem.title">
+          <input type="text" id="item-title" placeholder="Pizza" required tabindex="1" ng-model="newItem.title">
         </div>
       </div>
       <div class="row">
@@ -37,7 +43,7 @@
           <label for="item-description" class="right inline">Description</label>
         </div>
         <div class="small-9 columns">
-          <input type="text" id="item-description" placeholder="2 hot slices" required ng-model="newItem.description">
+          <input type="text" id="item-description" placeholder="2 hot slices" required tabindex="2" ng-model="newItem.description">
         </div>
       </div>
       <div class="row">
@@ -45,14 +51,74 @@
           <label for="item-price" class="right inline">Price</label>
         </div>
         <div class="small-9 columns">
-          <input type="number" id="item-price" placeholder="4.00" required ng-model="newItem.price">
+          <input type="number" id="item-price" placeholder="4.00" required tabindex="3" ng-model="newItem.price">
         </div>
       </div>
       <div class="row">
         <div class="small-9 small-offset-3 columns">
-          <a class="button" ng-click="createItem()">Create Item!</a>
+          <a class="button" tabindex="4" ng-click="createItem()">Create Item!</a>
         </div>
       </div>
     </div>
   </div>
 </form>
+
+<div id="editItemModal" class="reveal-modal" data-reveal>
+  <h2>Edit an item</h2>
+  <form>
+    <div class="row">
+      <div class="small-12">
+        <div class="row">
+          <div class="small-3 columns">
+            <label for="item-title" class="right inline">Title</label>
+          </div>
+          <div class="small-9 columns">
+            <input type="text" id="item-title" placeholder="Pizza" required ng-model="itemToUpdate.title">
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-3 columns">
+            <label for="item-description" class="right inline">Description</label>
+          </div>
+          <div class="small-9 columns">
+            <input type="text" id="item-description" placeholder="2 hot slices" required ng-model="itemToUpdate.description">
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-3 columns">
+            <label for="item-price" class="right inline">Price</label>
+          </div>
+          <div class="small-9 columns">
+            <input type="number" id="item-price" placeholder="4.00" required ng-model="itemToUpdate.price">
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-3 columns">
+            <label for="item-status" class="right inline">Active</label>
+          </div>
+          <div class="small-9 columns">
+            <input type="checkbox" id="item-status" ng-model="itemToUpdate.active">
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-3 small-offset-6 columns">
+            <a class="button success" ng-click="updateItem()">Update Item!</a>
+          </div>
+          <div class="small-3 columns">
+            <a class="button alert close-reveal-modal" ng-click="cancelUpdateItem()">Cancel</a>
+          </div>
+        </div>
+        <div class="row" ng-show="updateStatus">
+          <div class="small-3 small-offset-3 columns">
+            {{updateStatus}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<script>
+  $(document).foundation();
+</script>

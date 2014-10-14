@@ -1,3 +1,8 @@
+.item .active {
+  background: #43ac6a; }
+.item .inactive {
+  background: #f04124; }
+
 .content {
   display: flex; }
 

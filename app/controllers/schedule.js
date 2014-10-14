@@ -1,24 +1,42 @@
 var later = require('later');
 
-// Use EDT for calculating start end days of school year
+// Use ET for calculating start end days of school year
 later.date.localTime();
 
-// every weekday in Sept - June at 9 AM
-var schoolYear = later.parse.recur().on(9).hour().on(1, 2, 3, 4, 5, 6, 9, 10, 11, 12).month();
-var schoolDays = later.parse.recur().on(9).hour().onWeekday().on(1, 2, 3, 4, 5, 6, 9, 10, 11, 12).month();
+exports.create = function(req, res) {
+	var startDate = new Date(req.body.startDate);
+	var endDate = new Date(req.body.endDate);
+	var time = req.body.time;
+	var exceptions = req.body.exceptions;
 
-var schoolYearSched = later.schedule(schoolYear).next(310);
-var schoolSched = later.schedule(schoolDays).next(240);
+	exports.schoolDays = later.parse.recur()
+		.on(time).hour()
+		.onWeekday()
+		.on(1, 2, 3, 4, 5, 6, 9, 10, 11, 12).month();
 
-// schoolDays = schoolDays.except().on(310).dayOfYear();
-// for skipping days
-//
-// schoolSched = later.schedule(schoolDays);
+	exceptions.forEach(function(exception, index) {
+		exception = new Date(exception);
+		exports.schoolDays.except()
+			.on(exception.getMonth()).month()
+			.on(exception.getDate()).dayOfMonth()
+			.on(exception.getFullYear()).year();
+	});
+	exports.schoolSchedule = later.schedule(exports.schoolDays)
+		.next(365, startDate, endDate);
+
+	res.jsonp(exports.schoolSchedule);
+};
 
 exports.read = function(req, res) {
 	// res.jsonp({
 	// 	weekdays: schoolSched,
 	// 	week: schoolYearSched
 	// });
-	res.jsonp(schoolSched);
+	res.jsonp(exports.schoolSchedule);
+};
+
+function endSubmissionsForDay() {
+	// var ordersForTheDay =
+	//
+	// Order.find({}).where('timestampe').lt(date 9:00 AM).gt(date 9:01 AM).sort('timestamp').exec(function)
 };

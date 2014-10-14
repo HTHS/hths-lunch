@@ -25,10 +25,10 @@ angular.module('hthsLunch.panel').factory(
 	'$resource',
 	function($resource) {
 		return $resource('/api/panel/schedule', {}, {
-			// query: {
-			// 	method: 'GET',
-			// 	isArray: false
-			// },
+			create: {
+				method: 'POST',
+				isArray: true
+			},
 			update: {
 				method: 'PUT'
 			}

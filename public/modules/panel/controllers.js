@@ -16,11 +16,46 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope',
 				});
 		};
 
-		$scope.toggleActivity = function(item) {
-			Item
-				.update(angular.extend(item, {
-					'active': !item.active
-				}));
+		$scope.editItem = function(item) {
+			$scope.itemToUpdate = item;
+			$scope.updateStatus = null;
+		};
+
+		$scope.updateItem = function() {
+			$scope.updateStatus = 'Updating';
+
+			$scope.itemToUpdate
+				.$update()
+				.then(function(item) {
+					$scope.updateStatus = 'Success';
+				})
+				.catch(function(response) {
+					$scope.updateStatus = 'Error, please try again';
+				});
+		};
+
+		$scope.cancelUpdateItem = function() {
+			$scope.itemToUpdate = null;
+			$scope.updateStatus = null;
+		};
+
+		$scope.deleteItem = function(item) {
+			// item
+			// .$delete()
+			// debugger;
+		};
+
+		$scope.toggleActivity = function(item, index) {
+			item.active = !item.active;
+			item.index = index;
+			item
+				.$update()
+				.catch(function(response) {
+					// reset item status, maybe figure out how to
+					// delay settings Item status until a response
+					// is received from the server
+					$scope.items[response.config.data.index].active = !response.data.active;
+				});
 		};
 
 		Item
@@ -46,6 +81,24 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope',
 			});
 	}
 ]).controller('DashboardScheduleController', ['$scope', 'PanelSchedule', function($scope, Schedule) {
+	$scope.newSchedule = {};
+
+	$scope.createSchedule = function() {
+		$scope.newSchedule.endDate = new Date($scope.newSchedule.fakeEndDate);
+		$scope.newSchedule.endDate.setDate($scope.newSchedule.endDate.getDate() + 1);
+		$scope.newSchedule.time = $scope.newSchedule.submissionTime.getHours();
+		$scope.newSchedule.exceptions = $scope.newSchedule.datesToSkip.split(', ');
+		Schedule
+			.create($scope.newSchedule)
+			.$promise.then(function(schedule) {
+				$scope.schedule = schedule.map(function(day) {
+					return new Date(day);
+				});
+
+				debugger;
+			});
+	};
+
 	$scope.daysInMonth = function(month, year) {
 		return new Date(year, month, 0).getDate();
 	};

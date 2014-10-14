@@ -8,7 +8,7 @@ exports.getItems = function(req, res) {
 	/**
 	 * TODO see how to just use item.list
 	 */
-	Item.find().sort('-active').sort('-title').exec(function(err, items) {
+	Item.find().sort('-active').sort('title').exec(function(err, items) {
 		if (err) {
 			return res.send(400, {
 				message: item.getErrorMessage(err)
@@ -45,6 +45,10 @@ exports.getOrder = function(req, res) {
 
 exports.deleteOrder = function(req, res) {
 	order.delete(req, res);
+};
+
+exports.createSchedule = function(req, res) {
+	schedule.create(req, res);
 };
 
 exports.getSchedule = function(req, res) {

@@ -38,3 +38,9 @@
 
 .icon-stats:before {
   content: "\e604"; }
+
+.icon-pencil:before {
+  content: "\e605"; }
+
+.icon-close:before {
+  content: "\e606"; }

@@ -1,5 +1,3 @@
-$(document).foundation();
-
 angular.module('hthsLunch.order', ['hthsLunch.core.itemService',
 	'hthsLunch.core.orderService'
 ]);

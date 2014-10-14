@@ -1,10 +1,9 @@
 .item {
-  rules: none;
-  &.active {
+  .active {
     background: #43ac6a;
   }
 
-  &.inactive {
+  .inactive {
     background: #f04124;
   }
 }
