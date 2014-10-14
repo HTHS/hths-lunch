@@ -135,4 +135,6 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope',
 			}
 			 */
 		});
+}]).controller('DashboardAnalyticsController', ['$scope', function($scope) {
+
 }]);

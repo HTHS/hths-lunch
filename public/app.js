@@ -568,6 +568,8 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope',
 			}
 			 */
 		});
+}]).controller('DashboardAnalyticsController', ['$scope', function($scope) {
+
 }]);
 
 angular.module('hthsLunch.panel').factory(

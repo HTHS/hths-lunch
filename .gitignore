@@ -3,3 +3,6 @@ node_modules
 
 # Bower Dependency directory
 public/lib
+
+# Compiled files
+public/app.js
