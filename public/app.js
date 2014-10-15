@@ -351,6 +351,11 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope',
 				$scope.newOrder.items = $scope.newOrder.items.filter(function(item) {
 					return item.quantity > 0;
 				});
+
+				$scope.newOrder.items = $scope.newOrder.items.map(function(item) {
+					return item._id;
+				});
+
 				Order
 					.save($scope.newOrder)
 					.$promise.then(function(order) {

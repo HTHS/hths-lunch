@@ -3,6 +3,7 @@
  */
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
+
 /**
  * Post Schema
  */
@@ -12,8 +13,8 @@ var OrderSchema = new Schema({
 		required: true
 	},
 	items: {
-		type: Array,
-		required: true
+		type: [Schema.ObjectId],
+		ref: 'Item'
 	},
 	total: {
 		type: Number,

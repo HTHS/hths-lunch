@@ -39,7 +39,7 @@ exports.create = function(req, res) {
 
 	order.save(function(err) {
 		if (err) {
-			return res.send(400, {
+			return res.status(400).send({
 				message: getErrorMessage(err)
 			});
 		} else {
@@ -65,7 +65,7 @@ exports.update = function(req, res) {
 
 	order.save(function(err) {
 		if (err) {
-			return res.send(400, {
+			return res.status(400).send({
 				message: getErrorMessage(err)
 			});
 		} else {
@@ -82,7 +82,7 @@ exports.delete = function(req, res) {
 
 	order.remove(function(err) {
 		if (err) {
-			return res.send(400, {
+			return res.status(400).send({
 				message: getErrorMessage(err)
 			});
 		} else {
@@ -92,12 +92,12 @@ exports.delete = function(req, res) {
 };
 
 /**
- * List of Items
+ * List of Orders
  */
 exports.list = function(req, res) {
-	Order.find().exec(function(err, orders) {
+	Order.find().populate('items').exec(function(err, orders) {
 		if (err) {
-			return res.send(400, {
+			return res.status(400).send({
 				message: getErrorMessage(err)
 			});
 		} else {
@@ -107,10 +107,10 @@ exports.list = function(req, res) {
 };
 
 /**
- * Item middleware
+ * Order middleware
  */
 exports.orderByID = function(req, res, next, id) {
-	Order.findById(id).exec(function(err, order) {
+	Order.findById(id).populate('items').exec(function(err, order) {
 		if (err) {
 			return next(err);
 		}

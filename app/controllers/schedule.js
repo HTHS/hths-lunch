@@ -16,10 +16,18 @@ exports.create = function(req, res) {
 
 	exceptions.forEach(function(exception, index) {
 		exception = new Date(exception);
-		exports.schoolDays.except()
-			.on(exception.getMonth()).month()
-			.on(exception.getDate()).dayOfMonth()
-			.on(exception.getFullYear()).year();
+
+		if (index === 0) {
+			exports.schoolDays.except()
+				.on(exception.getMonth()).month()
+				.on(exception.getDate()).dayOfMonth()
+				.on(exception.getFullYear()).year();
+		} else {
+			exports.schoolDays.and()
+				.on(exception.getMonth()).month()
+				.on(exception.getDate()).dayOfMonth()
+				.on(exception.getFullYear()).year();
+		}
 	});
 	exports.schoolSchedule = later.schedule(exports.schoolDays)
 		.next(365, startDate, endDate);
@@ -39,4 +47,4 @@ function endSubmissionsForDay() {
 	// var ordersForTheDay =
 	//
 	// Order.find({}).where('timestampe').lt(date 9:00 AM).gt(date 9:01 AM).sort('timestamp').exec(function)
-};
+}
