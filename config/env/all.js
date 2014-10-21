@@ -10,7 +10,7 @@ module.exports = {
 	google: {
 		clientID: '260484967294-qel7tlhafljn7n0c1kqias6s5fnldbv3.apps.googleusercontent.com',
 		clientSecret: 'Q7TyFI-lYnTdiTF4r7JFnI1g',
-		callbackURL: '/oauth/callback'
+		callbackURL: '/auth/callback'
 	},
 	mailer: {
 		from: 'MAILER_FROM',
