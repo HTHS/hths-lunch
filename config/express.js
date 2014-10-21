@@ -12,6 +12,7 @@ var express = require('express'),
 	mongoStore = require('connect-mongo')({
 		session: session
 	}),
+	passport = require('passport'),
 	flash = require('connect-flash'),
 	config = require('./config'),
 	consolidate = require('consolidate'),
@@ -86,6 +87,10 @@ module.exports = function(db) {
 			collection: config.sessionCollection
 		})
 	}));
+
+	// use passport session
+	app.use(passport.initialize());
+	app.use(passport.session());
 
 	// connect flash for flash messages
 	app.use(flash());
