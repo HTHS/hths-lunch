@@ -1,8 +1,12 @@
+/**
+ * Module dependencies
+ */
 var mongoose = require('mongoose'),
 	Item = mongoose.model('Item'),
 	item = require('./item'),
 	order = require('./order'),
-	schedule = require('./schedule');
+	schedule = require('./schedule'),
+	errorHandler = require('./error');
 
 exports.getItems = function(req, res) {
 	/**
@@ -11,7 +15,7 @@ exports.getItems = function(req, res) {
 	Item.find().sort('-active').sort('title').exec(function(err, items) {
 		if (err) {
 			return res.send(400, {
-				message: item.getErrorMessage(err)
+				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
 			res.jsonp(items);

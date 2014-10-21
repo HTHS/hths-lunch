@@ -1,35 +1,10 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
+var _ = require('lodash'),
+	mongoose = require('mongoose'),
 	Order = mongoose.model('Order'),
-	_ = require('lodash');
-
-/**
- * Get the error message from error object
- */
-function getErrorMessage(err) {
-	var message = '';
-
-	if (err.code) {
-		switch (err.code) {
-			case 11000:
-			case 11001:
-				message = 'Order already exists';
-				break;
-			default:
-				message = 'Something went wrong';
-		}
-	} else {
-		for (var errName in err.errors) {
-			if (err.errors[errName].message) {
-				message = err.errors[errName].message;
-			}
-		}
-	}
-
-	return message;
-}
+	errorHandler = require('./error');
 
 /**
  * Create a Item
@@ -40,7 +15,7 @@ exports.create = function(req, res) {
 	order.save(function(err) {
 		if (err) {
 			return res.status(400).send({
-				message: getErrorMessage(err)
+				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
 			res.jsonp(order);
@@ -66,7 +41,7 @@ exports.update = function(req, res) {
 	order.save(function(err) {
 		if (err) {
 			return res.status(400).send({
-				message: getErrorMessage(err)
+				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
 			res.jsonp(order);
@@ -83,7 +58,7 @@ exports.delete = function(req, res) {
 	order.remove(function(err) {
 		if (err) {
 			return res.status(400).send({
-				message: getErrorMessage(err)
+				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
 			res.jsonp(order);
@@ -98,7 +73,7 @@ exports.list = function(req, res) {
 	Order.find().populate('items').exec(function(err, orders) {
 		if (err) {
 			return res.status(400).send({
-				message: getErrorMessage(err)
+				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
 			res.jsonp(orders);

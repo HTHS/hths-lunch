@@ -8,8 +8,18 @@ module.exports = {
 	sessionSecret: '5dvpGV0wulKTQ2Ya',
 	sessionCollection: 'sessions',
 	google: {
-		clientID: 'APP_ID',
-		clientSecret: 'APP_SECRET',
-		callbackURL: 'http://localhost:3000/auth/google/callback'
+		clientID: '260484967294-qel7tlhafljn7n0c1kqias6s5fnldbv3.apps.googleusercontent.com',
+		clientSecret: 'Q7TyFI-lYnTdiTF4r7JFnI1g',
+		callbackURL: '/oauth/callback'
 	},
+	mailer: {
+		from: 'MAILER_FROM',
+		options: {
+			service: 'Mandrill',
+			auth: {
+				user: 'ilanbiala',
+				pass: '5rc0a3ydRJkbwFX5qeKq9w'
+			}
+		}
+	}
 };
