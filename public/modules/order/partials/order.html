@@ -1,10 +1,38 @@
+<link rel="stylesheet" href="/modules/order/styles/order.css">
+
+<nav class="top-bar" data-topbar role="navigation">
+  <ul class="title-area">
+    <!-- <li class="name">
+      <h1><a href="#">My Site</a></h1>
+    </li> -->
+     <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+    <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+  </ul>
+
+  <section class="top-bar-section">
+    <!-- Left Nav Section -->
+    <ul class="left"></ul>
+
+    <!-- Right Nav Section -->
+    <ul class="right">
+      <li class="has-dropdown">
+        <a><span class="user-display-name">{{user.displayName}}</span><img class="user-profile-picture" ng-src="{{user.providerData.picture}}"></a>
+        <ul class="dropdown">
+          <li><a ui-sref="profile">Profile</a></li>
+          <li><a ng-click="signout()">Sign out</a></li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+</nav>
+
 <br>
 <form>
   <div class="row">
     <div class="small-8">
       <div class="row">
         <div class="small-3 columns">
-          <label for="order-customer" class="right inline">Title</label>
+          <label for="order-customer" class="right inline">Name</label>
         </div>
         <div class="small-9 columns">
           <input type="text" id="order-customer" placeholder="Johnny Appleseed" required ng-model="newOrder.customer">
@@ -61,3 +89,7 @@
     </div>
   </div>
 </form>
+
+<script>
+  $(document).foundation();
+</script>

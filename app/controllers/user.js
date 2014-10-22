@@ -92,14 +92,14 @@ exports.signin = function(strategy) {
 	return function(req, res, next) {
 		passport.authenticate(strategy, function(err, user, redirectURL) {
 			if (err || !user) {
-				return res.redirect('/signin');
+				return res.redirect('/');
 			}
 			req.login(user, function(err) {
 				if (err) {
-					return res.redirect('/signin');
+					return res.redirect('/');
 				}
 
-				return res.redirect(redirectURL || '/');
+				return res.redirect(redirectURL || '/order');
 			});
 		})(req, res, next);
 	};
@@ -110,7 +110,9 @@ exports.signin = function(strategy) {
  */
 exports.signout = function(req, res) {
 	req.logout();
-	res.redirect('/');
+	res.status(200).json({
+		success: true
+	});
 };
 
 
@@ -120,7 +122,7 @@ exports.signout = function(req, res) {
 exports.userByID = function(req, res, next, id) {
 	User.findOne({
 		_id: id
-	}).exec(function(err, user) {
+	}).populate('orderHistory').exec(function(err, user) {
 		if (err) return next(err);
 		if (!user) return next(new Error('Failed to load User ' + id));
 		req.profile = user;
@@ -168,9 +170,6 @@ exports.update = function(req, res) {
 	// Init Variables
 	var user = req.user;
 	var message = null;
-
-	// For security measurement we remove the roles from the req.body object
-	delete req.body.roles;
 
 	if (user) {
 		// Merge existing user

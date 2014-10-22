@@ -1,7 +1,7 @@
 {
 	"name": "hths-lunch",
 	"description": "Lunch orders in the 21st century",
-	"version": "0.4.0",
+	"version": "0.5.0",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/ilanbiala/hths-lunch.git"

@@ -129,7 +129,8 @@ module.exports = function(db) {
 	 */
 	app.use(function(req, res) {
 		res.render('index', {
-			url: req.originalUrl
+			url: req.originalUrl,
+			user: req.user || null
 		});
 	});
 

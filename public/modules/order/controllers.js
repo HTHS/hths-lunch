@@ -1,10 +1,16 @@
-angular.module('hthsLunch.order').controller('OrderController', ['$scope',
-	'Item', 'Order',
-	function($scope, Item, Order) {
+angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$state',
+	'Item', 'Order', 'User', 'Auth',
+	function($scope, $state, Item, Order, User, Auth) {
+		$scope.user = user;
+
+		if (!$scope.user) {
+			$state.go('landingPage');
+		}
+
 		$scope.newOrder = {
 			'total': 0,
 			'items': {},
-			'customer': ''
+			'customer': $scope.user.displayName || ''
 		};
 		Item.query().$promise.then(function(items) {
 			$scope.menu = items.map(function(item) {
@@ -49,8 +55,24 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope',
 					.save($scope.newOrder)
 					.$promise.then(function(order) {
 						$scope.orderProcessed = true;
+
+						$scope.user.orderHistory.push(order._id);
+						User();
+						// User.update($scope.user)
 					});
 			}
+		};
+
+		$scope.signout = function() {
+			Auth
+				.signout()
+				.$promise.then(function(status) {
+					if (status.success) {
+						setTimeout(function() {
+							$state.go('landingPage');
+						}, 2000);
+					}
+				});
 		};
 	}
 ]);

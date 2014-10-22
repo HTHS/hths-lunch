@@ -2,11 +2,13 @@ doctype html
 html(lang='en', ng-app='hthsLunch')
   head
     meta(charset='utf-8')
-    title= pageTitle
+    title #{title}
     link(rel='stylesheet', href='/lib/foundation/css/foundation.css')
     link(rel='stylesheet', href='/styles/global.css')
     script(src='/app.js')
   body
     base(href='/')
     div.content(ui-view='main')
-    script $(document).foundation();
+    script(type='text/javascript').
+      $(document).foundation();
+      var user = !{JSON.stringify(user)};

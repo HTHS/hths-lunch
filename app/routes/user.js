@@ -8,12 +8,12 @@ module.exports = function(app) {
 	var users = require('../controllers/user');
 
 	// User profile API
-	app.route('/users/me').get(users.me);
-	app.route('/users').put(users.update);
+	app.route('/api/users/me').get(users.me);
+	app.route('/api/users/:userId').put(users.update);
 
 	// User Authentication API
 	// Logout link
-	app.route('/auth/signout').get(users.signout);
+	app.route('/api/auth/signout').get(users.signout);
 
 	// Google OAuth routes
 	// "Signup" link

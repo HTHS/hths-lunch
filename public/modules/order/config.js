@@ -3,7 +3,7 @@ angular.module('hthsLunch.order')
 		function($stateProvider, $urlRouterProvider) {
 			$stateProvider
 				.state('order', {
-					url: '/',
+					url: '/order',
 					views: {
 						'main': {
 							controller: 'OrderController',
