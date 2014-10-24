@@ -28,12 +28,6 @@ var UserSchema = new Schema({
 		default: '',
 		match: [/.+\@.+\..+/, 'Please fill in a valid email address']
 	},
-	username: {
-		type: String,
-		unique: 'Usernames must be unique',
-		required: 'Please fill in a username',
-		trim: true
-	},
 	provider: {
 		type: String,
 		required: 'Provider is required'
@@ -50,7 +44,11 @@ var UserSchema = new Schema({
 	orderHistory: [{
 		type: Schema.Types.ObjectId,
 		ref: 'Order'
-	}]
+	}],
+	currentOrder: {
+		type: Schema.Types.ObjectId,
+		ref: 'Order'
+	}
 });
 
 mongoose.model('User', UserSchema);
