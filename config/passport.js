@@ -13,7 +13,7 @@ module.exports = function() {
 	passport.deserializeUser(function(id, done) {
 		User.findOne({
 			_id: id
-		}, '-salt -password', function(err, user) {
+		}).populate('orderHistory').exec(function(err, user) {
 			done(err, user);
 		});
 	});

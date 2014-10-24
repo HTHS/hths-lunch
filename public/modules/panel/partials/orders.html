@@ -12,7 +12,7 @@
   <tbody>
     <tr class="order" ng-repeat="order in orders | orderBy: '-timestamp'">
       <td>{{order.customer}}</td>
-      <td>{{order.items | prettyprint}}</td>
+      <td>{{order | prettyprint}}</td>
       <td>{{order.total | currency}}</td>
       <td>{{order.timestamp | date: 'shortTime'}}</td>
       <td><a class="button tiny alert" ng-click="deleteOrder($index)">Delete</a></td>

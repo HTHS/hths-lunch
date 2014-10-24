@@ -12,10 +12,13 @@ var OrderSchema = new Schema({
 		type: String,
 		required: true
 	},
-	items: {
-		type: [Schema.ObjectId],
+	items: [{
+		type: Schema.ObjectId,
 		ref: 'Item'
-	},
+	}],
+	quantity: [{
+		type: Number
+	}],
 	total: {
 		type: Number,
 		required: true

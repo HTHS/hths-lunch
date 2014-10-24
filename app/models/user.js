@@ -47,11 +47,10 @@ var UserSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	orderHistory: {
-		type: [Schema.ObjectId],
-		ref: 'Order',
-		default: []
-	}
+	orderHistory: [{
+		type: Schema.Types.ObjectId,
+		ref: 'Order'
+	}]
 });
 
 mongoose.model('User', UserSchema);

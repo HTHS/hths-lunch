@@ -8,11 +8,8 @@
     <form>
       <div class="large-6 columns">
         <div class="row collapse postfix-radius">
-          <div class="small-9 columns">
-            <input type="email" placeholder="user@ctemc.org" pattern="\S+(@ctemc.org)" title="email@ctemc.org" required ng-model="email">
-          </div>
-          <div class="small-3 columns">
-            <button type="submit" class="button postfix">Get started!</button>
+          <div class="small-8 small-offset-2 columns">
+            <button type="submit" class="button postfix" ng-click="authenticate()">Get started!</button>
           </div>
         </div>
       </div>

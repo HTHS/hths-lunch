@@ -35,11 +35,11 @@ angular.module('hthsLunch.panel').factory(
 		});
 	}
 ]).filter('prettyprint', function() {
-	return function(items) {
+	return function(order) {
 		var prettyPrint = '';
-		for (var i = 0; i < items.length; i++) {
-			prettyPrint += items[i].title + ' x' + items[i].quantity;
-			if (i + 1 < items.length) {
+		for (var i = 0; i < order.items.length; i++) {
+			prettyPrint += order.items[i].title + ' x' + order.quantity[i];
+			if (i + 1 < order.items.length) {
 				// another item left to evaluate
 				prettyPrint += ', ';
 			}

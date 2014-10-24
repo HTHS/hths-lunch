@@ -5,13 +5,14 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 
 		if (!$scope.user) {
 			$state.go('landingPage');
+		} else {
+			$scope.newOrder = {
+				'total': 0,
+				'items': {},
+				'customer': $scope.user.displayName
+			};
 		}
 
-		$scope.newOrder = {
-			'total': 0,
-			'items': {},
-			'customer': $scope.user.displayName || ''
-		};
 		Item.query().$promise.then(function(items) {
 			$scope.menu = items.map(function(item) {
 				item.quantity = 0;
@@ -47,7 +48,10 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 					return item.quantity > 0;
 				});
 
+				$scope.newOrder.quantity = [];
+
 				$scope.newOrder.items = $scope.newOrder.items.map(function(item) {
+					$scope.newOrder.quantity.push(item.quantity);
 					return item._id;
 				});
 
