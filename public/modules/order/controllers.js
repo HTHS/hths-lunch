@@ -6,6 +6,23 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 		if (!$scope.user) {
 			$state.go('landingPage');
 		} else {
+			if ($scope.user.orderHistory.length > 0) {
+				var lastOrderDate = new Date($scope.user.orderHistory[$scope.user.orderHistory.length - 1].timestamp);
+				var todaysDate = new Date();
+				var lastOrderDateTime = lastOrderDate.getTime();
+				var todaysDateTime = todaysDate.getTime();
+				var tomorrowsDate = new Date();
+				tomorrowsDate.setDate(todaysDate.getDate() + 1);
+				tomorrowsDate.setHours(9);
+				tomorrowsDate.setMinutes(0);
+				tomorrowsDate.setSeconds(0);
+				// Let's update the order, not create a new one, because it's before the cutoff time
+				if (todaysDateTime - lastOrderDateTime > 0 && todaysDate.getHours() < 9 || todaysDateTime - lastOrderDateTime <
+					tomorrowsDate.getTime() - todaysDateTime > 0) {
+					debugger;
+				}
+			}
+
 			$scope.newOrder = {
 				'total': 0,
 				'items': {},
@@ -61,8 +78,12 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 						$scope.orderProcessed = true;
 
 						$scope.user.orderHistory.push(order._id);
-						User();
-						// User.update($scope.user)
+						$scope.user.currentOrder = order;
+						User
+							.update($scope.user)
+							.$promise.then(function(user) {
+								debugger;
+							});
 					});
 			}
 		};
