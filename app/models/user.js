@@ -24,9 +24,7 @@ var UserSchema = new Schema({
 	},
 	email: {
 		type: String,
-		trim: true,
-		default: '',
-		match: [/.+\@.+\..+/, 'Please fill in a valid email address']
+		trim: true
 	},
 	provider: {
 		type: String,
@@ -44,11 +42,7 @@ var UserSchema = new Schema({
 	orderHistory: [{
 		type: Schema.Types.ObjectId,
 		ref: 'Order'
-	}],
-	currentOrder: {
-		type: Schema.Types.ObjectId,
-		ref: 'Order'
-	}
+	}]
 });
 
 mongoose.model('User', UserSchema);

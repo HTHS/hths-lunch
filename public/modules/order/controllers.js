@@ -6,36 +6,47 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 		if (!$scope.user) {
 			$state.go('landingPage');
 		} else {
-			if ($scope.user.orderHistory.length > 0) {
-				var lastOrderDate = new Date($scope.user.orderHistory[$scope.user.orderHistory.length - 1].timestamp);
-				var todaysDate = new Date();
-				var lastOrderDateTime = lastOrderDate.getTime();
-				var todaysDateTime = todaysDate.getTime();
-				var tomorrowsDate = new Date();
-				tomorrowsDate.setDate(todaysDate.getDate() + 1);
-				tomorrowsDate.setHours(9);
-				tomorrowsDate.setMinutes(0);
-				tomorrowsDate.setSeconds(0);
-				// Let's update the order, not create a new one, because it's before the cutoff time
-				if (todaysDateTime - lastOrderDateTime > 0 && todaysDate.getHours() < 9 || todaysDateTime - lastOrderDateTime <
-					tomorrowsDate.getTime() - todaysDateTime > 0) {
-					debugger;
-				}
-			}
-
 			$scope.newOrder = {
 				'total': 0,
 				'items': {},
 				'customer': $scope.user.displayName
 			};
-		}
 
-		Item.query().$promise.then(function(items) {
-			$scope.menu = items.map(function(item) {
-				item.quantity = 0;
-				return item;
+			Item.query().$promise.then(function(items) {
+				$scope.menu = items.map(function(item) {
+					item.quantity = 0;
+					return item;
+				});
+
+				if ($scope.user.orderHistory.length > 0) {
+					var lastOrderDate = new Date($scope.user.orderHistory[$scope.user.orderHistory.length - 1].timestamp);
+					var todaysDate = new Date();
+					var lastOrderDateTime = lastOrderDate.getTime();
+					var todaysDateTime = todaysDate.getTime();
+					var tomorrowsDate = new Date();
+					tomorrowsDate.setDate(todaysDate.getDate() + 1);
+					tomorrowsDate.setHours(9);
+					tomorrowsDate.setMinutes(0);
+					tomorrowsDate.setSeconds(0);
+					// Let's update the order, not create a new one, because it's before the cutoff time
+					// if order time is before now, and right now is before 9 AM or 9 AM tomorrow - right now < 9 AM tomorrow - order time
+					if (todaysDateTime - lastOrderDateTime > 0 && todaysDate.getHours() < 9 || todaysDateTime - lastOrderDateTime <
+						tomorrowsDate.getTime() - lastOrderDateTime) {
+						var orderToUpdate = $scope.user.orderHistory[$scope.user.orderHistory.length - 1];
+						$scope.newOrder.total = orderToUpdate.total;
+						$scope.newOrder.toBeUpdated = true;
+						for (var i = 0; i < orderToUpdate.items.length; i++) {
+							for (var z = 0; z < $scope.menu.length; z++) {
+								if (orderToUpdate.items[i] === $scope.menu[z]._id) {
+									$scope.menu[z].quantity = orderToUpdate.quantity[i];
+									$scope.toggleItemInOrder(z);
+								}
+							}
+						}
+					}
+				}
 			});
-		});
+		}
 
 		$scope.toggleItemInOrder = function(index) {
 			if ($scope.newOrder.items[index] !== null && typeof $scope.newOrder.items[
@@ -72,19 +83,31 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 					return item._id;
 				});
 
-				Order
-					.save($scope.newOrder)
-					.$promise.then(function(order) {
-						$scope.orderProcessed = true;
+				if ($scope.newOrder.toBeUpdated) {
+					Order.update($scope.newOrder)
+						.$promise.then(function(order) {
+							$scope.orderProcessed = true;
 
-						$scope.user.orderHistory.push(order._id);
-						$scope.user.currentOrder = order;
-						User
-							.update($scope.user)
-							.$promise.then(function(user) {
-								debugger;
-							});
-					});
+							User
+								.update($scope.user)
+								.$promise.then(function(user) {
+									debugger;
+								});
+						});
+				} else {
+					Order
+						.save($scope.newOrder)
+						.$promise.then(function(order) {
+							$scope.orderProcessed = true;
+
+							$scope.user.orderHistory.push(order._id);
+							User
+								.update($scope.user)
+								.$promise.then(function(user) {
+									debugger;
+								});
+						});
+				}
 			}
 		};
 
