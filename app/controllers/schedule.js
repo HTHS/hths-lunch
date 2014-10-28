@@ -1,4 +1,7 @@
-var later = require('later');
+var later = require('later'),
+	mongoose = require('mongoose'),
+	Order = mongoose.model('Order'),
+	Day = mongoose.model('Day');
 
 // Use ET for calculating start end days of school year
 later.date.localTime();
@@ -30,7 +33,9 @@ exports.create = function(req, res) {
 		}
 	});
 	exports.schoolSchedule = later.schedule(exports.schoolDays)
-		.next(365, startDate, endDate);
+		.next(500, startDate, endDate);
+
+	exports.job = later.setInterval(endSubmissionsForDay, exports.schoolDays);
 
 	res.jsonp(exports.schoolSchedule);
 };
@@ -44,7 +49,36 @@ exports.read = function(req, res) {
 };
 
 function endSubmissionsForDay() {
-	// var ordersForTheDay =
-	//
-	// Order.find({}).where('timestampe').lt(date 9:00 AM).gt(date 9:01 AM).sort('timestamp').exec(function)
+	var now = new Date();
+	var yesterdayCutoff = new Date(Date.now() - later.DAY);
+	yesterdayCutoff.setMinutes(1);
+	Order.find({}).where('timestamp').lt(now).gt(yesterdayCutoff).sort('timestamp').exec(function(
+		err, orders) {
+		if (err) {
+			throw new Error(err);
+		}
+		if (!orders.length) {
+			throw new Error('no orders for today');
+		} else {
+			var orderIDs = orders.map(function(order) {
+				return order._id;
+			});
+
+			var today = new Day({
+				orders: orderIDs
+			});
+
+			today.save(function(err) {
+				if (err) {
+					throw new Error(err);
+				} else {
+					generateCSV(today);
+				}
+			});
+		}
+	});
+}
+
+function generateCSV(day) {
+	console.log(day);
 }
