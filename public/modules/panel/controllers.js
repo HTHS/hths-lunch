@@ -87,7 +87,7 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope',
 		$scope.newSchedule.endDate = new Date($scope.newSchedule.fakeEndDate);
 		$scope.newSchedule.endDate.setDate($scope.newSchedule.endDate.getDate() + 1);
 		$scope.newSchedule.time = $scope.newSchedule.submissionTime.getHours();
-		$scope.newSchedule.exceptions = $scope.newSchedule.datesToSkip.split(', ');
+		$scope.newSchedule.exceptions = $scope.newSchedule.datesToSkip ? $scope.newSchedule.datesToSkip.split(', ') : [];
 		Schedule
 			.create($scope.newSchedule)
 			.$promise.then(function(schedule) {
