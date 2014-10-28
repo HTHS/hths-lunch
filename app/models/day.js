@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
 var DaySchema = new Schema({
 	date: {
 		type: Date,
-		required: true
+		default: Date.now
 	},
 	orders: {
 		type: [Schema.ObjectId],
