@@ -39,7 +39,7 @@
 		"gulp-concat": "~2.4.1",
 		"gulp-rename": "~1.2.0",
 		"gulp-sass": "~1.2.0",
-		"helmet": "~0.4.2",
+		"helmet": "~0.5.0",
 		"jade": "~1.7.0",
 		"later": "~1.1.6",
 		"lodash": "~2.4.1",
@@ -51,6 +51,7 @@
 		"passport-google-oauth": "~0.1.5"
 	},
 	"devDependencies": {
+		"mocha": "2.0.1",
 		"should": "~4.1.0",
 		"supertest": "~0.14.0"
 	}
