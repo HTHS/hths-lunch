@@ -59,6 +59,10 @@ exports.getSchedule = function(req, res) {
 	schedule.read(req, res);
 };
 
+exports.updateSchedule = function(req, res) {
+	schedule.update(req, res);
+};
+
 exports.itemByID = function(req, res, next, id) {
 	item.itemByID(req, res, next, id);
 };

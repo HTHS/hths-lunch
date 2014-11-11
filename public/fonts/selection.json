@@ -173,6 +173,29 @@
 			},
 			"setIdx": 0,
 			"iconIdx": 253
+		},
+		{
+			"icon": {
+				"paths": [
+					"M992 384h-352v-352c0-17.672-14.328-32-32-32h-192c-17.672 0-32 14.328-32 32v352h-352c-17.672 0-32 14.328-32 32v192c0 17.672 14.328 32 32 32h352v352c0 17.672 14.328 32 32 32h192c17.672 0 32-14.328 32-32v-352h352c17.672 0 32-14.328 32-32v-192c0-17.672-14.328-32-32-32z"
+				],
+				"tags": [
+					"plus",
+					"add",
+					"sum"
+				],
+				"grid": 16
+			},
+			"properties": {
+				"id": 258,
+				"order": 8,
+				"prevSize": 32,
+				"code": 58887,
+				"name": "plus",
+				"ligatures": ""
+			},
+			"setIdx": 0,
+			"iconIdx": 258
 		}
 	],
 	"height": 1024,
@@ -212,6 +235,8 @@
 		"showGrid": true,
 		"showGlyphs": true,
 		"showQuickUse": true,
-		"search": ""
+		"search": "",
+		"showQuickUse2": true,
+		"showSVGs": true
 	}
 }

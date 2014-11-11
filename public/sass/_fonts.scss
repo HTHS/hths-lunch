@@ -23,13 +23,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/*
-  Dashboard
-  Items
-  Orders
-  Analytics
-  Plus sign
-*/
 .icon-settings:before {
   content: "\e600";
 }
@@ -50,4 +43,7 @@
 }
 .icon-close:before {
   content: "\e606";
+}
+.icon-plus:before {
+  content: "\e607";
 }

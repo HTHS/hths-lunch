@@ -22,11 +22,6 @@ module.exports = function(db) {
 	// Initialize express app
 	var app = express();
 
-	// Globbing model files
-	config.getGlobbedFiles('./app/models/**/*.js').forEach(function(modelPath) {
-		require(path.resolve(modelPath));
-	});
-
 	// Setting application local variables
 	app.locals.title = config.app.title;
 	app.locals.description = config.app.description;
@@ -106,7 +101,7 @@ module.exports = function(db) {
 	app.use(express.static(path.resolve('./public')));
 
 	// Globbing routing files
-	config.getGlobbedFiles('./app/routes/**/*.js').forEach(function(routePath) {
+	config.getGlobbedPaths('./app/routes/**/*.js').forEach(function(routePath) {
 		require(path.resolve(routePath))(app);
 	});
 

@@ -2,7 +2,15 @@ var gulp = require('gulp'),
 	del = require('del'),
 	concat = require('gulp-concat'),
 	rename = require('gulp-rename'),
-	sass = require('gulp-sass');
+	sass = require('gulp-sass'),
+	mocha = require('gulp-mocha');
+
+/**
+ * Helpers
+ */
+gulp.task('env:test', function() {
+	process.env.NODE_ENV = 'test';
+});
 
 gulp.task('default', function() {
 	// place code for your default task here
@@ -56,6 +64,25 @@ gulp.task('watch', function() {
 		// event.path = event.path.replace('sass', 'styles');
 		console.log('File %s was %s, running tasks...', event.path, event.type);
 	});
+});
+
+gulp.task('mocha', ['env:test'], function() {
+	var mongoose = require('./config/mongoose');
+
+	mongoose.connect(function(db) {
+		return gulp.src('./test/**/*.js', {
+				read: false
+			})
+			.pipe(mocha({}))
+			.once('end', function() {
+				mongoose.disconnect();
+			});
+	});
+
+});
+
+gulp.task('test', ['mocha'], function() {
+
 });
 
 gulp.task('build', ['sass', 'concat'], function() {

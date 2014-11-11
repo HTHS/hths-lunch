@@ -113,6 +113,16 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope',
 	Schedule
 		.query()
 		.$promise.then(function(schedule) {
+			var startingDayOfWeek = new Date(schedule[0]).getDay();
+
+			if (startingDayOfWeek > 1) {
+				var args = [0, 0];
+				for (var day = 0; day < startingDayOfWeek - 1; day++) {
+					args.push('');
+				}
+				Array.prototype.splice.apply(schedule, args);
+			}
+
 			var weeks = schedule.length / 4 + schedule.length % 4;
 			var schoolDays = 5;
 			$scope.schedule = [];
@@ -122,6 +132,7 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope',
 					$scope.schedule[i][z] = new Date(schedule[i * (schoolDays - 1) + z]);
 				}
 			}
+			debugger;
 
 			/**
 			 * var weeks = schedule.week.length / 6 + schedule.week.length % 6;

@@ -21,7 +21,8 @@ module.exports = function(app) {
 
 	app.route('/api/panel/schedule')
 		.get(panel.getSchedule)
-		.post(panel.createSchedule);
+		.post(panel.createSchedule)
+		.put(panel.updateSchedule);
 
 	app.param('itemId', panel.itemByID);
 	app.param('orderId', panel.orderByID);

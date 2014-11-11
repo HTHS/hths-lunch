@@ -2,7 +2,9 @@
  * Module dependencies.
  */
 var _ = require('lodash'),
-	glob = require('glob');
+	glob = require('glob'),
+	chalk = require('chalk'),
+	path = require('path');
 
 /**
  * Load app configurations
@@ -15,10 +17,7 @@ module.exports = _.extend(
 /**
  * Get files by glob patterns
  */
-module.exports.getGlobbedFiles = function(globPatterns, removeRoot) {
-	// For context switching
-	var _this = this;
-
+module.exports.getGlobbedPaths = function(globPatterns, excludes) {
 	// URL paths regex
 	var urlRegex = new RegExp('^(?:[a-z]+:)?\/\/', 'i');
 
@@ -28,7 +27,7 @@ module.exports.getGlobbedFiles = function(globPatterns, removeRoot) {
 	// If glob pattern is array so we use each pattern in a recursive way, otherwise we use glob
 	if (_.isArray(globPatterns)) {
 		globPatterns.forEach(function(globPattern) {
-			output = _.union(output, _this.getGlobbedFiles(globPattern, removeRoot));
+			output = _.union(output, this.getGlobbedPaths(globPattern, excludes));
 		});
 	} else if (_.isString(globPatterns)) {
 		if (urlRegex.test(globPatterns)) {
@@ -37,9 +36,17 @@ module.exports.getGlobbedFiles = function(globPatterns, removeRoot) {
 			glob(globPatterns, {
 				sync: true
 			}, function(err, files) {
-				if (removeRoot) {
+				if (excludes) {
 					files = files.map(function(file) {
-						return file.replace(removeRoot, '');
+						if (_.isArray(excludes)) {
+							for (var i in excludes) {
+								file = file.replace(excludes[i], '');
+							}
+						} else {
+							file = file.replace(excludes, '');
+						}
+
+						return file;
 					});
 				}
 
@@ -49,4 +56,31 @@ module.exports.getGlobbedFiles = function(globPatterns, removeRoot) {
 	}
 
 	return output;
+};
+
+/**
+ * Validate NODE_ENV existance
+ */
+var validateEnvironmentVariable = function() {
+	glob('./config/env/' + process.env.NODE_ENV + '.js', {
+		sync: true
+	}, function(err, environmentFiles) {
+		console.log();
+
+		if (!environmentFiles.length) {
+			if (process.env.NODE_ENV) {
+				console.error(chalk.red('No configuration file found for "' + process.env.NODE_ENV +
+					'" environment, using development instead'));
+			} else {
+				console.error(chalk.red('NODE_ENV is not defined! Using default development environment'));
+			}
+
+			process.env.NODE_ENV = 'development';
+		} else {
+			console.log(chalk.bold('Application loaded using the "' + process.env.NODE_ENV + '" environment configuration'));
+		}
+
+		// Reset console color
+		console.log(chalk.white(''));
+	});
 };
