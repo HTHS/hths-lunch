@@ -69,16 +69,17 @@ gulp.task('watch', function() {
 gulp.task('mocha', ['env:test'], function() {
 	var mongoose = require('./config/mongoose');
 
-	mongoose.connect(function(db) {
-		return gulp.src('./test/**/*.js', {
-				read: false
-			})
-			.pipe(mocha({}))
-			.once('end', function() {
-				mongoose.disconnect();
-			});
-	});
-
+	mongoose
+		.connect()
+		.then(function(db) {
+			return gulp.src('./test/**/*.js', {
+					read: false
+				})
+				.pipe(mocha({}))
+				.once('end', function() {
+					mongoose.disconnect();
+				});
+		});
 });
 
 gulp.task('test', ['mocha'], function() {
