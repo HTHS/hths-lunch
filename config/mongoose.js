@@ -37,4 +37,5 @@ module.exports.connect = function(cb) {
 
 module.exports.disconnect = function() {
 	mongoose.disconnect();
+	console.log(chalk.yellow('Disconnected from MongoDB.'));
 };
