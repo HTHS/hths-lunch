@@ -2,7 +2,6 @@
  * Module dependencies.
  */
 var chalk = require('chalk'),
-	init = require('./config/init')(),
 	config = require('./config/config'),
 	express = require('./config/express'),
 	mongoose = require('./config/mongoose');

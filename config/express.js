@@ -1,7 +1,8 @@
 /**
  * Module dependencies.
  */
-var express = require('express'),
+var path = require('path'),
+	express = require('express'),
 	morgan = require('morgan'),
 	bodyParser = require('body-parser'),
 	session = require('express-session'),
@@ -14,9 +15,8 @@ var express = require('express'),
 	}),
 	passport = require('passport'),
 	flash = require('connect-flash'),
-	config = require('./config'),
 	consolidate = require('consolidate'),
-	path = require('path');
+	config = require('./config');
 
 module.exports = function(db) {
 	// Initialize express app
@@ -108,7 +108,9 @@ module.exports = function(db) {
 	// Assume 'not found' in the error msgs is a 404. this is somewhat silly, but valid, you can do whatever you like, set properties, use instanceof etc.
 	app.use(function(err, req, res, next) {
 		// If the error object doesn't exists
-		if (!err) return next();
+		if (!err) {
+			return next();
+		}
 
 		// Log it
 		console.error(err.stack);
