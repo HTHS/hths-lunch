@@ -1,10 +1,11 @@
 /**
  * Module dependencies.
  */
-var config = require('./config'),
-	chalk = require('chalk'),
+var chalk = require('chalk'),
+	Promise = require('bluebird'),
 	path = require('path'),
-	mongoose = require('mongoose');
+	mongoose = require('mongoose'),
+	config = require('./config');
 
 // Load the mongoose models
 module.exports.loadModels = function() {
@@ -15,27 +16,29 @@ module.exports.loadModels = function() {
 };
 
 // Initialize Mongoose
-module.exports.connect = function(cb) {
+module.exports.connect = function() {
+	var p = Promise.defer();
+
 	var db = mongoose.connect(config.db, function(err) {
 		// Log Error
 		if (err) {
-			console.error(chalk.red('Could not connect to MongoDB!'));
-			console.log(err);
+			console.log(chalk.red('Could not connect to MongoDB!'));
+			console.error(err);
+			p.reject(err);
 		} else {
-			console.error(chalk.green('Connected to MongoDB.'));
+			console.log(chalk.green('Connected to MongoDB.'));
 
 			// Load modules
 			module.exports.loadModels();
 
-			// Call callback FN
-			if (cb) {
-				cb(db);
-			}
+			p.resolve(db);
 		}
 	});
+
+	return p.promise;
 };
 
 module.exports.disconnect = function() {
 	mongoose.disconnect();
-	console.log(chalk.yellow('Disconnected from MongoDB.'));
+	console.info(chalk.yellow('Disconnected from MongoDB.'));
 };
