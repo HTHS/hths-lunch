@@ -52,7 +52,10 @@
 		"passport-google-oauth": "~0.1.5"
 	},
 	"devDependencies": {
+		"codecov.io": "~0.0.8",
+		"gulp-istanbul": "~0.3.1",
 		"gulp-mocha": "~1.1.1",
+		"istanbul": "~0.3.2",
 		"mocha": "2.0.1",
 		"should": "~4.3.0",
 		"supertest": "~0.15.0"
