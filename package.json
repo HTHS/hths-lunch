@@ -40,7 +40,7 @@
 		"gulp-concat": "~2.4.1",
 		"gulp-rename": "~1.2.0",
 		"gulp-sass": "~1.2.3",
-		"helmet": "~0.5.1",
+		"helmet": "~0.5.2",
 		"jade": "~1.7.0",
 		"later": "~1.1.6",
 		"lodash": "~2.4.1",
@@ -54,7 +54,7 @@
 	"devDependencies": {
 		"codecov.io": "~0.0.8",
 		"gulp-istanbul": "~0.3.1",
-		"gulp-mocha": "~1.1.1",
+		"gulp-mocha": "~2.0.0",
 		"istanbul": "~0.3.2",
 		"mocha": "2.0.1",
 		"should": "~4.3.0",
