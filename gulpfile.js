@@ -3,7 +3,8 @@ var gulp = require('gulp'),
 	concat = require('gulp-concat'),
 	rename = require('gulp-rename'),
 	sass = require('gulp-sass'),
-	mocha = require('gulp-mocha');
+	mocha = require('gulp-mocha'),
+	istanbul = require('gulp-istanbul');
 
 /**
  * Helpers
@@ -69,15 +70,39 @@ gulp.task('watch', function() {
 gulp.task('mocha', ['env:test'], function() {
 	var mongoose = require('./config/mongoose');
 
-	mongoose
-		.connect()
-		.then(function(db) {
-			return gulp.src('./test/**/*.js', {
-					read: false
-				})
-				.pipe(mocha({}))
-				.once('end', function() {
-					mongoose.disconnect();
+
+	gulp.src(['app/**/*.js', 'config/**/*.js', 'public/modules/**/*.js'])
+		.pipe(istanbul())
+		.on('finish', function() {
+
+			mongoose
+				.connect()
+				.then(function(db) {
+					return gulp.src('./test/**/*.js')
+						.pipe(mocha({
+							// reporter: 'mocha-lcov-reporter'
+						}))
+						.pipe(istanbul.writeReports())
+						.once('end', function() {
+							mongoose.disconnect();
+
+							// var exec = require('child_process').exec;
+							//
+							// var child = exec('', function(err, stdout, stderr) {
+							// 	if (err) {
+							// 		console.log(err);
+							// 	}
+							//
+							// 	if (stdout) {
+							// 		console.log(stdout);
+							// 	}
+							//
+							// 	if (stderr) {
+							// 		console.log(stderr);
+							// 	}
+							// });
+						});
+
 				});
 		});
 });
