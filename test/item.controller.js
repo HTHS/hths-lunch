@@ -1,15 +1,20 @@
 /**
  * Module dependencies
  */
+
+/*
 var should = require('should'),
 	mongoose = require('mongoose'),
 	request = require('supertest'),
 	Item = mongoose.model('Item'),
 	item = require('../app/controllers/item');
+*/
 
 /**
  * Unit tests
  */
+
+/*
 describe('Item controller unit tests:', function() {
 	before(function(done) {
 		done();
@@ -34,3 +39,5 @@ describe('Item controller unit tests:', function() {
 		done();
 	});
 });
+
+*/
