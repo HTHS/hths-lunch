@@ -8,3 +8,7 @@ public/lib
 public/app.js
 *.js.map
 *.css.map
+
+# Coverage/Analysis files
+coverage
+report
