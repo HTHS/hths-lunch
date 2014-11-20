@@ -23,7 +23,6 @@ module.exports = function() {
 		GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
 		users = require('../app/controllers/user');
 
-
 	// Use google strategy
 	passport.use(new GoogleStrategy({
 			clientID: config.google.clientID,
