@@ -57,25 +57,22 @@ module.exports.getGlobbedPaths = function(globPatterns, excludes) {
 		if (urlRegex.test(globPatterns)) {
 			output.push(globPatterns);
 		} else {
-			glob(globPatterns, {
-				sync: true
-			}, function(err, files) {
-				if (excludes) {
-					files = files.map(function(file) {
-						if (_.isArray(excludes)) {
-							for (var i in excludes) {
-								file = file.replace(excludes[i], '');
-							}
-						} else {
-							file = file.replace(excludes, '');
+			var files = glob.sync(globPatterns, {});
+			if (excludes) {
+				files = files.map(function(file) {
+					if (_.isArray(excludes)) {
+						for (var i in excludes) {
+							file = file.replace(excludes[i], '');
 						}
+					} else {
+						file = file.replace(excludes, '');
+					}
 
-						return file;
-					});
-				}
+					return file;
+				});
+			}
 
-				output = _.union(output, files);
-			});
+			output = _.union(output, files);
 		}
 	}
 
