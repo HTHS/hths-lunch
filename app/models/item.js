@@ -3,8 +3,9 @@
  */
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
+
 /**
- * Post Schema
+ * Item Schema
  */
 var ItemSchema = new Schema({
 	title: {

@@ -41,7 +41,8 @@ var UserSchema = new Schema({
 	},
 	orderHistory: [{
 		type: Schema.Types.ObjectId,
-		ref: 'Order'
+		ref: 'Order',
+		required: true
 	}]
 });
 

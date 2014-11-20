@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 /**
- * Post Schema
+ * Order Schema
  */
 var OrderSchema = new Schema({
 	customer: {
@@ -14,10 +14,12 @@ var OrderSchema = new Schema({
 	},
 	items: [{
 		type: Schema.ObjectId,
-		ref: 'Item'
+		ref: 'Item',
+		required: true
 	}],
 	quantity: [{
-		type: Number
+		type: Number,
+		required: true
 	}],
 	total: {
 		type: Number,

@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 /**
- * Post Schema
+ * Day Schema
  */
 var DaySchema = new Schema({
 	date: {
@@ -14,7 +14,8 @@ var DaySchema = new Schema({
 	},
 	orders: {
 		type: [Schema.ObjectId],
-		ref: 'Order'
+		ref: 'Order',
+		required: true
 	}
 });
 

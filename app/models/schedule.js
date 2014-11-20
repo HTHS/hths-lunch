@@ -3,8 +3,9 @@
  */
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
+
 /**
- * Post Schema
+ * Schedule Schema
  */
 var ScheduleSchema = new Schema({
 	schedules: {
