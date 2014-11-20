@@ -7,7 +7,6 @@ var path = require('path'),
 	bodyParser = require('body-parser'),
 	session = require('express-session'),
 	compress = require('compression'),
-	methodOverride = require('method-override'),
 	cookieParser = require('cookie-parser'),
 	helmet = require('helmet'),
 	mongoStore = require('connect-mongo')({
@@ -15,7 +14,6 @@ var path = require('path'),
 	}),
 	passport = require('passport'),
 	flash = require('connect-flash'),
-	consolidate = require('consolidate'),
 	config = require('./config');
 
 module.exports = function(db) {
@@ -59,12 +57,10 @@ module.exports = function(db) {
 		app.locals.cache = 'memory';
 	}
 
-	// Request body parsing middleware should be above methodOverride
 	app.use(bodyParser.urlencoded({
 		extended: true
 	}));
 	app.use(bodyParser.json());
-	app.use(methodOverride());
 
 	// Enable jsonp
 	app.enable('jsonp callback');
