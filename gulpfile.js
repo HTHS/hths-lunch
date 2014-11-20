@@ -119,16 +119,17 @@ gulp.task('analysis', ['plato']);
  * Development tasks *
  *********************/
 gulp.task('watch', function() {
-	var jsWatcher = gulp.watch('public/**/*.js', {}, ['concat']);
-	jsWatcher.on('change', function(event) {
-		console.log('File %s was %s, running tasks...', event.path, event.type);
-	});
+	gulp
+		.watch('public/**/*.js', {}, ['concat'])
+		.on('change', function(event) {
+			console.log('File %s was %s, running tasks...', event.path, event.type);
+		});
 
-	var sassWatcher = gulp.watch('public/**/*.scss', {}, ['sass']);
-	sassWatcher.on('change', function(event) {
-		// event.path = event.path.replace('sass', 'styles');
-		console.log('File %s was %s, running tasks...', event.path, event.type);
-	});
+	gulp
+		.watch('public/**/*.scss', {}, ['sass'])
+		.on('change', function(event) {
+			console.log('File %s was %s, running tasks...', event.path, event.type);
+		});
 });
 
 gulp.task('dev', function() {
