@@ -1,25 +1,25 @@
 {
-	"name": "hths-lunch",
-	"version": "0.5.7",
-	"homepage": "https://github.com/ilanbiala/hths-lunch",
-	"authors": [
-		"Ilan Biala <ilan.biala@gmail.com>"
-	],
-	"description": "Better Lunch form management for HTHS",
-	"main": "server.js",
-	"private": true,
-	"ignore": [
-		"**/.*",
-		"node_modules",
-		"bower_components",
-		"test",
-		"tests"
-	],
-	"dependencies": {
-		"angular": "~1.3.3",
-		"angular-resource": "~1.3.3",
-		"angular-ui-router": "~0.2.12",
-		"foundation": "~5.4.7",
-		"d3": "~3.4.13"
-	}
+  "name": "hths-lunch",
+  "version": "0.5.7",
+  "homepage": "https://github.com/ilanbiala/hths-lunch",
+  "authors": [
+    "Ilan Biala <ilan.biala@gmail.com>"
+  ],
+  "description": "Better Lunch form management for HTHS",
+  "main": "server.js",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.3.3",
+    "angular-resource": "~1.3.3",
+    "angular-ui-router": "~0.2.13",
+    "foundation": "~5.4.7",
+    "d3": "~3.4.13"
+  }
 }
