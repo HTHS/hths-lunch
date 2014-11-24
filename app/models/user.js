@@ -26,6 +26,10 @@ var UserSchema = new Schema({
 		type: String,
 		trim: true
 	},
+	// isAdmin: {
+	// 	type: Boolean,
+	// 	default: false
+	// },
 	provider: {
 		type: String,
 		required: 'Provider is required'
