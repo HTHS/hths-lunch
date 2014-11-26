@@ -62,6 +62,18 @@ angular.module('hthsLunch.panel')
 							templateUrl: '/modules/panel/partials/analytics.html'
 						}
 					}
+				}).state('dashboard.users', {
+					url: '/users',
+					views: {
+						'main': {
+							controller: 'DashboardController',
+							templateUrl: '/modules/panel/partials/dashboard.html'
+						},
+						'dashboard': {
+							controller: 'DashboardUsersController',
+							templateUrl: '/modules/panel/partials/users.html'
+						}
+					}
 				});
 		}
 	]);

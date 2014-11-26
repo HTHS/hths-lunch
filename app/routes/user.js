@@ -11,6 +11,9 @@ module.exports = function(app) {
 	app.route('/api/users/me').get(users.me);
 	app.route('/api/users/:userId').put(users.update);
 
+	// TODO better route
+	app.route('/api/users/hasAccount').post(users.emailHasAccount);
+
 	// User Authentication API
 	// Logout link
 	app.route('/api/auth/signout').get(users.signout);
@@ -24,6 +27,7 @@ module.exports = function(app) {
 			'https://www.googleapis.com/auth/plus.login'
 		]
 	}));
+
 	// "Callback/Signin" link
 	app.route('/auth/callback').get(users.signin('google'));
 

@@ -6,6 +6,18 @@ angular.module('hthsLunch.core.userService', ['ngResource']).factory('User', [
 		}, {
 			update: {
 				method: 'PUT'
+			},
+			hasAccount: {
+				url: '/api/users/hasAccount',
+				method: 'POST',
+				interceptor: {
+					response: function(response) {
+						return response.resource.hasAccount;
+					},
+					responseError: function(data) {
+
+					}
+				}
 			}
 		});
 	}

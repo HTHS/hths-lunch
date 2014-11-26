@@ -24,6 +24,10 @@ module.exports = function(app) {
 		.post(panel.createSchedule)
 		.put(panel.updateSchedule);
 
+	app.route('/api/panel/users')
+		.get(panel.getUsers)
+		.post(panel.inviteUser);
+
 	app.param('itemId', panel.itemByID);
 	app.param('orderId', panel.orderByID);
 };

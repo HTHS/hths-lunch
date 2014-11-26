@@ -1,0 +1,52 @@
+<h2>Users</h2>
+<table rules="none"><!-- get rid of border between cells -->
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Admin?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="user in users | orderBy: '-created'">
+      <td>{{user.displayName}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.isAdmin}}</td>
+    </tr>
+  </tbody>
+</table>
+
+<form>
+  <div class="row">
+    <h2>Invite user</h2>
+  </div>
+  <div class="row">
+    <div class="small-8">
+
+      <div class="row">
+        <div class="small-3 columns">
+          <label for="user-email" class="right inline">Email</label>
+        </div>
+        <div class="small-9 columns">
+          <input type="email" id="user-email" required tabindex="2" ng-model="newUser.email">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="small-3 columns">
+          <label for="user-status" class="right inline">Admin</label>
+        </div>
+        <div class="small-9 columns">
+          <input type="checkbox" id="user-status" required tabindex="3" ng-model="newUser.status">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="small-9 small-offset-3 columns">
+          <a class="button" tabindex="4" ng-click="inviteUser()">Invite user!</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</form>

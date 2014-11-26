@@ -13,7 +13,8 @@ module.exports = {
 		callbackURL: '/auth/callback'
 	},
 	mailer: {
-		from: 'MAILER_FROM',
+		// TODO get email to reply to
+		from: 'autobot@hths-lunch.tk',
 		options: {
 			service: 'Mandrill',
 			auth: {

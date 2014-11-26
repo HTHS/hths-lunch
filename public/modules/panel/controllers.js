@@ -148,4 +148,12 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope',
 		});
 }]).controller('DashboardAnalyticsController', ['$scope', function($scope) {
 
+}]).controller('DashboardUsersController', ['$scope', 'PanelUser', function($scope, User) {
+	$scope.inviteUser = function() {
+		User
+			.invite($scope.newUser)
+			.$promise.then(function() {
+				debugger;
+			});
+	};
 }]);

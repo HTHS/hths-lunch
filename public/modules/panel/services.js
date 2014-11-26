@@ -34,6 +34,15 @@ angular.module('hthsLunch.panel').factory(
 			}
 		});
 	}
+]).factory('PanelUser', [
+	'$resource',
+	function($resource) {
+		return $resource('/api/panel/users', {}, {
+			invite: {
+				method: 'POST'
+			}
+		});
+	}
 ]).filter('prettyprint', function() {
 	return function(order) {
 		var prettyPrint = '';

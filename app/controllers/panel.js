@@ -2,11 +2,16 @@
  * Module dependencies
  */
 var mongoose = require('mongoose'),
+	nodemailer = require('nodemailer'),
 	Item = mongoose.model('Item'),
+	config = require('../../config/config'),
 	item = require('./item'),
 	order = require('./order'),
 	schedule = require('./schedule'),
+	user = require('./user'),
 	errorHandler = require('./error');
+
+var transporter = nodemailer.createTransport(config.mailer.options);
 
 exports.getItems = function(req, res) {
 	/**
@@ -14,7 +19,7 @@ exports.getItems = function(req, res) {
 	 */
 	Item.find().sort('-active').sort('title').exec(function(err, items) {
 		if (err) {
-			return res.send(400, {
+			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
@@ -61,6 +66,47 @@ exports.getSchedule = function(req, res) {
 
 exports.updateSchedule = function(req, res) {
 	schedule.update(req, res);
+};
+
+exports.getUsers = function(req, res) {
+	user.list(req, res);
+};
+
+exports.inviteUser = function(req, res) {
+	var url = 'http://hths-lunch.tk/auth/google';
+	var status = req.body.status || false;
+
+	var stateParams = encodeURIComponent(JSON.stringify({
+		isAdmin: req.body.status
+	}));
+	url += '?state=' + stateParams;
+
+	console.log('URL: ', url);
+
+	transporter.sendMail({
+		from: config.mailer.from,
+		to: req.body.email,
+		subject: 'Join HTHS-Lunch',
+		// TODO figure out how to do it for text-only clients
+		text: 'Join HTHS-Lunch (' + url + ') and start ordering lunch the right way.',
+		html: 'Join <a href="' + url + '">HTHS-Lunch</a> and start ordering lunch the right way.'
+	}, function(err, info) {
+		var status = 200;
+		var success = true;
+
+		if (err) {
+			console.log(new Error(err));
+			status = 500;
+			success = false;
+		} else {
+			console.log('Message sent: ' + info.response);
+		}
+
+		res.status(status).json({
+			success: success,
+			response: info
+		});
+	});
 };
 
 exports.itemByID = function(req, res, next, id) {

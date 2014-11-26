@@ -3,11 +3,15 @@
 <div class="row">
   <div class="small-8 small-centered columns">
     <h1 class="slogan">Order lunch the right way</h1>
-    <h5 class="slogan">Enter your email and order lunch the easy way.</h5>
+    <h5 class="slogan">Request an invite to simplify your lunch time.</h5>
     <br>
     <div class="row">
-      <div class="small-8 small-offset-2 small-centered columns">
-        <button class="button" ng-click="authenticate()">Get started!</button>
+      <div class="small-8 columns">
+        <input type="email" required autofocus placeholder="johnny.appleseed@gmail.com" ng-model="email">
+      </div>
+
+      <div class="small-4 columns">
+        <button class="button" ng-click="authenticateOrRequestInvite()">Get started!</button>
       </div>
     </div>
   </div>
