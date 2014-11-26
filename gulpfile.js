@@ -49,11 +49,12 @@ gulp.task('concat', function() {
 			'public/lib/angular-resource/angular-resource.min.js',
 			'public/lib/foundation/js/vendor/modernizr.js',
 			'public/lib/foundation/js/foundation.min.js',
+			'public/modules/app.js',
 			'public/modules/**/*.js'
 		])
 		.pipe(sourcemaps.init())
 		// .pipe(uglify())
-		.pipe(concat('app.js'))
+		.pipe(concat('app.min.js'))
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('public/'));
 });
