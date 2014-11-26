@@ -6,6 +6,7 @@ public/lib
 
 # Compiled files
 public/app.js
+public/app.min.js
 *.js.map
 *.css.map
 
