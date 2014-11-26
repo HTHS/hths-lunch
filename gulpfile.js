@@ -104,6 +104,19 @@ gulp.task('mocha', ['env:test'], function() {
  * Analysis *
  ************/
 gulp.task('plato', function() {
+	// plato.inspect([
+	// 	'app/**/*.js',
+	// 	'config/**/*.js',
+	// 	'public/modules/**/*.js'
+	// 	],
+	// 	'report',
+	// 	{
+	// 		jshint: {},
+	// 		complexity: {
+	// 			trycatch: true
+	// 		}
+	// 	});
+
 	return gulp.src(['app/**/*.js', 'config/**/*.js', 'public/modules/**/*.js'])
 		.pipe(plato('report', {
 			jshint: {},
