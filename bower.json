@@ -16,8 +16,8 @@
 		"tests"
 	],
 	"dependencies": {
-		"angular": "~1.3.3",
-		"angular-resource": "~1.3.3",
+		"angular": "~1.3.4",
+		"angular-resource": "~1.3.4",
 		"angular-ui-router": "~0.2.13",
 		"foundation": "~5.4.7",
 		"d3": "~3.4.13"
