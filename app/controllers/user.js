@@ -43,6 +43,7 @@ exports.createProfile = function(req, providerUserProfile, done) {
 						lastName: providerUserProfile.lastName,
 						displayName: providerUserProfile.displayName,
 						email: providerUserProfile.email,
+						isAdmin: JSON.parse(decodeURIComponent(req.query.state)).isAdmin,
 						provider: providerUserProfile.provider,
 						providerData: providerUserProfile.providerData
 					});

@@ -81,8 +81,6 @@ exports.inviteUser = function(req, res) {
 	}));
 	url += '?state=' + stateParams;
 
-	console.log('URL: ', url);
-
 	transporter.sendMail({
 		from: config.mailer.from,
 		to: req.body.email,

@@ -85,7 +85,7 @@ exports.update = function(req, res) {
 	Schedule.findOneAndUpdate().exec(function(err, schedule) {
 
 		if (err) {
-			return res.send(400, {
+			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
