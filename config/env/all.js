@@ -14,7 +14,7 @@ module.exports = {
 	},
 	mailer: {
 		// TODO get email to reply to
-		from: 'autobot@hths-lunch.tk',
+		from: 'HTHS Lunch Autobot <autobot@hths-lunch.tk>',
 		options: {
 			service: 'Mandrill',
 			auth: {
