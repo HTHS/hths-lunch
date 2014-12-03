@@ -69,34 +69,15 @@ gulp.task('mocha', ['env:test'], function() {
 		.pipe(istanbul())
 		.on('finish', function() {
 
-			mongoose
-				.connect()
-				.then(function(db) {
-					return gulp.src('./test/**/*.js')
-						.pipe(mocha({
-							// reporter: 'mocha-lcov-reporter'
-						}))
-						.pipe(istanbul.writeReports())
-						.once('end', function() {
-							mongoose.disconnect();
+			var server = require('./server');
 
-							// var exec = require('child_process').exec;
-							//
-							// var child = exec('', function(err, stdout, stderr) {
-							// 	if (err) {
-							// 		console.log(err);
-							// 	}
-							//
-							// 	if (stdout) {
-							// 		console.log(stdout);
-							// 	}
-							//
-							// 	if (stderr) {
-							// 		console.log(stderr);
-							// 	}
-							// });
-						});
-
+			return gulp.src('./test/**/*.js')
+				.pipe(mocha({
+					// reporter: 'mocha-lcov-reporter'
+				}))
+				.pipe(istanbul.writeReports())
+				.once('end', function() {
+					server.kill();
 				});
 		});
 });
