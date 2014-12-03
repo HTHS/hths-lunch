@@ -24,7 +24,8 @@ var UserSchema = new Schema({
 	},
 	email: {
 		type: String,
-		trim: true
+		trim: true,
+		required: true
 	},
 	isAdmin: {
 		type: Boolean,
@@ -48,6 +49,15 @@ var UserSchema = new Schema({
 		ref: 'Order',
 		required: true
 	}]
+});
+
+/**
+ * Hook a pre save method to hash the password
+ */
+UserSchema.pre('save', function(next) {
+	this.updated = new Date();
+
+	return next();
 });
 
 mongoose.model('User', UserSchema);
