@@ -27,6 +27,11 @@ exports.createProfile = function(req, providerUserProfile, done) {
 		additionalProviderSearchQuery[searchAdditionalProviderIdentifierField] = providerUserProfile.providerData[
 			providerUserProfile.providerIdentifierField];
 
+
+		// TODO cleanup this thing
+		console.log('Main provider search query: ', mainProviderSearchQuery);
+		console.log('Other search query: ', additionalProviderSearchQuery);
+
 		// Define a search query to find existing user with current provider profile
 		var searchQuery = {
 			$or: [mainProviderSearchQuery, additionalProviderSearchQuery]

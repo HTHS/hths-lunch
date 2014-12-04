@@ -8,15 +8,17 @@ var chalk = require('chalk'),
 	config = require('./config');
 
 // Load the mongoose models
-module.exports.loadModels = function() {
+exports.loadModels = function() {
 	// Globbing model files
-	config.getGlobbedPaths('./app/models/**/*.js').forEach(function(modelPath) {
-		require(path.resolve(modelPath));
-	});
+	config
+		.getGlobbedPaths('./app/models/**/*.js')
+		.forEach(function(modelPath) {
+			require(path.resolve(modelPath));
+		});
 };
 
 // Initialize Mongoose
-module.exports.connect = function() {
+exports.connect = function() {
 	var p = Promise.defer();
 
 	var db = mongoose.connect(config.db, function(err) {
@@ -29,7 +31,7 @@ module.exports.connect = function() {
 			console.log(chalk.green('Connected to MongoDB.'));
 
 			// Load modules
-			module.exports.loadModels();
+			exports.loadModels();
 
 			p.resolve(db);
 		}
@@ -38,7 +40,7 @@ module.exports.connect = function() {
 	return p.promise;
 };
 
-module.exports.disconnect = function() {
+exports.disconnect = function() {
 	mongoose.disconnect();
 	console.info(chalk.yellow('Disconnected from MongoDB.'));
 };

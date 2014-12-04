@@ -15,8 +15,7 @@ var _ = require('lodash'),
 
 	if (!environmentFiles.length) {
 		if (process.env.NODE_ENV) {
-			console.error(chalk.red('No configuration file found for "' + process.env
-				.NODE_ENV + '" environment using development instead'));
+			console.error(chalk.red('No configuration file found for %s environment using development instead'), process.env.NODE_ENV);
 		} else {
 			console.error(chalk.red(
 				'NODE_ENV is not defined! Using default development environment'));
@@ -24,8 +23,7 @@ var _ = require('lodash'),
 
 		process.env.NODE_ENV = 'development';
 	} else {
-		console.log(chalk.inverse('Application loaded using the "' + process.env.NODE_ENV +
-			'" environment configuration'));
+		console.log(chalk.inverse('Application loaded using the environment configuration'), process.env.NODE_ENV);
 	}
 	console.log(chalk.reset(''));
 })();
