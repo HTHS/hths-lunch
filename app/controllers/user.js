@@ -169,6 +169,9 @@ exports.update = function(req, res) {
 	}
 };
 
+/**
+ * Check if email has account
+ */
 exports.emailHasAccount = function(req, res) {
 	User.findOne({
 		email: req.body.email
@@ -186,6 +189,23 @@ exports.emailHasAccount = function(req, res) {
 			});
 		}
 	});
+};
+
+/**
+ * User authorization check
+ */
+exports.userHasAuthorization = function(req, res) {
+	if (req.user.isAdmin) {
+		return res.send({
+			authorized: true,
+			message: 'User is authorized'
+		});
+	} else {
+		return res.status(403).send({
+			authorized: false,
+			message: 'User is not authorized'
+		});
+	}
 };
 
 /**
@@ -220,18 +240,12 @@ exports.requiresLogin = function(req, res, next) {
 };
 
 /**
- * User authorizations routing middleware
+ * Require Authentication routing middleware
  */
-exports.hasAuthorization = function(req, res) {
+exports.requiresAuthentication = function(req, res, next) {
 	if (req.user.isAdmin) {
-		return res.send({
-			authorized: true,
-			message: 'User is authorized'
-		});
+		next();
 	} else {
-		return res.status(403).send({
-			authorized: false,
-			message: 'User is not authorized'
-		});
+		next(new Error('User is not authorized'));
 	}
 };

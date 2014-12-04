@@ -1,6 +1,8 @@
 var router = require('express').Router(),
 	panel = require('../controllers/panel');
 
+router.all('*', panel.requiresLogin, panel.requiresAuthentication);
+
 // Item Routes
 router.route('/api/panel/items')
 	.get(panel.getItems)
@@ -31,7 +33,7 @@ router.route('/api/panel/users')
 	.post(panel.inviteUser);
 
 router.route('/api/panel/auth/:user')
-	.post(panel.hasAuthorization);
+	.post(panel.userHasAuthorization);
 
 router.param('itemId', panel.itemByID);
 router.param('orderId', panel.orderByID);

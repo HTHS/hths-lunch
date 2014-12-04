@@ -111,6 +111,13 @@ exports.inviteUser = function(req, res) {
 };
 
 /**
+ * Authorization check
+ */
+exports.userHasAuthorization = function(req, res, next) {
+	user.hasAuthorization(req, res);
+};
+
+/**
  * Item middleware
  */
 exports.itemByID = function(req, res, next, id) {
@@ -132,8 +139,15 @@ exports.userByID = function(req, res, next, id) {
 };
 
 /**
+ * Require login middleware
+ */
+exports.requiresLogin = function(req, res, next) {
+	user.requiresLogin(req, res, next);
+};
+
+/**
  * Panel authorization middleware
  */
-exports.hasAuthorization = function(req, res, next) {
-	user.hasAuthorization(req, res);
+exports.requiresAuthentication = function(req, res, next) {
+	user.requiresAuthentication(req, res, next);
 };
