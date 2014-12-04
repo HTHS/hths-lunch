@@ -14,7 +14,7 @@ angular.module('hthsLunch.panel').factory(
 	'$resource',
 	function($resource) {
 		return $resource('/api/panel/orders/:orderId', {
-			'orderId': '@_id'
+			orderId: '@_id'
 		}, {
 			update: {
 				method: 'PUT'
@@ -37,8 +37,17 @@ angular.module('hthsLunch.panel').factory(
 ]).factory('PanelUser', [
 	'$resource',
 	function($resource) {
-		return $resource('/api/panel/users', {}, {
+		return $resource('/api/panel/users', {
+			// user: '@_id'
+		}, {
 			invite: {
+				method: 'POST'
+			},
+			hasAuthorization: {
+				url: '/api/panel/auth/:user',
+				params: {
+					user: '@user'
+				},
 				method: 'POST'
 			}
 		});

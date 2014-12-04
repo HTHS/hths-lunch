@@ -89,28 +89,51 @@ exports.inviteUser = function(req, res) {
 		text: 'Join HTHS-Lunch (' + url + ') and start ordering lunch the right way.',
 		html: 'Join <a href="' + url + '">HTHS-Lunch</a> and start ordering lunch the right way.'
 	}, function(err, info) {
-		var status = 200;
-		var success = true;
-
 		if (err) {
-			console.log(new Error(err));
-			status = 500;
-			success = false;
+			console.log(err);
+
+			res.status(500).json({
+				success: false,
+				response: {
+					message: err.message,
+					code: err.code
+				}
+			});
 		} else {
 			console.log('Message sent: ' + info.response);
-		}
 
-		res.status(status).json({
-			success: success,
-			response: info
-		});
+			res.json({
+				success: true,
+				response: info
+			});
+		}
 	});
 };
 
+/**
+ * Item middleware
+ */
 exports.itemByID = function(req, res, next, id) {
 	item.itemByID(req, res, next, id);
 };
 
+/**
+ * Order middleware
+ */
 exports.orderByID = function(req, res, next, id) {
 	order.orderByID(req, res, next, id);
+};
+
+/**
+ * User middleware
+ */
+exports.userByID = function(req, res, next, id) {
+	user.userByID(req, res, next, id);
+};
+
+/**
+ * Panel authorization middleware
+ */
+exports.hasAuthorization = function(req, res, next) {
+	user.hasAuthorization(req, res);
 };

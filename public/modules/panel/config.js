@@ -13,6 +13,25 @@ angular.module('hthsLunch.panel')
 							controller: 'DashboardController',
 							templateUrl: '/modules/panel/partials/index.html'
 						}
+					},
+					onEnter: function($state, PanelUser) {
+						if (user) {
+							PanelUser
+								.hasAuthorization({
+									user: user._id
+								})
+								.$promise.then(function(user) {
+									if (!user.authorized) {
+										$state.go('landingPage');
+									}
+								}).catch(function(response) {
+									if (response.status === 403) {
+										$state.go('landingPage');
+									}
+								});
+						} else {
+							$state.go('landingPage');
+						}
 					}
 				}).state('dashboard.items', {
 					url: '/items',
