@@ -9,15 +9,12 @@
 	"main": "server.js",
 	"private": true,
 	"ignore": [
-		"**/.*",
 		"node_modules",
-		"bower_components",
-		"test",
-		"tests"
+		"test"
 	],
 	"dependencies": {
-		"angular": "~1.3.4",
-		"angular-resource": "~1.3.4",
+		"angular": "~1.3.5",
+		"angular-resource": "~1.3.5",
 		"angular-ui-router": "~0.2.13",
 		"foundation": "~5.4.7",
 		"d3": "~3.4.13"
