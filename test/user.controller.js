@@ -21,21 +21,21 @@ describe('User controller unit tests:', function() {
 	});
 
 	describe('Creating an User', function() {
-		it('should create and save an User', function(done) {
-			request
-				.post('/api/users')
-				.set('Content-Type', 'application/json')
-				.expect(200)
-				.end(function(err, res) {
-					if (err) {
-						return done(err);
-					}
+		// it('should invite a User when not authenticated', function(done) {
+		// 	request
+		// 		.post('/api/panel/users')
+		// 		.set('Content-Type', 'application/json')
+		// 		.expect(200)
+		// 		.end(function(err, res) {
+		// 			if (err) {
+		// 				return done(err);
+		// 			}
+		//
+		// 			done();
+		// 		});
+		// });
 
-					done();
-				});
-		});
-
-		it('fails to create an User with missing field', function(done) {
+		it('fails to create a User with missing field', function(done) {
 			done();
 		});
 	});
