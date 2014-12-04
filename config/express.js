@@ -98,7 +98,9 @@ module.exports = function(db) {
 
 	// Globbing routing files
 	config.getGlobbedPaths('./app/routes/**/*.js').forEach(function(routePath) {
-		require(path.resolve(routePath))(app);
+		var routes = require(path.resolve(routePath));
+
+		app.use(routes.basePath, routes.router);
 	});
 
 	// Assume 'not found' in the error msgs is a 404. this is somewhat silly, but valid, you can do whatever you like, set properties, use instanceof etc.

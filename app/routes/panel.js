@@ -1,33 +1,41 @@
-module.exports = function(app) {
-	var panel = require('../controllers/panel');
+var router = require('express').Router(),
+	panel = require('../controllers/panel');
 
-	// Item Routes
-	app.route('/api/panel/items')
-		.get(panel.getItems)
-		.post(panel.createItem);
+// Item Routes
+router.route('/api/panel/items')
+	.get(panel.getItems)
+	.post(panel.createItem);
 
-	app.route('/api/panel/items/:itemId')
-		.get(panel.getItem)
-		.put(panel.updateItem)
-		.delete(panel.deleteItem);
+router.route('/api/panel/items/:itemId')
+	.get(panel.getItem)
+	.put(panel.updateItem)
+	.delete(panel.deleteItem);
 
-	// Lunch order routes
-	app.route('/api/panel/orders')
-		.get(panel.getOrders);
+// Lunch order routes
+router.route('/api/panel/orders')
+	.get(panel.getOrders);
 
-	app.route('/api/panel/orders/:orderId')
-		.get(panel.getOrder)
-		.delete(panel.deleteOrder);
+router.route('/api/panel/orders/:orderId')
+	.get(panel.getOrder)
+	.delete(panel.deleteOrder);
 
-	app.route('/api/panel/schedule')
-		.get(panel.getSchedule)
-		.post(panel.createSchedule)
-		.put(panel.updateSchedule);
+// Schedule routes
+router.route('/api/panel/schedule')
+	.get(panel.getSchedule)
+	.post(panel.createSchedule)
+	.put(panel.updateSchedule);
 
-	app.route('/api/panel/users')
-		.get(panel.getUsers)
-		.post(panel.inviteUser);
+// Users routes
+router.route('/api/panel/users')
+	.get(panel.getUsers)
+	.post(panel.inviteUser);
 
-	app.param('itemId', panel.itemByID);
-	app.param('orderId', panel.orderByID);
-};
+router.route('/api/panel/auth/:user')
+	.post(panel.hasAuthorization);
+
+router.param('itemId', panel.itemByID);
+router.param('orderId', panel.orderByID);
+router.param('user', panel.userByID);
+
+module.exports.basePath = '/';
+module.exports.router = router;

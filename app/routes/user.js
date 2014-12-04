@@ -1,36 +1,38 @@
 /**
  * Module dependencies.
  */
-var passport = require('passport');
+var router = require('express').Router(),
+	passport = require('passport'),
+	users = require('../controllers/user');
 
-module.exports = function(app) {
-	// User Routes
-	var users = require('../controllers/user');
+// User Routes
 
-	// User profile API
-	app.route('/api/users/me').get(users.me);
-	app.route('/api/users/:userId').put(users.update);
+// User profile API
+router.route('/api/users/me').get(users.me);
+router.route('/api/users/:userId').put(users.update);
 
-	// TODO better route
-	app.route('/api/users/hasAccount').post(users.emailHasAccount);
+// TODO better route
+router.route('/api/users/hasAccount').post(users.emailHasAccount);
 
-	// User Authentication API
-	// Logout link
-	app.route('/api/auth/signout').get(users.signout);
+// User Authentication API
+// Logout link
+router.route('/api/auth/signout').get(users.signout);
 
-	// Google OAuth routes
-	// "Signup" link
-	app.route('/auth/google').get(passport.authenticate('google', {
-		scope: [
-			'https://www.googleapis.com/auth/userinfo.profile',
-			'https://www.googleapis.com/auth/userinfo.email',
-			'https://www.googleapis.com/auth/plus.login'
-		]
-	}));
+// Google OAuth routes
+// "Signup" link
+router.route('/auth/google').get(passport.authenticate('google', {
+	scope: [
+		'https://www.googleapis.com/auth/userinfo.profile',
+		'https://www.googleapis.com/auth/userinfo.email',
+		'https://www.googleapis.com/auth/plus.login'
+	]
+}));
 
-	// "Callback/Signin" link
-	app.route('/auth/callback').get(users.signin('google'));
+// "Callback/Signin" link
+router.route('/auth/callback').get(users.signin('google'));
 
-	// User middleware
-	app.param('userId', users.userByID);
-};
+// User middleware
+router.param('userId', users.userByID);
+
+module.exports.basePath = '/';
+module.exports.router = router;

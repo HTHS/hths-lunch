@@ -1,6 +1,8 @@
-var core = require('../controllers/core');
+var router = require('express').Router(),
+	core = require('../controllers/core');
 
-module.exports = function(app) {
-	app.route('/')
-		.get(core.index);
-};
+router.route('/')
+	.get(core.index);
+
+module.exports.basePath = '/';
+module.exports.router = router;
