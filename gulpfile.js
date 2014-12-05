@@ -53,8 +53,10 @@ gulp.task('concat', function() {
 			'public/modules/**/*.js'
 		])
 		.pipe(sourcemaps.init())
-		// .pipe(uglify())
-		.pipe(concat('app.min.js'))
+		.pipe(concat('app.js'))
+		.pipe(gulp.dest('public/'))
+		.pipe(rename('app.min.js'))
+		.pipe(uglify())
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('public/'));
 });
