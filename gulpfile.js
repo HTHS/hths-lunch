@@ -57,7 +57,7 @@ gulp.task('concat', function() {
 		.pipe(gulp.dest('public/'))
 		.pipe(rename('app.min.js'))
 		.pipe(uglify())
-		.pipe(sourcemaps.write('./'))
+		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('public/'));
 });
 
@@ -117,7 +117,7 @@ gulp.task('analysis', ['plato']);
  *********************/
 gulp.task('watch', function() {
 	gulp
-		.watch('public/**/*.js', {}, ['concat'])
+		.watch(['public/**/*.js', '!public/*.js'], {}, ['concat'])
 		.on('change', function(event) {
 			console.log('File %s was %s, running tasks...', event.path, event.type);
 		});
