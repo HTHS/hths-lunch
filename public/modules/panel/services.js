@@ -1,6 +1,5 @@
 angular.module('hthsLunch.panel').factory(
-	'PanelItem', [
-		'$resource',
+	'PanelItem', ['$resource',
 		function($resource) {
 			return $resource('/api/panel/items/:itemId', {
 				itemId: '@_id'
@@ -10,8 +9,7 @@ angular.module('hthsLunch.panel').factory(
 				}
 			});
 		}
-	]).factory('PanelOrder', [
-	'$resource',
+	]).factory('PanelOrder', ['$resource',
 	function($resource) {
 		return $resource('/api/panel/orders/:orderId', {
 			orderId: '@_id'
@@ -21,8 +19,7 @@ angular.module('hthsLunch.panel').factory(
 			}
 		});
 	}
-]).factory('PanelSchedule', [
-	'$resource',
+]).factory('PanelSchedule', ['$resource',
 	function($resource) {
 		return $resource('/api/panel/schedule', {}, {
 			create: {
@@ -34,8 +31,7 @@ angular.module('hthsLunch.panel').factory(
 			}
 		});
 	}
-]).factory('PanelUser', [
-	'$resource',
+]).factory('PanelUser', ['$resource',
 	function($resource) {
 		return $resource('/api/panel/users', {
 			// user: '@_id'
@@ -52,7 +48,7 @@ angular.module('hthsLunch.panel').factory(
 			}
 		});
 	}
-]).filter('prettyprint', function() {
+]).filter('prettyprint', [function() {
 	return function(order) {
 		var prettyPrint = '';
 		for (var i = 0; i < order.items.length; i++) {
@@ -65,4 +61,4 @@ angular.module('hthsLunch.panel').factory(
 
 		return prettyPrint;
 	};
-});
+}]);

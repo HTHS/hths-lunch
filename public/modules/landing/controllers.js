@@ -1,7 +1,5 @@
 angular.module('hthsLunch.landingPage').controller('LandingPageController', ['$scope', '$window', '$state', 'User',
-	function(
-		$scope,
-		$window, $state, User) {
+	function($scope, $window, $state, User) {
 		if (user) {
 			$state.go('order');
 		}

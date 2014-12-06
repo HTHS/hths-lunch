@@ -42,13 +42,19 @@ exports.createProfile = function(req, providerUserProfile, done) {
 				return done(err);
 			} else {
 				if (!user) {
+					var isAdmin = false;
+
+					if (req.query.state) {
+						isAdmin = JSON.parse(decodeURIComponent(req.query.state)).isAdmin;
+					}
+
 					// Create the user
 					user = new User({
 						firstName: providerUserProfile.firstName,
 						lastName: providerUserProfile.lastName,
 						displayName: providerUserProfile.displayName,
 						email: providerUserProfile.email,
-						isAdmin: JSON.parse(decodeURIComponent(req.query.state)).isAdmin,
+						isAdmin: isAdmin,
 						provider: providerUserProfile.provider,
 						providerData: providerUserProfile.providerData
 					});
@@ -129,7 +135,7 @@ exports.me = function(req, res) {
 exports.list = function(req, res) {
 	User.find().exec(function(err, users) {
 		if (err) {
-			return res.send(400, {
+			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
@@ -149,7 +155,7 @@ exports.update = function(req, res) {
 	if (user) {
 		// Merge existing user
 		user = _.extend(user, req.body);
-		user.updated = Date.now();
+		user.updated = new Date();
 		user.displayName = user.firstName + ' ' + user.lastName;
 
 		user.save(function(err) {
@@ -251,6 +257,8 @@ exports.requiresAuthentication = function(req, res, next) {
 	if (req.user.isAdmin) {
 		next();
 	} else {
-		next(new Error('User is not authorized'));
+		return res.status(403).send({
+			message: 'User is not authorized'
+		});
 	}
 };

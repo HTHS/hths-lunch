@@ -1,8 +1,6 @@
-angular.module('hthsLunch.panel').controller('DashboardController', ['$scope',
-	function($scope) {
+angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', function($scope) {
 
-	}
-]).controller('DashboardItemsController', ['$scope', 'PanelItem',
+}]).controller('DashboardItemsController', ['$scope', 'PanelItem',
 	function($scope, Item) {
 		$scope.createItem = function() {
 			Item

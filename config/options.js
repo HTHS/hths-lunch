@@ -16,7 +16,6 @@ var p1 = new Promise(function(resolve, reject) {
 				throw new Error(err);
 			}
 
-			console.log(count);
 			resolve({
 				userCount: count
 			});

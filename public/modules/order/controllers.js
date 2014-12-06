@@ -1,5 +1,4 @@
-angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$state',
-	'Item', 'Order', 'User', 'Auth',
+angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$state', 'Item', 'Order', 'User', 'Auth',
 	function($scope, $state, Item, Order, User, Auth) {
 		$scope.user = user;
 
@@ -116,9 +115,9 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 				.signout()
 				.$promise.then(function(status) {
 					if (status.success) {
-						setTimeout(function() {
-							$state.go('landingPage');
-						}, 2000);
+						$state.go('landingPage', null, {
+							reload: true
+						});
 					}
 				});
 		};

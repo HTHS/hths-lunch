@@ -14,7 +14,7 @@ angular.module('hthsLunch.panel')
 							templateUrl: '/modules/panel/partials/index.html'
 						}
 					},
-					onEnter: function($state, PanelUser) {
+					onEnter: ['$state', 'PanelUser', function($state, PanelUser) {
 						if (user) {
 							PanelUser
 								.hasAuthorization({
@@ -32,7 +32,7 @@ angular.module('hthsLunch.panel')
 						} else {
 							$state.go('landingPage');
 						}
-					}
+					}]
 				}).state('dashboard.items', {
 					url: '/items',
 					views: {
