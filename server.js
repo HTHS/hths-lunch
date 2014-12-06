@@ -11,17 +11,24 @@ exports.start = function() {
 	mongoose
 		.connect()
 		.then(function(db) {
-			var app = express(db);
 			var options = require('./config/options');
 
-			// Bootstrap passport config
-			require('./config/passport')();
+			options.then(function(opts) {
+				var options = opts.reduce(function(prevObj, currentObj) {
+					return _.extend(prevObj, currentObj);
+				});
 
-			// Logging initialization
-			console.log(chalk.green('Application started on port ' + config.port));
+				var app = express(db, options);
 
-			// Start the app by listening on <port>
-			exports.server = app.listen(config.port);
+				// Bootstrap passport config
+				require('./config/passport')();
+
+				// Logging initialization
+				console.log(chalk.green('Application started on port ' + config.port));
+
+				// Start the app by listening on <port>
+				exports.server = app.listen(config.port);
+			});
 		});
 };
 

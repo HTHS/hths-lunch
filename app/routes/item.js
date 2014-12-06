@@ -2,11 +2,11 @@ var router = require('express').Router(),
 	item = require('../controllers/item');
 
 // Item Routes
-router.route('/api/items')
+router.route('/')
 	.get(item.list)
 	.post(item.create);
 
-router.route('/api/items/:itemId')
+router.route('/:itemId')
 	.get(item.read)
 	.put(item.update)
 	.delete(item.delete);
@@ -14,5 +14,5 @@ router.route('/api/items/:itemId')
 // Finish by binding the Item middleware
 router.param('itemId', item.itemByID);
 
-module.exports.basePath = '/';
+module.exports.basePath = '/api/items';
 module.exports.router = router;

@@ -205,7 +205,7 @@ exports.emailHasAccount = function(req, res) {
 /**
  * User authorization check
  */
-exports.userHasAuthorization = function(req, res) {
+exports.hasAuthorization = function(req, res) {
 	if (req.user.isAdmin) {
 		return res.send({
 			authorized: true,

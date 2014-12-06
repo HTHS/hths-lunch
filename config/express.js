@@ -16,7 +16,7 @@ var path = require('path'),
 	flash = require('connect-flash'),
 	config = require('./config');
 
-module.exports = function(db) {
+module.exports = function(db, options) {
 	// Initialize express app
 	var app = express();
 
@@ -95,6 +95,26 @@ module.exports = function(db) {
 
 	// Setting the app router and static folder
 	app.use(express.static(path.resolve('./public')));
+
+	var waitingForSignup = options.userCount === 0 ? false : true;
+	app.use(function(req, res, next) {
+		if (waitingForSignup) {
+			if (options.userCount === 0 && req.url.indexOf('/auth/callback') !== -1) {
+				options.userCount = true;
+			}
+
+			next();
+		} else {
+			waitingForSignup = true;
+
+			var state = encodeURIComponent(JSON.stringify({
+				isAdmin: true
+			}));
+
+			// TODO state parameter isn't caught by google and passed back to users.signin method
+			return res.redirect('/auth/google?state=' + state);
+		}
+	});
 
 	// Globbing routing files
 	config
