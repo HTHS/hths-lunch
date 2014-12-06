@@ -57,7 +57,7 @@ gulp.task('concat', function() {
 		.pipe(gulp.dest('public/'))
 		.pipe(rename('app.min.js'))
 		.pipe(uglify())
-		.pipe(sourcemaps.write())
+		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('public/'));
 });
 
