@@ -34,6 +34,12 @@ var server = http.createServer(function(request, response) {
 
 			if (buildInfo.status === 'success') {
 				console.log('Updating deployment');
+
+				response.writeHead(200, {
+					'Content-Type': 'text/plain'
+				});
+				response.end('Updating deployment');
+
 				exec('./scripts/update.sh', function(error, stdout, stderr) {
 					console.log(request.method, new Date());
 					if (error != null) {
@@ -41,12 +47,6 @@ var server = http.createServer(function(request, response) {
 					}
 
 					console.log('Pulled commit %s by %s\n"%s"', commitID, author, commitMessage);
-
-					response.writeHead(200, {
-						'Content-Type': 'text/plain'
-					});
-
-					response.end(error ? stderr : stdout);
 				});
 			}
 		});
