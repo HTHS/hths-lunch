@@ -34,12 +34,6 @@ var server = http.createServer(function(request, response) {
 
 			if (buildInfo.status === 'success') {
 				console.log('Updating deployment');
-
-				response.writeHead(200, {
-					'Content-Type': 'text/plain'
-				});
-				response.end('Time: ' + (new Date()).toLocaleString() + ', updating deployment');
-
 				exec('./scripts/update.sh', function(error, stdout, stderr) {
 					console.log('Finished updating deployment at %s', (new Date()).toLocaleString());
 					if (error) {
