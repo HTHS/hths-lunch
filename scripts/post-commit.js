@@ -26,9 +26,8 @@ var server = http.createServer(function(request, response) {
 		});
 
 		request.on('end', function() {
-			console.log(body);
-			console.log(typeof body);
-			var buildInfo = body;
+			console.log(JSON.parse(body));
+			var buildInfo = JSON.parse(body);
 			var status = buildInfo.status;
 			var commitID = buildInfo.commit_id;
 			var commitMessage = buildInfo.message;
