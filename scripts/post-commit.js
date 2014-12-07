@@ -32,16 +32,15 @@ var server = http.createServer(function(request, response) {
 			var commitMessage = buildInfo.message;
 			var author = buildInfo.committer;
 
-			console.log(buildInfo.status);
-
 			if (buildInfo.status === 'success') {
+				console.log('Updating deployment');
 				exec('./scripts/update.sh', function(error, stdout, stderr) {
 					console.log(request.method, new Date());
 					if (error != null) {
 						console.log('Git pull error: ', error, stdout, stderr);
-					} else if (commit != null) {
-						console.log('Pulled commit %s by %s\n"%s"', commitID, author, commitMessage);
 					}
+
+					console.log('Pulled commit %s by %s\n"%s"', commitID, author, commitMessage);
 
 					response.writeHead(200, {
 						'Content-Type': 'text/plain'
