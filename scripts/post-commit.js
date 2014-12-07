@@ -38,7 +38,7 @@ var server = http.createServer(function(request, response) {
 				response.writeHead(200, {
 					'Content-Type': 'text/plain'
 				});
-				response.end('Time: %s, updating deployment', (new Date()).toLocaleString());
+				response.end('Time: ' + (new Date()).toLocaleString() + ', updating deployment');
 
 				exec('./scripts/update.sh', function(error, stdout, stderr) {
 					console.log('Finished updating deployment at %s', (new Date()).toLocaleString());
