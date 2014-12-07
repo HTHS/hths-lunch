@@ -26,36 +26,30 @@ var server = http.createServer(function(request, response) {
 		});
 
 		request.on('end', function() {
-			var last_payload = null;
-			var commit = null;
-			try {
-				last_payload = JSON.parse(querystring.parse(body));
-				commit = last_payload.commits[0];
-			} catch (err) {
-				console.log('JSON error: ', err);
-			}
+			console.log(body);
+			console.log(typeof body);
+			var buildInfo = body;
+			var status = buildInfo.status;
+			var commitID = buildInfo.commit_id;
+			var commitMessage = buildInfo.message;
+			var author = buildInfo.committer;
 
-			exec('./scripts/update.sh', function(error, stdout, stderr) {
-				console.log(request.method, new Date());
-				if (error != null) {
-					console.log('Git pull error: ', error, stdout, stderr);
-				} else if (commit != null) {
-					console.log('Pulled commit ' + commit.node + ' by ' + commit.raw_author + '\n"' + commit.message + '"');
-					var files = commit.files;
-					if (files !== null) {
-						for (var i = 0; i < files.length; i++) {
-							var obj = files[i];
-							console.log(obj.type + ': ' + obj.file);
-						}
+			if (buildInfo.status === 'success') {
+				exec('./scripts/update.sh', function(error, stdout, stderr) {
+					console.log(request.method, new Date());
+					if (error != null) {
+						console.log('Git pull error: ', error, stdout, stderr);
+					} else if (commit != null) {
+						console.log('Pulled commit %s by %s\n"%s"', commitID, author, commitMessage);
 					}
-				}
 
-				response.writeHead(200, {
-					'Content-Type': 'text/plain'
+					response.writeHead(200, {
+						'Content-Type': 'text/plain'
+					});
+
+					response.end(error ? stderr : stdout);
 				});
-
-				response.end(error ? stderr : stdout);
-			});
+			}
 		});
 	}
 });
@@ -66,5 +60,5 @@ server.listen(port, function() {
 	if (address === '0.0.0.0') {
 		address = 'localhost';
 	}
-	console.log('Git post-commit server running at http://' + address + ':' + serverDetails.port);
+	console.log('Git post-commit server running at http://%s:%s', address, serverDetails.port);
 });
