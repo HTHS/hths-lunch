@@ -2,6 +2,7 @@
 
 git checkout .;
 git pull;
+chmod +x ./update.sh;
 npm install;
 bower --allow-root install;
 gulp build;
