@@ -38,15 +38,15 @@ var server = http.createServer(function(request, response) {
 				response.writeHead(200, {
 					'Content-Type': 'text/plain'
 				});
-				response.end('Updating deployment');
+				response.end('Time: %s, updating deployment', (new Date()).toLocaleString());
 
 				exec('./scripts/update.sh', function(error, stdout, stderr) {
-					console.log(request.method, new Date());
-					if (error != null) {
+					console.log('Finished updating deployment at %s', (new Date()).toLocaleString());
+					if (error) {
 						console.log('Git pull error: ', error, stdout, stderr);
+					} else {
+						console.log('Pulled commit %s by %s\n"%s"', commitID, author, commitMessage);
 					}
-
-					console.log('Pulled commit %s by %s\n"%s"', commitID, author, commitMessage);
 				});
 			}
 		});
