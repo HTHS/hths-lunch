@@ -1,6 +1,6 @@
 #!/bin/sh
 
-git checkout .;
+git checkout . -f;
 git pull;
 chmod +x ./update.sh;
 npm install;
