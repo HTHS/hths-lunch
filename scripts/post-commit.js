@@ -26,12 +26,13 @@ var server = http.createServer(function(request, response) {
 		});
 
 		request.on('end', function() {
-			console.log(JSON.parse(body).build);
 			var buildInfo = JSON.parse(body).build;
 			var status = buildInfo.status;
 			var commitID = buildInfo.commit_id;
 			var commitMessage = buildInfo.message;
 			var author = buildInfo.committer;
+
+			console.log(buildInfo.status);
 
 			if (buildInfo.status === 'success') {
 				exec('./scripts/update.sh', function(error, stdout, stderr) {
