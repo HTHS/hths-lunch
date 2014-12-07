@@ -23,8 +23,11 @@ exports.start = function() {
 				// Bootstrap passport config
 				require('./config/passport')();
 
-				// Logging initialization
-				console.log(chalk.green('Application started on port ' + config.port));
+				// Logging the initialization details
+				console.log(chalk.green('%s application started.'), config.app.title);
+				console.log(chalk.green('Environment: %s'), process.env.NODE_ENV);
+				console.log(chalk.green('Port: %d'), config.port);
+				console.log(chalk.green('Database: %s'), config.db);
 
 				// Start the app by listening on <port>
 				exports.server = app.listen(config.port);
