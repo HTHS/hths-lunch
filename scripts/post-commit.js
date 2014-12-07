@@ -29,7 +29,7 @@ var server = http.createServer(function(request, response) {
 			var last_payload = null;
 			var commit = null;
 			try {
-				last_payload = JSON.parse(querystring.parse(body).payload);
+				last_payload = JSON.parse(querystring.parse(body));
 				commit = last_payload.commits[0];
 			} catch (err) {
 				console.log('JSON error: ', err);
