@@ -35,7 +35,7 @@ var server = http.createServer(function(request, response) {
 				console.log('JSON error: ', err);
 			}
 
-			exec('./update.sh', function(error, stdout, stderr) {
+			exec('./scripts/update.sh', function(error, stdout, stderr) {
 				console.log(request.method, new Date());
 				if (error != null) {
 					console.log('Git pull error: ', error, stdout, stderr);
