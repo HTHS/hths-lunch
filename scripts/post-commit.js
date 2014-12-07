@@ -28,18 +28,18 @@ var server = http.createServer(function(request, response) {
 		request.on('end', function() {
 			var buildInfo = JSON.parse(body).build;
 			var status = buildInfo.status;
-			var commitID = buildInfo.commit_id;
+			var commitSHA = buildInfo.commit_id;
 			var commitMessage = buildInfo.message;
 			var author = buildInfo.committer;
 
 			if (buildInfo.status === 'success') {
-				console.log('Updating deployment');
+				console.log('Updating deployment at %s', (new Date()).toLocaleString());
 				exec('./scripts/update.sh', function(error, stdout, stderr) {
-					console.log('Finished updating deployment at %s', (new Date()).toLocaleString());
 					if (error) {
 						console.log('Git pull error: ', error, stdout, stderr);
 					} else {
-						console.log('Pulled commit %s by %s\n"%s"', commitID, author, commitMessage);
+						console.log('Commit %s\nAuthor: %s\n\t%s\n', commitSHA, author, commitMessage);
+						console.log('Updated deployment at %s', (new Date()).toLocaleString());
 					}
 				});
 			}
