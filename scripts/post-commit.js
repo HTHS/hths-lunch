@@ -33,13 +33,25 @@ var server = http.createServer(function(request, response) {
 			var author = buildInfo.committer;
 
 			if (buildInfo.status === 'success') {
-				console.log('Updating deployment at %s', (new Date()).toLocaleString());
-				exec('./scripts/update.sh', function(error, stdout, stderr) {
-					if (error) {
-						console.log('Git pull error: ', error, stdout, stderr);
+				exec('git log -1 | grep "commit"', function(error, stdout, stderr) {
+					if (err) {
+						console.log(error);
+						console.log(stderr);
 					} else {
-						console.log('Commit %s\nAuthor: %s\n\t%s\n', commitSHA, author, commitMessage);
-						console.log('Updated deployment at %s', (new Date()).toLocaleString());
+						if (stdout.substring(7) == commitSHA) {
+							console.log('Nothing new to deploy.');
+						} else {
+							console.log('Updating deployment at %s', (new Date()).toLocaleString());
+
+							exec('./scripts/update.sh', function(error, stdout, stderr) {
+								if (error) {
+									console.log('Git pull error: ', error, stdout, stderr);
+								} else {
+									console.log('Commit %s\nAuthor: %s\n\t%s\n', commitSHA, author, commitMessage);
+									console.log('Updated deployment at %s', (new Date()).toLocaleString());
+								}
+							});
+						}
 					}
 				});
 			}
