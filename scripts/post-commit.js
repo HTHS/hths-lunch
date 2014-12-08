@@ -33,12 +33,12 @@ var server = http.createServer(function(request, response) {
 			var author = buildInfo.committer;
 
 			if (buildInfo.status === 'success') {
-				exec('git log -1 | grep "commit"', function(error, stdout, stderr) {
-					if (err) {
+				exec('git log --pretty=format:"%H"', function(error, stdout, stderr) {
+					if (error) {
 						console.log(error);
 						console.log(stderr);
 					} else {
-						if (stdout.substring(7) == commitSHA) {
+						if (stdout == commitSHA) {
 							console.log('Nothing new to deploy.');
 						} else {
 							console.log('Updating deployment at %s', (new Date()).toLocaleString());
