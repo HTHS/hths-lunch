@@ -7,6 +7,7 @@ angular.module('hthsLunch.order', ['hthsLunch.core.itemService',
 angular.module('hthsLunch.panel', ['ngResource']);
 
 angular.module('hthsLunch', [
+	'ngMaterial',
 	'ui.router',
 	'hthsLunch.landingPage',
 	'hthsLunch.user',

@@ -7,30 +7,35 @@ var gulp = require('gulp'),
 	istanbul = require('gulp-istanbul'),
 	sourcemaps = require('gulp-sourcemaps'),
 	uglify = require('gulp-uglify'),
-	plato = require('gulp-plato');
+	plato = require('gulp-plato'),
+	nodemon = require('gulp-nodemon');
 
 /***********
  * Helpers *
  ***********/
-gulp.task('env:test', function() {
+gulp.task('env:test', function testEnv() {
 	process.env.NODE_ENV = 'test';
 });
 
 /*******
  * CSS *
  *******/
-gulp.task('sass', function() {
+gulp.task('sass', function sass() {
 	gulp.src([
 			'public/sass/**/*.scss'
-		])
+		], {
+			read: false
+		})
 		.pipe(sass())
 		.pipe(gulp.dest('public/styles'));
 
 	gulp.src([
 			'public/modules/**/*.scss'
-		])
+		], {
+			read: false
+		})
 		.pipe(sass())
-		.pipe(rename(function(path) {
+		.pipe(rename(function renameScssFiles(path) {
 			path.dirname = path.dirname.replace('sass', 'styles');
 		}))
 		.pipe(gulp.dest('public/modules/'));
@@ -43,15 +48,21 @@ gulp.task('concat', function() {
 	del.sync('public/app.js');
 
 	return gulp.src([
-			'public/lib/jquery/dist/jquery.min.js',
-			'public/lib/angular/angular.min.js',
-			'public/lib/angular-ui-router/release/angular-ui-router.min.js',
-			'public/lib/angular-resource/angular-resource.min.js',
-			'public/lib/foundation/js/vendor/modernizr.js',
-			'public/lib/foundation/js/foundation.min.js',
-			'public/modules/app.js',
-			'public/modules/**/*.js'
-		])
+			'lib/jquery/dist/jquery.min.js',
+			'lib/angular/angular.min.js',
+			'lib/angular-animate/angular-animate.min.js',
+			'lib/hammerjs/hammer.min.js',
+			'lib/angular-material/angular-material.min.js',
+			'lib/angular-ui-router/release/angular-ui-router.min.js',
+			'lib/angular-resource/angular-resource.min.js',
+			'lib/foundation/js/vendor/modernizr.js',
+			'lib/foundation/js/foundation.min.js',
+			'modules/app.js',
+			'modules/**/*.js'
+		], {
+			cwd: 'public',
+			read: false
+		})
 		.pipe(sourcemaps.init())
 		.pipe(concat('app.js'))
 		.pipe(gulp.dest('public/'))
@@ -69,7 +80,7 @@ gulp.task('mocha', ['env:test'], function() {
 
 	gulp.src(['app/**/*.js', 'config/**/*.js', 'public/modules/**/*.js'])
 		.pipe(istanbul())
-		.on('finish', function() {
+		.on('finish', function onIstanbulEnd() {
 
 			var server = require('./server');
 
@@ -78,7 +89,7 @@ gulp.task('mocha', ['env:test'], function() {
 					// reporter: 'mocha-lcov-reporter'
 				}))
 				.pipe(istanbul.writeReports())
-				.once('end', function() {
+				.once('end', function onMochaEnd() {
 					server.kill();
 				});
 		});
@@ -87,7 +98,7 @@ gulp.task('mocha', ['env:test'], function() {
 /************
  * Analysis *
  ************/
-gulp.task('plato', function() {
+gulp.task('plato', function plato() {
 	// plato.inspect([
 	// 	'app/**/*.js',
 	// 	'config/**/*.js',
@@ -112,35 +123,49 @@ gulp.task('plato', function() {
 
 gulp.task('analysis', ['plato']);
 
+/*******************
+ * Composite tasks *
+ *******************/
+
 /*********************
  * Development tasks *
  *********************/
-gulp.task('watch', function() {
+gulp.task('watch', function watch() {
 	gulp
 		.watch(['public/**/*.js', '!public/*.js'], {}, ['concat'])
-		.on('change', function(event) {
+		.on('change', function logJsEvents(event) {
 			console.log('File %s was %s, running tasks...', event.path, event.type);
 		});
 
 	gulp
 		.watch('public/**/*.scss', {}, ['sass'])
-		.on('change', function(event) {
+		.on('change', function logScssEvents(event) {
 			console.log('File %s was %s, running tasks...', event.path, event.type);
 		});
 });
 
-gulp.task('dev', function() {
+gulp.task('test', ['mocha'], function test() {
 
 });
 
-/*******************
- * Composite tasks *
- *******************/
-gulp.task('test', ['mocha'], function() {
-
+gulp.task('dev', [], function dev() {
+	return nodemon({
+			script: 'server.js',
+			ext: 'js',
+			ignore: [
+				'coverage/',
+				'report/',
+				'test/',
+				'gulpfile.js'
+			]
+		})
+		.on('change', ['sass', 'concat']);
 });
 
-gulp.task('build', ['sass', 'concat'], function() {
+/**********************
+ * Production tasks   *
+ **********************/
+gulp.task('build', ['sass', 'concat'], function build() {
 
 });
 
