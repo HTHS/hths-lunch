@@ -21,6 +21,7 @@ module.exports = function(db, options) {
 	var app = express();
 
 	// Setting application local variables
+	app.locals.env = process.env.NODE_ENV;
 	app.locals.title = config.app.title;
 	app.locals.description = config.app.description;
 	app.locals.keywords = config.app.keywords;

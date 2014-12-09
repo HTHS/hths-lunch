@@ -20,7 +20,7 @@ gulp.task('env:test', function testEnv() {
 /*******
  * CSS *
  *******/
-gulp.task('sass', function sass() {
+gulp.task('sass', function() {
 	gulp.src([
 			'public/sass/**/*.scss'
 		], {
@@ -148,7 +148,7 @@ gulp.task('test', ['mocha'], function test() {
 
 });
 
-gulp.task('dev', [], function dev() {
+gulp.task('dev', ['sass', 'concat'], function dev() {
 	return nodemon({
 			script: 'server.js',
 			ext: 'js',
