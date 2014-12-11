@@ -9,7 +9,10 @@ html(lang='en', ng-app='hthsLunch')
     link(rel='stylesheet', href='/lib/foundation/css/foundation.css')
     link(rel='stylesheet', href='/lib/angular-material/angular-material.min.css')
     link(rel='stylesheet', href='/styles/global.css')
-    script(src='/app.min.js')
+    if env == 'production'
+      script(src='/app.min.js')
+    else
+      script(src='/app.js')
   body
     base(href='/')
     div.content(ui-view='main')
