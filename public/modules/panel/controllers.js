@@ -1,7 +1,7 @@
 angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', function($scope) {
 
-}]).controller('DashboardItemsController', ['$scope', 'PanelItem',
-	function($scope, Item) {
+}]).controller('DashboardItemsController', ['$scope', '$mdDialog', '$mdToast', 'PanelItem',
+	function($scope, $mdDialog, $mdToast, Item) {
 		$scope.createItem = function() {
 			Item
 				.save({
