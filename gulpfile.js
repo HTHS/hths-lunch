@@ -162,7 +162,7 @@ gulp.task('test', gulp.series('env:test', 'mocha'));
 /*********************
  * Development tasks *
  *********************/
-gulp.task('dev', function() {});
+gulp.task('dev', gulp.parallel('sass', 'concat'));
 
 /**********************
  * Production tasks   *
