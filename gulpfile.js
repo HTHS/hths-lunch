@@ -138,8 +138,18 @@ gulp.task('test', ['mocha'], function test() {
 
 });
 
-gulp.task('dev', ['sass', 'concat'], function dev() {
-gulp.task('nodemon', function() {
+/*******************
+ * Composite tasks *
+ *******************/
+
+/**************
+ * Test tasks *
+ **************/
+
+/*********************
+ * Development tasks *
+ *********************/
+gulp.task('dev', ['sass', 'concat'], function() {
 	return nodemon({
 			script: 'server.js',
 			ext: 'js',
@@ -153,19 +163,6 @@ gulp.task('nodemon', function() {
 			]
 		})
 		.on('change', ['sass', 'concat']);
-});
-
-/*******************
- * Composite tasks *
- *******************/
-
-/**************
- * Test tasks *
- **************/
-/*********************
- * Development tasks *
- *********************/
-gulp.task('dev', function() {
 });
 
 /**********************
