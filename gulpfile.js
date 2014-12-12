@@ -134,7 +134,6 @@ gulp.task('watch', function() {
 		});
 });
 
-gulp.task('dev', ['sass', 'concat'], function dev() {
 gulp.task('nodemon', function() {
 	return nodemon({
 			script: 'server.js',
@@ -163,8 +162,7 @@ gulp.task('test', gulp.series('env:test', 'mocha'));
 /*********************
  * Development tasks *
  *********************/
-gulp.task('dev', function() {
-});
+gulp.task('dev', gulp.parallel('sass', 'concat'));
 
 /**********************
  * Production tasks   *
