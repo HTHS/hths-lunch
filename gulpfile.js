@@ -13,7 +13,7 @@ var gulp = require('gulp'),
 /***********
  * Helpers *
  ***********/
-gulp.task('env:test', function testEnv() {
+gulp.task('env:test', function() {
 	process.env.NODE_ENV = 'test';
 });
 
@@ -23,19 +23,15 @@ gulp.task('env:test', function testEnv() {
 gulp.task('sass', function() {
 	gulp.src([
 			'public/sass/**/*.scss'
-		], {
-			read: false
-		})
+		])
 		.pipe(sass())
 		.pipe(gulp.dest('public/styles'));
 
 	gulp.src([
 			'public/modules/**/*.scss'
-		], {
-			read: false
-		})
+		])
 		.pipe(sass())
-		.pipe(rename(function renameScssFiles(path) {
+		.pipe(rename(function(path) {
 			path.dirname = path.dirname.replace('sass', 'styles');
 		}))
 		.pipe(gulp.dest('public/modules/'));
@@ -48,28 +44,26 @@ gulp.task('concat', function() {
 	del.sync('public/app.js');
 
 	return gulp.src([
-			'lib/jquery/dist/jquery.min.js',
-			'lib/angular/angular.min.js',
-			'lib/angular-animate/angular-animate.min.js',
-			'lib/hammerjs/hammer.min.js',
-			'lib/angular-material/angular-material.min.js',
-			'lib/angular-ui-router/release/angular-ui-router.min.js',
-			'lib/angular-resource/angular-resource.min.js',
-			'lib/foundation/js/vendor/modernizr.js',
-			'lib/foundation/js/foundation.min.js',
-			'modules/app.js',
-			'modules/**/*.js'
-		], {
-			cwd: 'public',
-			read: false
-		})
+			'public/lib/jquery/dist/jquery.min.js',
+			'public/lib/angular/angular.min.js',
+			'public/lib/angular-aria/angular-aria.min.js',
+			'public/lib/angular-animate/angular-animate.min.js',
+			'public/lib/hammerjs/hammer.min.js',
+			'public/lib/angular-material/angular-material.min.js',
+			'public/lib/angular-resource/angular-resource.min.js',
+			'public/lib/angular-ui-router/release/angular-ui-router.min.js',
+			'public/lib/foundation/js/vendor/modernizr.js',
+			'public/lib/foundation/js/foundation.min.js',
+			'public/modules/app.js',
+			'public/modules/**/*.js'
+		])
 		.pipe(sourcemaps.init())
 		.pipe(concat('app.js'))
-		.pipe(gulp.dest('public/'))
-		.pipe(rename('app.min.js'))
+		.pipe(gulp.dest('public'))
 		.pipe(uglify())
+		.pipe(rename('app.min.js'))
 		.pipe(sourcemaps.write('./'))
-		.pipe(gulp.dest('public/'));
+		.pipe(gulp.dest('public'));
 });
 
 /*********
@@ -80,7 +74,7 @@ gulp.task('mocha', ['env:test'], function() {
 
 	gulp.src(['app/**/*.js', 'config/**/*.js', 'public/modules/**/*.js'])
 		.pipe(istanbul())
-		.on('finish', function onIstanbulEnd() {
+		.on('finish', function() {
 
 			var server = require('./server');
 
@@ -89,7 +83,7 @@ gulp.task('mocha', ['env:test'], function() {
 					// reporter: 'mocha-lcov-reporter'
 				}))
 				.pipe(istanbul.writeReports())
-				.once('end', function onMochaEnd() {
+				.once('end', function() {
 					server.kill();
 				});
 		});
@@ -98,7 +92,7 @@ gulp.task('mocha', ['env:test'], function() {
 /************
  * Analysis *
  ************/
-gulp.task('plato', function plato() {
+gulp.task('plato', function() {
 	// plato.inspect([
 	// 	'app/**/*.js',
 	// 	'config/**/*.js',
@@ -123,23 +117,19 @@ gulp.task('plato', function plato() {
 
 gulp.task('analysis', ['plato']);
 
-/*******************
- * Composite tasks *
- *******************/
-
-/*********************
- * Development tasks *
- *********************/
-gulp.task('watch', function watch() {
+/*****************
+ * Development   *
+ *****************/
+gulp.task('watch', function() {
 	gulp
 		.watch(['public/**/*.js', '!public/*.js'], {}, ['concat'])
-		.on('change', function logJsEvents(event) {
+		.on('change', function(event) {
 			console.log('File %s was %s, running tasks...', event.path, event.type);
 		});
 
 	gulp
 		.watch('public/**/*.scss', {}, ['sass'])
-		.on('change', function logScssEvents(event) {
+		.on('change', function(event) {
 			console.log('File %s was %s, running tasks...', event.path, event.type);
 		});
 });
@@ -149,17 +139,33 @@ gulp.task('test', ['mocha'], function test() {
 });
 
 gulp.task('dev', ['sass', 'concat'], function dev() {
+gulp.task('nodemon', function() {
 	return nodemon({
 			script: 'server.js',
 			ext: 'js',
 			ignore: [
+				'node_modules/',
 				'coverage/',
 				'report/',
 				'test/',
+				'public/lib/',
 				'gulpfile.js'
 			]
 		})
 		.on('change', ['sass', 'concat']);
+});
+
+/*******************
+ * Composite tasks *
+ *******************/
+
+/**************
+ * Test tasks *
+ **************/
+/*********************
+ * Development tasks *
+ *********************/
+gulp.task('dev', function() {
 });
 
 /**********************
