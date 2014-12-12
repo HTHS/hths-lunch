@@ -69,7 +69,7 @@ gulp.task('concat', function() {
 /*********
  * Tests *
  *********/
-gulp.task('mocha', ['env:test'], function() {
+gulp.task('mocha', function() {
 	var mongoose = require('./config/mongoose');
 
 	gulp.src(['app/**/*.js', 'config/**/*.js', 'public/modules/**/*.js'])
@@ -115,7 +115,7 @@ gulp.task('plato', function() {
 		}));
 });
 
-gulp.task('analysis', ['plato']);
+gulp.task('analysis', gulp.parallel('plato'));
 
 /*****************
  * Development   *
@@ -134,22 +134,7 @@ gulp.task('watch', function() {
 		});
 });
 
-gulp.task('test', ['mocha'], function test() {
-
-});
-
-/*******************
- * Composite tasks *
- *******************/
-
-/**************
- * Test tasks *
- **************/
-
-/*********************
- * Development tasks *
- *********************/
-gulp.task('dev', ['sass', 'concat'], function() {
+gulp.task('nodemon', function() {
 	return nodemon({
 			script: 'server.js',
 			ext: 'js',
@@ -162,15 +147,27 @@ gulp.task('dev', ['sass', 'concat'], function() {
 				'gulpfile.js'
 			]
 		})
-		.on('change', ['sass', 'concat']);
+		.on('change', gulp.parallel('sass', 'concat'));
 });
+
+/*******************
+ * Composite tasks *
+ *******************/
+
+/**************
+ * Test tasks *
+ **************/
+gulp.task('test', gulp.series('env:test', 'mocha'));
+
+/*********************
+ * Development tasks *
+ *********************/
+gulp.task('dev', function() {});
 
 /**********************
  * Production tasks   *
  **********************/
-gulp.task('build', ['sass', 'concat'], function build() {
-
-});
+gulp.task('build', gulp.parallel('sass', 'concat'));
 
 gulp.task('default', function() {
 	// place code for your default task here
