@@ -69,7 +69,7 @@ gulp.task('concat', function() {
 /*********
  * Tests *
  *********/
-gulp.task('mocha', ['env:test'], function() {
+gulp.task('mocha', function() {
 	var mongoose = require('./config/mongoose');
 
 	gulp.src(['app/**/*.js', 'config/**/*.js', 'public/modules/**/*.js'])
@@ -115,7 +115,7 @@ gulp.task('plato', function() {
 		}));
 });
 
-gulp.task('analysis', ['plato']);
+gulp.task('analysis', gulp.parallel('plato'));
 
 /*****************
  * Development   *
@@ -132,10 +132,6 @@ gulp.task('watch', function() {
 		.on('change', function(event) {
 			console.log('File %s was %s, running tasks...', event.path, event.type);
 		});
-});
-
-gulp.task('test', ['mocha'], function test() {
-
 });
 
 gulp.task('dev', ['sass', 'concat'], function dev() {
@@ -162,6 +158,8 @@ gulp.task('nodemon', function() {
 /**************
  * Test tasks *
  **************/
+gulp.task('test', gulp.series('env:test', 'mocha'));
+
 /*********************
  * Development tasks *
  *********************/
@@ -171,9 +169,7 @@ gulp.task('dev', function() {
 /**********************
  * Production tasks   *
  **********************/
-gulp.task('build', ['sass', 'concat'], function build() {
-
-});
+gulp.task('build', gulp.parallel('sass', 'concat'));
 
 gulp.task('default', function() {
 	// place code for your default task here
