@@ -145,7 +145,7 @@ gulp.task('nodemon', function() {
 				'gulpfile.js'
 			]
 		})
-		.on('change', ['sass', 'concat']);
+		.on('change', gulp.parallel('sass', 'concat'));
 });
 
 /*******************
