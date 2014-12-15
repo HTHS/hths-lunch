@@ -17,15 +17,19 @@ exports.getItems = function(req, res) {
 	/**
 	 * TODO see how to just use item.list
 	 */
-	Item.find().sort('-active').sort('title').exec(function(err, items) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(items);
-		}
-	});
+	Item
+		.find()
+		.sort('title')
+		.sort('-active')
+		.exec(function(err, items) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				res.jsonp(items);
+			}
+		});
 };
 
 exports.createItem = function(req, res) {
