@@ -1,11 +1,35 @@
 <link rel="stylesheet" href="/modules/panel/styles/dashboard.css">
 
-<nav class="dashboard-nav">
-  <li><a ui-sref="dashboard" class="left"><span class="icon-settings"></span>Dashboard</a></li>
-  <li><a ui-sref="dashboard.items" class="left"><span class="icon-tags"></span>Items</a><a><span class="right icon-plus"></span></a></li>
-  <li><a ui-sref="dashboard.orders" class="left"><span class="icon-cart"></span>Orders</a></li>
-  <li><a ui-sref="dashboard.schedule" class="left"><span class="icon-calendar"></span>Schedule</a></li>
-  <li><a ui-sref="dashboard.analytics" class="left"><span class="icon-stats"></span>Analytics</a></li>
-  <li><a ui-sref="dashboard.users" class="left"><span class="icon-stats"></span>Users</a></li>
-</nav>
-<div class="dashboard-view" ui-view="dashboard"></div>
+<div layout="column" layout-fill>
+  <section layout="row" flex>
+    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('md')">
+      <md-toolbar class="md-theme-indigo">
+        <h1 class="md-toolbar-tools">Dashboard</h1>
+      </md-toolbar>
+      <md-content class="md-padding">
+        <md-content>
+          <md-list>
+            <md-item ng-repeat="item in menuItems">
+              <md-item-content>
+                <div class="md-tile-left">
+                  <span class="{{item.iconClass}}"></span>
+                </div>
+
+                <div class="md-tile-content">
+                  <a ui-sref="item.link">{{item.text}}</a>
+                </div>
+              </md-item-content>
+            </md-item>
+          </md-list>
+        </md-content>
+      </md-content>
+    </md-sidenav>
+    <md-content class="md-padding" flex>
+      <div layout="column" layout-fill layout-align="center center">
+        <div>
+          <div class="dashboard-view" ui-view="dashboard"></div>
+        </div>
+      </div>
+    </md-content>
+  </section>
+</div>
