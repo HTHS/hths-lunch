@@ -20,7 +20,17 @@ describe('Core controller unit tests:', function() {
 			request
 				.get('/')
 				.expect('Content-Type', /html/)
-				.expect(200, done);
+				.expect(200)
+				// .expect(200, done);
+				.end(function(err, res) {
+					console.log(err);
+					console.log(res);
+					if (err) {
+						done(err);
+					} else {
+						done();
+					}
+				});
 		});
 	});
 
