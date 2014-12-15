@@ -70,8 +70,6 @@ gulp.task('concat', function() {
  * Tests *
  *********/
 gulp.task('mocha', function() {
-	var mongoose = require('./config/mongoose');
-
 	gulp.src(['app/**/*.js', 'config/**/*.js', 'public/modules/**/*.js'])
 		.pipe(istanbul())
 		.on('finish', function() {
