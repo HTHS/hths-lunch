@@ -2,6 +2,32 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', f
 
 }]).controller('DashboardItemsController', ['$scope', '$mdDialog', '$mdToast', 'PanelItem',
 	function($scope, $mdDialog, $mdToast, Item) {
+		$scope.menuItems = [{
+			iconClass: 'icon-settings',
+			uiSref: 'dashboard',
+			text: 'Dashboard'
+		}, {
+			iconClass: 'icon-tags',
+			uiSref: 'dashboard.items',
+			text: 'Items'
+		}, {
+			iconClass: 'icon-cart',
+			uiSref: 'dashboard.orders',
+			text: 'Orders'
+		}, {
+			iconClass: 'icon-schedule',
+			uiSref: 'dashboard.schedule',
+			text: 'Schedule'
+		}, {
+			iconClass: 'icon-analytics',
+			uiSref: 'dashboard.analytics',
+			text: 'Analytics'
+		}, {
+			iconClass: 'icon-stats',
+			uiSref: 'dashboard.users',
+			text: 'Users'
+		}];
+
 		$scope.createItem = function() {
 			Item
 				.save({
@@ -14,7 +40,20 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', f
 				});
 		};
 
-		$scope.editItem = function(item) {
+		$scope.editItem = function(item, index, $event) {
+			item.index = index;
+			$scope.editingItem = item;
+			$mdDialog.show({
+					controller: 'EditItemController',
+					templateUrl: '/modules/panel/partials/edit-item.html',
+					targetEvent: $event
+				})
+				.then(function(promise) {
+					debugger;
+				})
+				.catch(function(response) {
+					debugger;
+				});
 			$scope.itemToUpdate = item;
 			$scope.updateStatus = null;
 		};
@@ -37,18 +76,40 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', f
 			$scope.updateStatus = null;
 		};
 
-		$scope.deleteItem = function(item) {
-			// item
-			// .$delete()
-			// debugger;
-		};
-
 		$scope.toggleActivity = function(item, index) {
-			item.active = !item.active;
 			item.index = index;
 			item
 				.$update()
+				.then(function(item) {
+					var successToast = $mdToast
+						.simple()
+						.content(item.title + ' successfully updated')
+						.position('top right');
+
+					$mdToast
+						.show(successToast)
+						.then(function() {
+							debugger;
+						})
+						.catch(function() {
+							debugger;
+						});
+				})
 				.catch(function(response) {
+					var failureToast = $mdToast
+						.simple()
+						.content(item.title + ' not updated')
+						.position('top right');
+
+					$mdToast
+						.show(failureToast)
+						.then(function() {
+							debugger;
+						})
+						.catch(function() {
+							debugger;
+						});
+
 					// reset item status, maybe figure out how to
 					// delay settings Item status until a response
 					// is received from the server
@@ -60,6 +121,9 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', f
 			.query()
 			.$promise.then(function(items) {
 				$scope.items = items;
+			})
+			.catch(function(reponse) {
+				debugger;
 			});
 	}
 ]).controller('DashboardOrdersController', ['$scope', 'PanelOrder',
@@ -153,5 +217,13 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', f
 			.$promise.then(function() {
 				debugger;
 			});
+	};
+}]).controller('EditItemController', ['$scope', '$mdDialog', function($scope, $mdDialog) {
+	$scope.update = function() {
+		$mdDialog.hide('abc');
+	};
+
+	$scope.cancel = function() {
+		$mdDialog.cancel();
 	};
 }]);
