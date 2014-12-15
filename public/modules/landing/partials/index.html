@@ -1,18 +1,22 @@
 <link rel="stylesheet" href="/modules/landing/styles/index.css">
 
-<div class="row">
-  <div class="small-8 small-centered columns">
-    <h1 class="slogan">Order lunch the right way</h1>
-    <h5 class="slogan">Request an invite to simplify your lunch time.</h5>
-    <br>
-    <div class="row">
-      <div class="small-8 columns">
-        <input type="email" required autofocus placeholder="johnny.appleseed@gmail.com" ng-model="email">
-      </div>
+<div layout="column" layout-align="center center">
+  <h1 class="slogan">Order lunch the right way</h1>
+  <h5 class="slogan">Request an invite to simplify your lunch time.</h5>
+  <br>
+</div>
 
-      <div class="small-4 columns">
-        <button class="button" ng-click="authenticateOrRequestInvite()">Get started!</button>
-      </div>
+<form>
+  <div layout="row" layout-align="center center">
+    <div flex></div>
+    <div flex="55">
+      <md-text-float label="Email" class="long" placeholder="johnny.appleseed@gmail.com" autofocus="autofocus" required="required" ng-model="email"></md-text-float>
+    </div>
+    <div flex="5"></div>
+    <div flex="20">
+      <md-button class="md-raised md-primary" ng-click="authenticateOrRequestInvite()">
+        Get started!
+      </md-button>
     </div>
   </div>
-</div>
+</form>

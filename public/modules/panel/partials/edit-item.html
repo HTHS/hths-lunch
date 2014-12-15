@@ -1,0 +1,24 @@
+<md-dialog aria-label="Edit item">
+  <md-content>
+    <md-subheader class="md-sticky-no-effect">Edit item</md-subheader>
+    <form>
+      <div class="row">
+        <md-text-float type="text" label="Title" ng-model="editingItem.title"></md-text-float>
+      </div>
+      <div class="row">
+        <md-text-float type="text" label="Description" ng-model="editingItem.description"></md-text-float>
+      </div>
+      <div class="row">
+        <md-text-float type="number" label="Price" ng-model="editingItem.price"></md-text-float>
+      </div>
+    </form>
+  </md-content>
+  <div class="md-actions" layout="row">
+    <md-button class="md-primary" ng-click="update()">
+      Update
+    </md-button>
+    <md-button class="md-warn" ng-click="cancel()">
+      Cancel
+    </md-button>
+  </div>
+</md-dialog>

@@ -1,94 +1,142 @@
 <link rel="stylesheet" href="/modules/order/styles/order.css">
 
-<nav class="top-bar" data-topbar role="navigation">
+<div layout="column" layout-fill>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <span>HTHS Lunch</span>
+      <!-- fill up the space between left and right area -->
+      <span flex></span>
+      <md-button ng-click="signout()">
+        Sign out
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-content>
+<!--     <nav class="top-bar" data-topbar role="navigation">
   <ul class="title-area">
-    <!-- <li class="name">
-      <h1><a href="#">My Site</a></h1>
-    </li> -->
-     <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
-    <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    <li class="name">
+    <h1><a href="#">My Site</a></h1>
+  </li>
+  Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone
+  <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+</ul>
+
+<section class="top-bar-section">
+  Left Nav Section
+  <ul class="left"></ul>
+
+  Right Nav Section
+  <ul class="right">
+    <li class="has-dropdown">
+      <a><span class="user-display-name">{{user.displayName}}</span><img class="user-profile-picture" ng-src="{{user.providerData.picture}}"></a>
+      <ul class="dropdown">
+        <li><a ui-sref="userProfile">Profile</a></li>
+        <li><a ng-click="signout()">Sign out</a></li>
+      </ul>
+    </li>
   </ul>
+</section>
+  </nav> -->
 
-  <section class="top-bar-section">
-    <!-- Left Nav Section -->
-    <ul class="left"></ul>
-
-    <!-- Right Nav Section -->
-    <ul class="right">
-      <li class="has-dropdown">
-        <a><span class="user-display-name">{{user.displayName}}</span><img class="user-profile-picture" ng-src="{{user.providerData.picture}}"></a>
-        <ul class="dropdown">
-          <li><a ui-sref="userProfile">Profile</a></li>
-          <li><a ng-click="signout()">Sign out</a></li>
-        </ul>
-      </li>
-    </ul>
-  </section>
-</nav>
-
-<br>
-<form>
-  <div class="row">
-    <div class="small-8">
-      <div class="row">
-        <div class="small-3 columns">
-          <label for="order-customer" class="right inline">Name</label>
-        </div>
-        <div class="small-9 columns">
-          <input type="text" id="order-customer" placeholder="Johnny Appleseed" required ng-model="newOrder.customer">
-        </div>
+  <br>
+  <form>
+    <div class="row" flex="80">
+      <md-text-float type="text" label="Name" placeholder="Johnny Appleseed" required="required" ng-model="newOrder.customer"></md-text-float>
+    </div>
+    <div class="row" layout="row" layout-margin layout-align="center center">
+      <div flex>
+        <md-list>
+          <md-item ng-repeat="item in menu">
+            <md-item-content>
+              <div class="md-tile-left">
+                <img ng-src="{{item.face}}" class="face" alt="{{item.who}}">
+              </div>
+              <div class="md-tile-content">
+                <h3>{{item.what}}</h3>
+                <h4>{{item.who}}</h4>
+                <p>
+                  {{item.notes}}
+                </p>
+              </div>
+            </md-item-content>
+          </md-item>
+        </md-list>
       </div>
-      <div class="row">
-        <div class="small-3 columns">
-          <label for="order-items" class="right inline">Description</label>
-        </div>
-        <div class="small-9 columns">
-          <table rules="none"><!-- get rid of border between cells -->
-            <thead>
-              <tr>
-                <th></th>
-                <th>Item</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Quantity</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="item" ng-repeat="item in menu" ng-show="item.active">
-                <td><input type="checkbox" ng-click="toggleItemInOrder($index)"></td>
-                <td>{{item.title}}</td>
-                <td>{{item.description}}</td>
-                <td>{{item.price | currency}}</td>
-                <td><input type="number" min="0" step="1" pattern="^\d+$" required ng-disabled="newOrder.items[$index].toString() !== '[object Object]'" ng-model="item.quantity" ng-blur="recalculateTotal()"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div flex>
+        <md-list>
+          <md-item ng-repeat="item in menu">
+            <md-item-content>
+              <div class="md-tile-left">
+                <img ng-src="{{item.face}}" class="face" alt="{{item.who}}">
+              </div>
+              <div class="md-tile-content">
+                <h3>{{item.what}}</h3>
+                <h4>{{item.who}}</h4>
+                <p>
+                  {{item.notes}}
+                </p>
+              </div>
+            </md-item-content>
+          </md-item>
+        </md-list>
       </div>
-      <div class="row">
-        <div class="small-3 columns">
-          <label class="right inline">Total</label>
+    </div>
+      <div class="small-8">
+        <div class="row">
+          <div class="small-3 columns">
+            <label for="order-items" class="right inline">Description</label>
+          </div>
+          <div class="small-9 columns">
+            <table rules="none"><!-- get rid of border between cells -->
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Item</th>
+                  <th>Description</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="item" ng-repeat="item in menu" ng-show="item.active">
+                  <td><input type="checkbox" ng-click="toggleItemInOrder($index)"></td>
+                  <td>{{item.title}}</td>
+                  <td>{{item.description}}</td>
+                  <td>{{item.price | currency}}</td>
+                  <td><input type="number" min="0" step="1" pattern="^\d+$" required ng-disabled="newOrder.items[$index].toString() !== '[object Object]'" ng-model="item.quantity" ng-blur="recalculateTotal()"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div class="small-9 columns">
-          <span>{{newOrder.total | currency}}</span>
+        <div class="row">
+          <div class="small-3 columns">
+            <label class="right inline">Total</label>
+          </div>
+          <div class="small-9 columns">
+            <span>{{newOrder.total | currency}}</span>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="small-9 small-offset-3 columns">
-          <button class="button" type="submit" ng-click="submitOrder()">Submit Order!</button>
+        <div class="row">
+          <div class="small-9 small-offset-3 columns">
+            <button class="button" type="submit" ng-click="submitOrder()">Submit Order!</button>
+          </div>
         </div>
-      </div>
-      <div class="row" ng-show="orderProcessed">
-        <div class="small-9 small-offset-3 columns">
-          <div data-alert class="alert-box">
-            <p>Your order has been processed!</p>
-            <a href="#" class="close">&times;</a>
+        <div class="row" ng-show="orderProcessed">
+          <div class="small-9 small-offset-3 columns">
+            <div data-alert class="alert-box">
+              <p>Your order has been processed!</p>
+              <a href="#" class="close">&times;</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</form>
+  </form>
+  </md-content>
+</div>
+
+
 
 <script>
   $(document).foundation();
