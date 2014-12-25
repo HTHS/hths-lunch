@@ -9,9 +9,7 @@ var path = require('path'),
 	compress = require('compression'),
 	cookieParser = require('cookie-parser'),
 	helmet = require('helmet'),
-	mongoStore = require('connect-mongo')({
-		session: session
-	}),
+	MongoStore = require('connect-mongo')(session),
 	passport = require('passport'),
 	flash = require('connect-flash'),
 	config = require('./config');
@@ -58,13 +56,20 @@ module.exports = function(db, options) {
 		app.locals.cache = 'memory';
 	}
 
+	// Use helmet to secure Express headers
+	app.use(helmet.frameguard());
+	app.use(helmet.xssFilter());
+	app.use(helmet.nosniff());
+	app.use(helmet.ienoopen());
+	app.disable('x-powered-by');
+
+	// Setting the app router and static folder
+	app.use(express.static(path.resolve('./public')));
+
 	app.use(bodyParser.urlencoded({
 		extended: true
 	}));
 	app.use(bodyParser.json());
-
-	// Enable jsonp
-	app.enable('jsonp callback');
 
 	// CookieParser should be above session
 	app.use(cookieParser());
@@ -74,8 +79,8 @@ module.exports = function(db, options) {
 		saveUninitialized: true,
 		resave: true,
 		secret: config.sessionSecret,
-		store: new mongoStore({
-			db: db.connection.db,
+		store: new MongoStore({
+			mongooseConnection: db.connection,
 			collection: config.sessionCollection
 		})
 	}));
@@ -86,16 +91,6 @@ module.exports = function(db, options) {
 
 	// connect flash for flash messages
 	app.use(flash());
-
-	// Use helmet to secure Express headers
-	app.use(helmet.frameguard());
-	app.use(helmet.xssFilter());
-	app.use(helmet.nosniff());
-	app.use(helmet.ienoopen());
-	app.disable('x-powered-by');
-
-	// Setting the app router and static folder
-	app.use(express.static(path.resolve('./public')));
 
 	var waitingForSignup = options.userCount === 0 ? false : true;
 	app.use(function(req, res, next) {

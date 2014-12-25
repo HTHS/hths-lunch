@@ -13,11 +13,11 @@
     "test"
   ],
   "dependencies": {
-    "angular": "~1.3.6",
-    "angular-resource": "~1.3.6",
+    "angular": "~1.3.8",
+    "angular-resource": "~1.3.8",
     "angular-ui-router": "~0.2.13",
     "foundation": "~5.4.7",
-    "d3": "~3.5.0",
+    "d3": "~3.5.2",
     "material-design-icons": "~1.0.1",
     "angular-material": "~0.6.1"
   }
