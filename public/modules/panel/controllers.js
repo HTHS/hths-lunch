@@ -1,132 +1,129 @@
 angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', function($scope) {
-
-}]).controller('DashboardItemsController', ['$scope', '$mdDialog', '$mdToast', 'PanelItem',
-	function($scope, $mdDialog, $mdToast, Item) {
-		$scope.menuItems = [{
-			iconClass: 'icon-settings',
-			uiSref: 'dashboard',
-			text: 'Dashboard'
-		}, {
-			iconClass: 'icon-tags',
-			uiSref: 'dashboard.items',
-			text: 'Items'
-		}, {
-			iconClass: 'icon-cart',
-			uiSref: 'dashboard.orders',
-			text: 'Orders'
-		}, {
-			iconClass: 'icon-schedule',
-			uiSref: 'dashboard.schedule',
-			text: 'Schedule'
-		}, {
-			iconClass: 'icon-analytics',
-			uiSref: 'dashboard.analytics',
-			text: 'Analytics'
-		}, {
-			iconClass: 'icon-stats',
-			uiSref: 'dashboard.users',
-			text: 'Users'
-		}];
-
-		$scope.createItem = function() {
-			Item
-				.save({
-					title: $scope.newItem.title,
-					description: $scope.newItem.description,
-					price: $scope.newItem.price
-				})
-				.$promise.then(function(item) {
-					$scope.items.push(item);
-				});
-		};
-
-		$scope.editItem = function(item, index, $event) {
-			item.index = index;
-			$scope.editingItem = item;
-			$mdDialog.show({
-					controller: 'EditItemController',
-					templateUrl: '/modules/panel/partials/edit-item.html',
-					targetEvent: $event
-				})
-				.then(function(promise) {
-					debugger;
-				})
-				.catch(function(response) {
-					debugger;
-				});
-			$scope.itemToUpdate = item;
-			$scope.updateStatus = null;
-		};
-
-		$scope.updateItem = function() {
-			$scope.updateStatus = 'Updating';
-
-			$scope.itemToUpdate
-				.$update()
-				.then(function(item) {
-					$scope.updateStatus = 'Success';
-				})
-				.catch(function(response) {
-					$scope.updateStatus = 'Error, please try again';
-				});
-		};
-
-		$scope.cancelUpdateItem = function() {
-			$scope.itemToUpdate = null;
-			$scope.updateStatus = null;
-		};
-
-		$scope.toggleActivity = function(item, index) {
-			item.index = index;
-			item
-				.$update()
-				.then(function(item) {
-					var successToast = $mdToast
-						.simple()
-						.content(item.title + ' successfully updated')
-						.position('top right');
-
-					$mdToast
-						.show(successToast)
-						.then(function() {
-							debugger;
-						})
-						.catch(function() {
-							debugger;
-						});
-				})
-				.catch(function(response) {
-					var failureToast = $mdToast
-						.simple()
-						.content(item.title + ' not updated')
-						.position('top right');
-
-					$mdToast
-						.show(failureToast)
-						.then(function() {
-							debugger;
-						})
-						.catch(function() {
-							debugger;
-						});
-
-					// reset item status, maybe figure out how to
-					// delay settings Item status until a response
-					// is received from the server
-					$scope.items[response.config.data.index].active = !response.data.active;
-				});
-		};
-
+	$scope.menuItems = [{
+		iconClass: 'icon-settings',
+		uiSref: 'dashboard',
+		text: 'Dashboard'
+	}, {
+		iconClass: 'icon-tags',
+		uiSref: 'dashboard.items',
+		text: 'Items'
+	}, {
+		iconClass: 'icon-cart',
+		uiSref: 'dashboard.orders',
+		text: 'Orders'
+	}, {
+		iconClass: 'icon-schedule',
+		uiSref: 'dashboard.schedule',
+		text: 'Schedule'
+	}, {
+		iconClass: 'icon-analytics',
+		uiSref: 'dashboard.analytics',
+		text: 'Analytics'
+	}, {
+		iconClass: 'icon-stats',
+		uiSref: 'dashboard.users',
+		text: 'Users'
+	}];
+}]).controller('DashboardItemsController', ['$scope', '$mdDialog', '$mdToast', 'PanelItem', function($scope, $mdDialog, $mdToast,
+	Item) {
+	$scope.createItem = function() {
 		Item
-			.query()
-			.$promise.then(function(items) {
-				$scope.items = items;
+			.save({
+				title: $scope.newItem.title,
+				description: $scope.newItem.description,
+				price: $scope.newItem.price
 			})
-			.catch(function(reponse) {
+			.$promise.then(function(item) {
+				$scope.items.push(item);
+			});
+	};
+
+	$scope.editItem = function(item, index, $event) {
+		item.index = index;
+		$scope.editingItem = item;
+		$mdDialog.show({
+				controller: 'EditItemController',
+				templateUrl: '/modules/panel/partials/edit-item.html',
+				targetEvent: $event
+			})
+			.then(function(promise) {
+				debugger;
+			})
+			.catch(function(response) {
 				debugger;
 			});
-	}
-]).controller('DashboardOrdersController', ['$scope', 'PanelOrder',
+		$scope.itemToUpdate = item;
+		$scope.updateStatus = null;
+	};
+
+	$scope.updateItem = function() {
+		$scope.updateStatus = 'Updating';
+
+		$scope.itemToUpdate
+			.$update()
+			.then(function(item) {
+				$scope.updateStatus = 'Success';
+			})
+			.catch(function(response) {
+				$scope.updateStatus = 'Error, please try again';
+			});
+	};
+
+	$scope.cancelUpdateItem = function() {
+		$scope.itemToUpdate = null;
+		$scope.updateStatus = null;
+	};
+
+	$scope.toggleActivity = function(item, index) {
+		item.index = index;
+		item
+			.$update()
+			.then(function(item) {
+				var successToast = $mdToast
+					.simple()
+					.content(item.title + ' successfully updated')
+					.position('top right');
+
+				$mdToast
+					.show(successToast)
+					.then(function() {
+						debugger;
+					})
+					.catch(function() {
+						debugger;
+					});
+			})
+			.catch(function(response) {
+				var failureToast = $mdToast
+					.simple()
+					.content(item.title + ' not updated')
+					.position('top right');
+
+				$mdToast
+					.show(failureToast)
+					.then(function() {
+						debugger;
+					})
+					.catch(function() {
+						debugger;
+					});
+
+				// reset item status, maybe figure out how to
+				// delay settings Item status until a response
+				// is received from the server
+				$scope.items[response.config.data.index].active = !response.data.active;
+			});
+	};
+
+	Item
+		.query()
+		.$promise.then(function(items) {
+			$scope.items = items;
+		})
+		.catch(function(reponse) {
+			debugger;
+		});
+}]).controller('DashboardOrdersController', ['$scope', 'PanelOrder',
 	function($scope, Order) {
 		$scope.deleteOrder = function(index) {
 			$scope.orders[index]
