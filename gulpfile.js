@@ -120,13 +120,13 @@ gulp.task('analysis', gulp.parallel('plato'));
  *****************/
 gulp.task('watch', function() {
 	gulp
-		.watch(['public/**/*.js', '!public/*.js'], {}, ['concat'])
+		.watch(['public/**/*.js', '!public/*.js'], 'concat')
 		.on('change', function(event) {
 			console.log('File %s was %s, running tasks...', event.path, event.type);
 		});
 
 	gulp
-		.watch('public/**/*.scss', {}, ['sass'])
+		.watch('public/**/*.scss', 'sass')
 		.on('change', function(event) {
 			console.log('File %s was %s, running tasks...', event.path, event.type);
 		});
