@@ -14,5 +14,13 @@ angular.module('hthsLunch', [
 	'hthsLunch.order',
 	'hthsLunch.panel'
 ]).config(['$locationProvider', function($locationProvider) {
-	$locationProvider.html5Mode(true).hashPrefix('!');
+	$locationProvider
+		.html5Mode(true)
+		.hashPrefix('!');
+
+	// $mdThemingProvider
+	// 	.theme('default')
+	// 	.primaryColor('blue');
 }]);
+
+// ]).config(['$locationProvider', '$mdThemingProvider', function($locationProvider, $mdThemingProvider) {
