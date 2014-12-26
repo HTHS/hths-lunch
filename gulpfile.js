@@ -44,23 +44,26 @@ gulp.task('concat', function() {
 	del.sync('public/app.js');
 
 	return gulp.src([
-			'public/lib/jquery/dist/jquery.min.js',
-			'public/lib/angular/angular.min.js',
-			'public/lib/angular-aria/angular-aria.min.js',
-			'public/lib/angular-animate/angular-animate.min.js',
-			'public/lib/hammerjs/hammer.min.js',
-			'public/lib/angular-material/angular-material.min.js',
-			'public/lib/angular-resource/angular-resource.min.js',
-			'public/lib/angular-ui-router/release/angular-ui-router.min.js',
-			'public/lib/foundation/js/vendor/modernizr.js',
-			'public/lib/foundation/js/foundation.min.js',
-			'public/modules/app.js',
-			'public/modules/**/*.js'
-		])
+			'lib/jquery/dist/jquery.min.js',
+			'lib/d3/d3.min.js',
+			'lib/angular/angular.min.js',
+			'lib/angular-aria/angular-aria.min.js',
+			'lib/angular-animate/angular-animate.min.js',
+			'lib/hammerjs/hammer.min.js',
+			'lib/angular-material/angular-material.min.js',
+			'lib/angular-resource/angular-resource.min.js',
+			'lib/angular-ui-router/release/angular-ui-router.min.js',
+			'lib/foundation/js/vendor/modernizr.js',
+			'lib/foundation/js/foundation.min.js',
+			'modules/app.js',
+			'modules/**/*.js'
+		], {
+			cwd: 'public'
+		})
 		.pipe(sourcemaps.init())
 		.pipe(concat('app.js'))
 		.pipe(gulp.dest('public'))
-		.pipe(uglify())
+		// .pipe(uglify())
 		.pipe(rename('app.min.js'))
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('public'));
