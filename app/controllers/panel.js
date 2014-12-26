@@ -14,22 +14,7 @@ var mongoose = require('mongoose'),
 var transporter = nodemailer.createTransport(config.mailer.options);
 
 exports.getItems = function(req, res) {
-	/**
-	 * TODO see how to just use item.list
-	 */
-	Item
-		.find()
-		.sort('title')
-		.sort('-active')
-		.exec(function(err, items) {
-			if (err) {
-				return res.status(400).send({
-					message: errorHandler.getErrorMessage(err)
-				});
-			} else {
-				res.jsonp(items);
-			}
-		});
+	item.list(req, res);
 };
 
 exports.createItem = function(req, res) {

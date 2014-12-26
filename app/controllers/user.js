@@ -93,6 +93,21 @@ exports.createProfile = function(req, providerUserProfile, done) {
 };
 
 /**
+ * Placholder user for invited users
+ */
+// TODO implement invited user tracking
+// exports.createPlaceholder = function(req, res) {
+// 	var user = new User({
+// 		email: req.body.email,
+// 		status: 'invited'
+// 	});
+//
+// 	user.save(function(err) {
+//
+// 	});
+// };
+
+/**
  * Signin after passport authentication
  */
 exports.signin = function(strategy) {
@@ -133,7 +148,10 @@ exports.me = function(req, res) {
  * List of Items
  */
 exports.list = function(req, res) {
-	User.find().exec(function(err, users) {
+	User
+		.find()
+		.sort('-created')
+		.exec(function(err, users) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

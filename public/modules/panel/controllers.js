@@ -1,27 +1,27 @@
 angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', function($scope) {
 	$scope.menuItems = [{
 		iconClass: 'icon-settings',
-		uiSref: 'dashboard',
+		state: 'dashboard',
 		text: 'Dashboard'
 	}, {
 		iconClass: 'icon-tags',
-		uiSref: 'dashboard.items',
+		state: 'dashboard.items',
 		text: 'Items'
 	}, {
 		iconClass: 'icon-cart',
-		uiSref: 'dashboard.orders',
+		state: 'dashboard.orders',
 		text: 'Orders'
 	}, {
 		iconClass: 'icon-schedule',
-		uiSref: 'dashboard.schedule',
+		state: 'dashboard.schedule',
 		text: 'Schedule'
 	}, {
 		iconClass: 'icon-analytics',
-		uiSref: 'dashboard.analytics',
+		state: 'dashboard.analytics',
 		text: 'Analytics'
 	}, {
 		iconClass: 'icon-stats',
-		uiSref: 'dashboard.users',
+		state: 'dashboard.users',
 		text: 'Users'
 	}];
 }]).controller('DashboardItemsController', ['$scope', '$mdDialog', '$mdToast', 'PanelItem', function($scope, $mdDialog, $mdToast,
@@ -39,39 +39,41 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', f
 	};
 
 	$scope.editItem = function(item, index, $event) {
-		item.index = index;
-		$scope.editingItem = item;
+		$scope.editingItem = new Item(item);
+		$scope.editingItem.index = index;
+
 		$mdDialog.show({
 				controller: 'EditItemController',
 				templateUrl: '/modules/panel/partials/edit-item.html',
-				targetEvent: $event
+				targetEvent: $event,
+				locals: {
+					editingItem: $scope.editingItem
+				}
 			})
-			.then(function(promise) {
-				debugger;
-			})
-			.catch(function(response) {
-				debugger;
-			});
-		$scope.itemToUpdate = item;
-		$scope.updateStatus = null;
-	};
-
-	$scope.updateItem = function() {
-		$scope.updateStatus = 'Updating';
-
-		$scope.itemToUpdate
-			.$update()
 			.then(function(item) {
-				$scope.updateStatus = 'Success';
-			})
-			.catch(function(response) {
-				$scope.updateStatus = 'Error, please try again';
-			});
-	};
+				index = item.index;
 
-	$scope.cancelUpdateItem = function() {
-		$scope.itemToUpdate = null;
-		$scope.updateStatus = null;
+				item
+					.$update()
+					.then(function(item) {
+						var successToast = $mdToast
+						.simple()
+						.content(item.title + ' successfully updated')
+						.position('top right');
+
+						$mdToast.show(successToast);
+
+						$scope.items[index] = item;
+					})
+					.catch(function(response) {
+						var failureToast = $mdToast
+						.simple()
+						.content(item.title + ' not updated')
+						.position('top right');
+
+						$mdToast.show(failureToast);
+					});
+			});
 	};
 
 	$scope.toggleActivity = function(item, index) {
@@ -84,14 +86,7 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', f
 					.content(item.title + ' successfully updated')
 					.position('top right');
 
-				$mdToast
-					.show(successToast)
-					.then(function() {
-						debugger;
-					})
-					.catch(function() {
-						debugger;
-					});
+				$mdToast.show(successToast);
 			})
 			.catch(function(response) {
 				var failureToast = $mdToast
@@ -99,14 +94,7 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', f
 					.content(item.title + ' not updated')
 					.position('top right');
 
-				$mdToast
-					.show(failureToast)
-					.then(function() {
-						debugger;
-					})
-					.catch(function() {
-						debugger;
-					});
+				$mdToast.show(failureToast);
 
 				// reset item status, maybe figure out how to
 				// delay settings Item status until a response
@@ -208,6 +196,13 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', f
 }]).controller('DashboardAnalyticsController', ['$scope', function($scope) {
 
 }]).controller('DashboardUsersController', ['$scope', 'PanelUser', function($scope, User) {
+	User
+	.query()
+	.$promise
+	.then(function(users) {
+		$scope.users = users;
+	});
+
 	$scope.inviteUser = function() {
 		User
 			.invite($scope.newUser)
@@ -215,9 +210,11 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', f
 				debugger;
 			});
 	};
-}]).controller('EditItemController', ['$scope', '$mdDialog', function($scope, $mdDialog) {
+}]).controller('EditItemController', ['$scope', '$mdDialog', 'editingItem', function($scope, $mdDialog, editingItem) {
+	$scope.editingItem = editingItem;
+
 	$scope.update = function() {
-		$mdDialog.hide('abc');
+		$mdDialog.hide(editingItem);
 	};
 
 	$scope.cancel = function() {

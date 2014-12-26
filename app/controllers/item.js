@@ -14,11 +14,11 @@ exports.create = function(req, res) {
 
 	item.save(function(err) {
 		if (err) {
-			return res.send(400, {
+			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(item);
+			res.json(item);
 		}
 	});
 };
@@ -27,7 +27,7 @@ exports.create = function(req, res) {
  * Show the current Item
  */
 exports.read = function(req, res) {
-	res.jsonp(req.item);
+	res.json(req.item);
 };
 
 /**
@@ -40,11 +40,11 @@ exports.update = function(req, res) {
 
 	item.save(function(err) {
 		if (err) {
-			return res.send(400, {
+			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(item);
+			res.json(item);
 		}
 	});
 };
@@ -57,11 +57,11 @@ exports.delete = function(req, res) {
 
 	item.remove(function(err) {
 		if (err) {
-			return res.send(400, {
+			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(item);
+			res.json(item);
 		}
 	});
 };
@@ -70,13 +70,17 @@ exports.delete = function(req, res) {
  * List of Items
  */
 exports.list = function(req, res) {
-	Item.find().exec(function(err, items) {
+	Item
+	.find()
+	.sort('-active')
+	.sort('title')
+	.exec(function(err, items) {
 		if (err) {
-			return res.send(400, {
+			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(items);
+			res.json(items);
 		}
 	});
 };

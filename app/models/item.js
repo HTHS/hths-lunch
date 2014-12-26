@@ -23,6 +23,10 @@ var ItemSchema = new Schema({
 	active: {
 		type: Boolean,
 		default: true
+	},
+	numberOrdered: {
+		type: Number,
+		default: 0 
 	}
 });
 

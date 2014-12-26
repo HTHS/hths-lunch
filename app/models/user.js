@@ -32,8 +32,7 @@ var UserSchema = new Schema({
 		default: false
 	},
 	provider: {
-		type: String,
-		required: 'Provider is required'
+		type: String
 	},
 	providerData: {},
 	additionalProvidersData: {},
@@ -43,6 +42,15 @@ var UserSchema = new Schema({
 	created: {
 		type: Date,
 		default: Date.now
+	},
+	status: {
+		type: String,
+		enum: [
+			'Invited',
+			'Created',
+			'Pending invite'
+		],
+		default: 'invited'
 	},
 	orderHistory: [{
 		type: Schema.Types.ObjectId,
