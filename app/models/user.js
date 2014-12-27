@@ -35,7 +35,6 @@ var UserSchema = new Schema({
 		type: String
 	},
 	providerData: {},
-	additionalProvidersData: {},
 	updated: {
 		type: Date
 	},
@@ -50,12 +49,12 @@ var UserSchema = new Schema({
 			'Created',
 			'Pending invite'
 		],
-		default: 'invited'
+		default: 'Invited'
 	},
 	orderHistory: [{
 		type: Schema.Types.ObjectId,
 		ref: 'Order',
-		required: true
+		default: []
 	}]
 });
 
@@ -64,6 +63,7 @@ var UserSchema = new Schema({
  */
 UserSchema.pre('save', function(next) {
 	this.updated = new Date();
+	this.displayName = this.firstName + ' ' + this.lastName;
 
 	return next();
 });
