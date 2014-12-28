@@ -8,5 +8,10 @@ var mongoose = require('mongoose'),
  * Order items by number of ordered
  */
 exports.topItems = function(req, res) {
-
+	Item
+		.find()
+		.sort('-ordered')
+		.exec(function(err, items) {
+			
+		});
 };
