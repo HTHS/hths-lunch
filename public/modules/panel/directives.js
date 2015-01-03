@@ -2,23 +2,52 @@ angular.module('hthsLunch.panel')
   .directive('barGraph', [function() {
     return {
       restrict: 'E',
-      replace: false,
-      link: function(scope, element, attrs) {
+      scope: {
+        data: '='
+      },
+      link: function($scope, element, attrs) {
         var data = {
           // A labels array that can contain any sort of values
-          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+          labels: $scope.data.labels,
           // Our series array that contains series objects or in this case series data arrays
-          series: [
-            [5, 2, 4, 2, 0]
-          ]
+          series: [$scope.data.data]
+        };
+
+        var options = {};
+
+        if (attrs.gWidth && attrs.gHeight) {
+          options.width = attrs.gWidth;
+          options.height = attrs.gHeight;
+        }
+
+        $scope.graph = new Chartist.Bar(element[0], data, options);
+      }
+    };
+  }])
+  .directive('lineChart', [function() {
+    return {
+      restrict: 'E',
+      scope: {
+        data: '='
+      },
+      link: function($scope, element, attrs) {
+        var data = {
+          // A labels array that can contain any sort of values
+          labels: $scope.data.labels,
+          // Our series array that contains series objects or in this case series data arrays
+          series: [$scope.data.data]
         };
 
         var options = {
-          width: attrs.gWidth,
-          height: attrs.gHeight
+          lineSmooth: false
         };
 
-        var xyz = new Chartist.Bar('.' + attrs.gName, data, options);
+        if (attrs.gWidth && attrs.gHeight) {
+          options.width = attrs.gWidth;
+          options.height = attrs.gHeight;
+        }
+
+        $scope.graph = new Chartist.Line(element[0], data, options);
       }
     };
   }]);

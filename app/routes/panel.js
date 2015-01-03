@@ -34,6 +34,9 @@ router.route('/analytics')
 router.route('/analytics/top-items')
   .get(panel.getTopItems);
 
+router.route('/analytics/days')
+  .get(panel.getDays);
+
 // Users routes
 router.route('/users')
   .get(panel.getUsers)

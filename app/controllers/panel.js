@@ -62,6 +62,10 @@ exports.getTopItems = function(req, res) {
   analytics.topItems(req, res);
 };
 
+exports.getDays = function(req, res) {
+  analytics.getDays(req, res);
+};
+
 exports.getUsers = function(req, res) {
   user.list(req, res);
 };

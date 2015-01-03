@@ -40,6 +40,23 @@ angular.module('hthsLunch.panel').factory(
 				method: 'GET',
 				isArray: true,
 				url: '/api/panel/analytics/top-items'
+			},
+			getDays: {
+				method: 'GET',
+				isArray: true,
+				url: '/api/panel/analytics/days',
+				interceptor: {
+					response: function(response) {
+						return response.data.map(function(datum) {
+							datum.date = new Date(datum.date);
+
+							return datum;
+						});
+					},
+					responseError: function(data) {
+
+					}
+				}
 			}
 		});
 	}
@@ -72,5 +89,19 @@ angular.module('hthsLunch.panel').factory(
 		}
 
 		return prettyPrint;
+	};
+}]).filter('keys', [function() {
+	return function(obj) {
+		if (angular.isObject(obj)) {
+			return Object.keys(obj);
+		}
+	};
+}]).filter('values', [function() {
+	return function(obj) {
+		if (angular.isObject(obj)) {
+			return Object.keys(obj).map(function (key) {
+				return obj[key];
+			});
+		}
 	};
 }]);

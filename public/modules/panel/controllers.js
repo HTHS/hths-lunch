@@ -1,4 +1,4 @@
-angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', 'PanelAnalytics', function($scope, PanelAnalytics) {
+angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '$filter', 'PanelAnalytics', function($scope, $filter, PanelAnalytics) {
 	$scope.menuItems = [{
 		iconClass: 'icon-settings',
 		state: 'dashboard',
@@ -26,10 +26,32 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 	}];
 
 	PanelAnalytics
-	.getTopItems()
-	.$promise.then(function(topItems) {
-		$scope.topItems = topItems;
-	});
+		.getTopItems()
+		.$promise.then(function(topItems) {
+			$scope.topItemsData = {
+				data: [],
+				labels: []
+			};
+
+			topItems.forEach(function(topItem) {
+				$scope.topItemsData.data.push(topItem.numberOrdered);
+				$scope.topItemsData.labels.push(topItem.title);
+			});
+		});
+
+	PanelAnalytics
+		.getDays()
+		.$promise.then(function(days) {
+			$scope.ordersPerDayData = {
+				data: [],
+				labels: []
+			};
+
+			days.forEach(function(day) {
+				$scope.ordersPerDayData.data.push(day.orders.length);
+				$scope.ordersPerDayData.labels.push($filter('date')(day.date, 'mediumDate'));
+			});
+		});
 }]).controller('DashboardItemsController', ['$scope', '$mdDialog', '$mdToast', 'PanelItem', function($scope, $mdDialog, $mdToast, Item) {
 	$scope.createItem = function() {
 		Item

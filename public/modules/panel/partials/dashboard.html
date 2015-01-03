@@ -29,11 +29,11 @@
       <div layout="column" layout-fill layout-align="center" ui-view="dashboard">
         <div layout="row" layout-fill layout-align="center">
           <md-whiteframe class="md-whiteframe-z1" flex>
-            <bar-graph class="top-items ct-chart" data="topItems" labels="" g-name="top-items" g-width="350" g-height="200">
+            <bar-graph class="ct-chart ct-perfect-fourth" data="topItemsData" ng-if="topItemsData"></bar-graph>
           </md-whiteframe>
 
           <md-whiteframe class="md-whiteframe-z1" flex>
-            <span>.md-whiteframe-z1</span>
+            <line-chart class="ct-chart ct-perfect-fourth" data="ordersPerDayData" ng-if="ordersPerDayData"></line-chart>
           </md-whiteframe>
         </div>
       </div>
