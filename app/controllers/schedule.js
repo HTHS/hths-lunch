@@ -107,11 +107,11 @@ exports.init = function scheduleOrderProcessing() {
 		if (!err && schedule) {
 			var startDate = new Date(schedule.startDate);
 			var endDate = new Date(schedule.endDate);
-			var time = schedule.schedules[0].m[0];
+			var time = schedule.schedules[0].h[0];
 			var exceptions = schedule.exceptions;
 
 			exports.schoolDays = later.parse.recur()
-				.on(time).minute()
+				.on(time).hour()
 				.onWeekday()
 				.on(1, 2, 3, 4, 5, 6, 9, 10, 11, 12).month();
 
