@@ -3,6 +3,7 @@
  */
 var mongoose = require('mongoose'),
   Item = mongoose.model('Item'),
+  Day = mongoose.model('Day'),
   errorHandler = require('./error');
 
 /**
@@ -20,6 +21,24 @@ exports.topItems = function(req, res) {
         });
       } else {
         res.json(items);
+      }
+    });
+};
+
+/**
+ * Get last 10 days
+ */
+exports.getDays = function(req, res) {
+  Day
+    .find()
+    .limit(10)
+    .exec(function(err, days) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.json(days);
       }
     });
 };
