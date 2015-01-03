@@ -37,8 +37,6 @@
   </ul>
 </section>
   </nav> -->
-
-  <br>
   <form>
     <div class="row" flex="80">
       <md-text-float type="text" label="Name" placeholder="Johnny Appleseed" required="required" ng-model="newOrder.customer"></md-text-float>
@@ -51,25 +49,6 @@
               <div class="md-tile-left">
                 <img ng-src="{{item.face}}" class="face" alt="{{item.who}}">
               </div>
-              <div class="md-tile-content">
-                <h3>{{item.what}}</h3>
-                <h4>{{item.who}}</h4>
-                <p>
-                  {{item.notes}}
-                </p>
-              </div>
-            </md-item-content>
-          </md-item>
-        </md-list>
-      </div>
-      <div flex>
-        <md-list>
-          <md-item ng-repeat="item in menu">
-            <md-item-content>
-              <div class="md-tile-left">
-                <img ng-src="{{item.face}}" class="face" alt="{{item.who}}">
-              </div>
-
               <div class="md-tile-content">
                 <h3>{{item.what}}</h3>
                 <h4>{{item.who}}</h4>
@@ -120,7 +99,7 @@
         </div>
         <div class="row">
           <div class="small-9 small-offset-3 columns">
-            <button class="button" type="submit" ng-click="submitOrder()">Submit Order!</button>
+            <md-button type="submit" class="md-raised md-primary" ng-click="submitOrder()">Submit Order!</md-button>
           </div>
         </div>
         <div class="row" ng-show="orderProcessed">
