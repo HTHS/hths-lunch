@@ -24,7 +24,7 @@ var ScheduleSchema = new Schema({
     type: Date,
     required: true
   },
-  timestamp: {
+  created: {
     type: Date,
     default: Date.now
   },
