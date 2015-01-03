@@ -222,19 +222,18 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 		});
 }]).controller('DashboardAnalyticsController', ['$scope', function($scope) {
 
-}]).controller('DashboardUsersController', ['$scope', 'PanelUser', function($scope, User) {
+}]).controller('DashboardUsersController', ['$scope', 'MessageService', 'PanelUser', function($scope, MessageService, User) {
 	User
 	.query()
-	.$promise
-	.then(function(users) {
+	.$promise.then(function(users) {
 		$scope.users = users;
 	});
 
 	$scope.inviteUser = function() {
 		User
 			.invite($scope.newUser)
-			.$promise.then(function() {
-				debugger;
+			.$promise.then(function(message) {
+					MessageService.showSuccessNotification('Successfully invited '+ $scope.newUser.email, 'top right', 2000);
 			});
 	};
 }]).controller('EditItemController', ['$scope', '$mdDialog', 'editingItem', function($scope, $mdDialog, editingItem) {
