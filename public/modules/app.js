@@ -1,10 +1,15 @@
 angular.module('hthsLunch.landingPage', ['hthsLunch.core.authService']);
 angular.module('hthsLunch.user', ['hthsLunch.core.authService']);
-angular.module('hthsLunch.order', ['hthsLunch.core.itemService',
-  'hthsLunch.core.orderService', 'hthsLunch.core.userService',
+angular.module('hthsLunch.order', [
+  'hthsLunch.core.itemService',
+  'hthsLunch.core.orderService',
+  'hthsLunch.core.userService',
   'hthsLunch.core.authService'
 ]);
-angular.module('hthsLunch.panel', ['ngResource']);
+angular.module('hthsLunch.panel', [
+  'ngResource',
+  'hthsLunch.core.messageService'
+]);
 
 angular.module('hthsLunch', [
   'ngMaterial',
