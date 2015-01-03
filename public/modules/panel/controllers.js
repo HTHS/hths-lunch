@@ -1,6 +1,4 @@
-angular.module('hthsLunch.panel').controller('DashboardController', ['$scope',
-	'PanelAnalytics',
-	function($scope, PanelAnalytics) {
+angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', 'PanelAnalytics', function($scope, PanelAnalytics) {
 	$scope.menuItems = [{
 		iconClass: 'icon-settings',
 		state: 'dashboard',
@@ -26,14 +24,13 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope',
 		state: 'dashboard.users',
 		text: 'Users'
 	}];
-}]).controller('DashboardItemsController', ['$scope', '$mdDialog', '$mdToast', 'PanelItem', function($scope, $mdDialog, $mdToast,
-	Item) {
 
-		PanelAnalytics
-			.getTopItems()
-			.$promise.then(function(topItems) {
-				$scope.topItems = topItems;
-			});
+	PanelAnalytics
+	.getTopItems()
+	.$promise.then(function(topItems) {
+		$scope.topItems = topItems;
+	});
+}]).controller('DashboardItemsController', ['$scope', '$mdDialog', '$mdToast', 'PanelItem', function($scope, $mdDialog, $mdToast, Item) {
 	$scope.createItem = function() {
 		Item
 			.save({
