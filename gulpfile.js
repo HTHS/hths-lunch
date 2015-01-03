@@ -46,6 +46,7 @@ gulp.task('concat', function() {
 	return gulp.src([
 			'lib/jquery/dist/jquery.min.js',
 			'lib/d3/d3.min.js',
+			'lib/chartist/dist/chartist.min.js',
 			'lib/angular/angular.min.js',
 			'lib/angular-aria/angular-aria.min.js',
 			'lib/angular-animate/angular-animate.min.js',

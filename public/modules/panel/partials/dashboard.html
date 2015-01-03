@@ -1,40 +1,42 @@
 <link rel="stylesheet" href="/modules/panel/styles/dashboard.css">
 
-<section layout="row" flex>
-  <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('min-width: 333px')">
-    <md-toolbar>
-      <h1 class="md-toolbar-tools">Dashboard</h1>
-    </md-toolbar>
-    <md-content class="md-padding">
-      <md-content>
-        <md-list>
-          <md-item ng-repeat="menuItem in menuItems">
-            <md-item-content>
-              <div class="md-tile-left">
-                <span class="{{menuItem.iconClass}}"></span>
-              </div>
+<div layout="column" layout-fill>
+  <section layout="row" flex>
+    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-sm')">
+      <md-toolbar>
+        <h1 class="md-toolbar-tools">Dashboard</h1>
+      </md-toolbar>
+      <md-content class="md-padding">
+        <md-content>
+          <md-list>
+            <md-item ng-repeat="menuItem in menuItems">
+              <md-item-content>
+                <div class="md-tile-left">
+                  <span class="{{menuItem.iconClass}}"></span>
+                </div>
 
-              <div class="md-tile-content">
-                <a ui-sref="{{menuItem.state}}">{{menuItem.text}}</a>
-              </div>
-            </md-item-content>
-          </md-item>
-        </md-list>
+                <div class="md-tile-content">
+                  <a ui-sref="{{menuItem.state}}">{{menuItem.text}}</a>
+                </div>
+              </md-item-content>
+            </md-item>
+          </md-list>
+        </md-content>
       </md-content>
-    </md-content>
-  </md-sidenav>
+    </md-sidenav>
 
-  <md-content class="md-padding" flex>
-    <div layout="column" layout-fill layout-align="center" ui-view="dashboard">
-      <div layout="row" layout-fill layout-align="center">
-        <md-whiteframe class="md-whiteframe-z1" flex>
-          <bar-graph data="topItems">
-        </md-whiteframe>
+    <md-content flex>
+      <div layout="column" layout-fill layout-align="center" ui-view="dashboard">
+        <div layout="row" layout-fill layout-align="center">
+          <md-whiteframe class="md-whiteframe-z1" flex>
+            <bar-graph class="top-items ct-chart" data="topItems" labels="" g-name="top-items" g-width="350" g-height="200">
+          </md-whiteframe>
 
-        <md-whiteframe class="md-whiteframe-z1" flex>
-          <span>.md-whiteframe-z1</span>
-        </md-whiteframe>
+          <md-whiteframe class="md-whiteframe-z1" flex>
+            <span>.md-whiteframe-z1</span>
+          </md-whiteframe>
+        </div>
       </div>
-    </div>
-  </md-content>
-</section>
+    </md-content>
+  </section>
+</div>

@@ -31,6 +31,18 @@ angular.module('hthsLunch.panel').factory(
 			}
 		});
 	}
+]).factory('PanelAnalytics', ['$resource',
+	function($resource) {
+		return $resource('/api/panel/analytics', {
+			// parameter aliases
+		}, {
+			getTopItems: {
+				method: 'GET',
+				isArray: true,
+				url: '/api/panel/analytics/top-items'
+			}
+		});
+	}
 ]).factory('PanelUser', ['$resource',
 	function($resource) {
 		return $resource('/api/panel/users', {

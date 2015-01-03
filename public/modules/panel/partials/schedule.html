@@ -1,81 +1,77 @@
-<dl class="tabs" data-tab>
-  <dd class="active"><a href="#panel1">Schedule</a></dd>
-  <dd><a href="#panel2">Create Schedule</a></dd>
-</dl>
-<div class="tabs-content">
-  <div class="content active" id="panel1">
-    <table>
-      <thead>
-        <tr>
-          <th>Mon.</th>
-          <th>Tues.</th>
-          <th>Wed.</th>
-          <th>Thurs.</th>
-          <th>Fri.</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="week in schedule">
-          <td ng-repeat="day in week">{{day | date: 'fullDate'}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="content" id="panel2">
-    <form>
-      <div class="row">
-        <div class="small-10">
-          <div class="row">
-            <div class="small-3 columns">
-              <label for="schedule-start-date" class="right inline">Start date</label>
+<md-tabs>
+  <md-tab class="md-hue-2" md-selected="true" label="Schedule">
+    <div layout="column" layout-fill layout-align="space-around center">
+      <table>
+        <thead>
+          <tr>
+            <th>Mon.</th>
+            <th>Tues.</th>
+            <th>Wed.</th>
+            <th>Thurs.</th>
+            <th>Fri.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="week in schedule">
+            <td ng-repeat="day in week">{{day | date: 'fullDate'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </md-tab>
+  <md-tab label="Create Schedule">
+    <div layout="column" layout-fill layout-align="space-around center">
+      <form>
+        <div class="row">
+          <div class="small-10">
+            <div class="row">
+              <div class="small-3 columns">
+                <label for="schedule-start-date" class="right inline">Start date</label>
+              </div>
+              <div class="small-9 columns">
+                <input type="date" id="schedule-start-date" placeholder="mm/dd/yyyy" required ng-model="newSchedule.startDate">
+              </div>
             </div>
-            <div class="small-9 columns">
-              <input type="date" id="schedule-start-date" placeholder="mm/dd/yyyy" required ng-model="newSchedule.startDate">
+            <div class="row">
+              <div class="small-3 columns">
+                <label for="schedule-end-date" class="right inline">End date</label>
+              </div>
+              <div class="small-9 columns">
+                <input type="date" id="schedule-end-date" placeholder="mm/dd/yyyy" required ng-model="newSchedule.fakeEndDate">
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="small-3 columns">
-              <label for="schedule-end-date" class="right inline">End date</label>
+            <div class="row">
+              <div class="small-3 columns">
+                <label for="schedule-time-deadline" class="right inline">Submission time</label>
+              </div>
+              <div class="small-9 columns">
+                <input type="time" id="schedule-time-deadline" placeholder="mm/dd/yyyy" required ng-model="newSchedule.submissionTime">
+              </div>
             </div>
-            <div class="small-9 columns">
-              <input type="date" id="schedule-end-date" placeholder="mm/dd/yyyy" required ng-model="newSchedule.fakeEndDate">
+            <div class="row">
+              <div class="small-3 columns">
+                <label for="schedule-time-exceptions" class="right inline">Dates to skip</label>
+              </div>
+              <div class="small-9 columns">
+                <input type="text" id="schedule-time-exceptions" placeholder="mm/dd/yyyy, mm/dd/yyyy" ng-model="newSchedule.datesToSkip">
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="small-3 columns">
-              <label for="schedule-time-deadline" class="right inline">Submission time</label>
+            <div class="row">
+              <div class="small-9 small-offset-3 columns">
+                <button class="button" type="submit" ng-click="createSchedule()">Create Schedule!</button>
+              </div>
             </div>
-            <div class="small-9 columns">
-              <input type="time" id="schedule-time-deadline" placeholder="mm/dd/yyyy" required ng-model="newSchedule.submissionTime">
-            </div>
-          </div>
-          <div class="row">
-            <div class="small-3 columns">
-              <label for="schedule-time-exceptions" class="right inline">Dates to skip</label>
-            </div>
-            <div class="small-9 columns">
-              <input type="text" id="schedule-time-exceptions" placeholder="mm/dd/yyyy, mm/dd/yyyy" ng-model="newSchedule.datesToSkip">
-            </div>
-          </div>
-          <div class="row">
-            <div class="small-9 small-offset-3 columns">
-              <button class="button" type="submit" ng-click="createSchedule()">Create Schedule!</button>
-            </div>
-          </div>
-          <div class="row" ng-show="orderProcessed">
-            <div class="small-9 small-offset-3 columns">
-              <div data-alert class="alert-box">
-                <p>Your order has been processed!</p>
-                <a href="#" class="close">&times;</a>
+            <div class="row" ng-show="orderProcessed">
+              <div class="small-9 small-offset-3 columns">
+                <div data-alert class="alert-box">
+                  <p>Your order has been processed!</p>
+                  <a href="#" class="close">&times;</a>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </form>
-  </div>
-</div>
-
-<script>
-  $(document).foundation();
-</script>
+      </form>
+    </div>
+  </md-tab>
+</md-tabs>

@@ -20,5 +20,6 @@
     "d3": "~3.5.2",
     "material-design-icons": "~1.0.1",
     "angular-material": "~0.6.1"
+    "chartist": "~0.5.0"
   }
 }

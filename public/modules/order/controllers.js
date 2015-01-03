@@ -11,7 +11,9 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 				'customer': $scope.user.displayName
 			};
 
-			Item.query().$promise.then(function(items) {
+      Item
+        .query()
+        .$promise.then(function(items) {
 				$scope.menu = items.map(function(item) {
 					item.quantity = 0;
 					return item;
@@ -83,7 +85,8 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 				});
 
 				if ($scope.newOrder.toBeUpdated) {
-					Order.update($scope.newOrder)
+          Order
+            .update($scope.newOrder)
 						.$promise.then(function(order) {
 							$scope.orderProcessed = true;
 
