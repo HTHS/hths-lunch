@@ -137,9 +137,9 @@ exports.init = function scheduleOrderProcessing() {
 				500,
 				exports.schoolDays.startDate, exports.schoolDays.endDate);
 			exports.job = later.setInterval(endSubmissionsForDay, exports.schoolDays);
+		}
 
 			p.resolve();
-		}
 	});
 
 	return p.promise;
