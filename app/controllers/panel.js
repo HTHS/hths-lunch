@@ -69,10 +69,10 @@ exports.getUsers = function(req, res) {
 
 exports.inviteUser = function(req, res) {
   var url = req.headers.origin + '/auth/google';
-  var status = req.body.status || false;
+  var isAdmin = req.body.isAdmin || false;
 
   var stateParams = encodeURIComponent(JSON.stringify({
-    isAdmin: req.body.status
+    isAdmin: isAdmin
   }));
   url += '?state=' + stateParams;
 
