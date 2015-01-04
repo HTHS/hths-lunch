@@ -12,6 +12,7 @@ router.route('/api/users/me').get(users.me);
 router.route('/api/users/:userId').put(users.update);
 
 // TODO better route
+router.route('/api/users/requestInvite').post(users.requestInvite);
 router.route('/api/users/hasAccount').post(users.emailHasAccount);
 
 // User Authentication API

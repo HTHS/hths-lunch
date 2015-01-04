@@ -9,15 +9,11 @@ angular.module('hthsLunch.core.userService', ['ngResource']).factory('User', [
 			},
 			hasAccount: {
 				url: '/api/users/hasAccount',
-				method: 'POST',
-				interceptor: {
-					response: function(response) {
-						return response.resource.hasAccount;
-					},
-					responseError: function(data) {
-
-					}
-				}
+				method: 'POST'
+			},
+			requestInvite: {
+				url: '/api/users/requestInvite',
+				method: 'POST'
 			}
 		});
 	}

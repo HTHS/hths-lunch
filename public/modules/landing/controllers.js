@@ -9,14 +9,27 @@ angular.module('hthsLunch.landingPage').controller('LandingPageController', ['$s
 				.hasAccount({
 					email: $scope.email
 				})
-				.$promise.then(function(hasAccount) {
-					if (hasAccount) {
+				.$promise.then(function(result) {
+					if (result.hasAccount && !result.pending) {
 						// TODO better routing here
 						$window.location.href += 'auth/google';
-					} else {
-						// request invite
-						// either through panel, or through email
+					} else if (!result.hasAccount) {
+						User
+							.requestInvite({
+								email: $scope.email
+							})
+							.$promise.then(function(user) {
+								MessageService.showSuccessNotification('Successfully requested invite for ' + user.email, 'top right', 2000);
+							})
+							.catch(function(response) {
+								MessageService.showDefaultFailureNotification();
+							});
+					} else if (result.hasAccount && result.pending) {
+						MessageService.showFailureNotification('Please wait for an administrator to approve your request.', 'top right', 5000);
 					}
+				})
+				.catch(function(response) {
+					MessageService.showDefaultFailureNotification();
 				});
 		};
 	}

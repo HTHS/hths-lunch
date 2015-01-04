@@ -11,10 +11,12 @@ var _ = require('lodash'),
 /**
  * Signup
  */
-exports.createProfile = function(req, providerUserProfile, done) {
+exports.createProfile = function createProfile(req, providerUserProfile, done) {
+	email = providerUserProfile.email.replace(/(\S+)\.(\S+@)/, '$1$2');
+
 	if (!req.user) {
 		User.findOne({
-			email: providerUserProfile.email
+			email: email
 		}).exec(function(err, user) {
 			if (err) {
 				return done(err);
@@ -67,12 +69,24 @@ exports.createProfile = function(req, providerUserProfile, done) {
 	}
 };
 
+exports.requestInvite = function requestInvite(req, res) {
+	exports.createPlaceholder(req.body.email, 'Pending invite')
+		.then(function(user) {
+			res.json(user);
+		})
+		.catch(function(err) {
+			res.status(400).json({
+				message: errorHandler.getErrorMessage(err)
+			});
+		});
+};
+
 /**
  * Create placeholder user for invited/requesting users
  * @param {String} email  email address of user
  * @param {String} status status of user
  */
-exports.createPlaceholder = function(email, status) {
+exports.createPlaceholder = function createPlaceholder(email, status) {
 	var p = Promise.defer();
 
 	var user = new User({
@@ -95,7 +109,7 @@ exports.createPlaceholder = function(email, status) {
 /**
  * Signin after passport authentication
  */
-exports.signin = function(strategy) {
+exports.signin = function signin(strategy) {
 	return function(req, res, next) {
 		passport.authenticate(strategy, function(err, user, redirectURL) {
 			if (err || !user) {
@@ -116,9 +130,9 @@ exports.signin = function(strategy) {
 /**
  * Signout
  */
-exports.signout = function(req, res) {
+exports.signout = function signout(req, res) {
 	req.logout();
-	res.status(200).json({
+	res.json({
 		success: true
 	});
 };
@@ -151,7 +165,7 @@ exports.list = function(req, res) {
 /**
  * Update user details
  */
-exports.update = function(req, res) {
+exports.update = function update(req, res) {
 	var user = req.user;
 
 	if (user) {
@@ -183,7 +197,7 @@ exports.update = function(req, res) {
 /**
  * Syntactic sugar on top of exports.update
  */
-exports.makeAdminUser = function(req, res) {
+exports.makeAdminUser = function makeAdminUser(req, res) {
 	req.body = {
 		isAdmin: true
 	};
@@ -194,20 +208,30 @@ exports.makeAdminUser = function(req, res) {
 /**
  * Check if email has account
  */
-exports.emailHasAccount = function(req, res) {
+exports.emailHasAccount = function emailHasAccount(req, res) {
+	var email = req.body.email.replace(/(\S+)\.(\S+@)/, '$1$2');
+
 	User.findOne({
-		email: req.body.email
+		email: email
 	}).exec(function(err, user) {
 		if (err) {
-			return res.json(err);
+			return res.json({
+				message: errorHandler.getErrorMessage(err)
+			});
 		}
 		if (!user) {
 			return res.json({
 				hasAccount: false
 			});
+		} else if (user.status === 'Pending invite') {
+			return res.json({
+				hasAccount: true,
+				pending: true
+			});
 		} else {
 			return res.json({
-				hasAccount: true
+				hasAccount: true,
+				pending: false
 			});
 		}
 	});
@@ -216,7 +240,7 @@ exports.emailHasAccount = function(req, res) {
 /**
  * User authorization check
  */
-exports.hasAuthorization = function(req, res) {
+exports.hasAuthorization = function hasAuthorization(req, res) {
 	if (req.user.isAdmin) {
 		return res.send({
 			authorized: true,
@@ -233,7 +257,7 @@ exports.hasAuthorization = function(req, res) {
 /**
  * User middleware
  */
-exports.userByID = function(req, res, next, id) {
+exports.userByID = function userByID(req, res, next, id) {
 	User.findOne({
 		_id: id
 	}).populate('orderHistory').exec(function(err, user) {
@@ -251,7 +275,7 @@ exports.userByID = function(req, res, next, id) {
 /**
  * Require login routing middleware
  */
-exports.requiresLogin = function(req, res, next) {
+exports.requiresLogin = function requiresLogin(req, res, next) {
 	if (!req.isAuthenticated()) {
 		return res.status(401).send({
 			message: 'User is not logged in'
@@ -264,7 +288,7 @@ exports.requiresLogin = function(req, res, next) {
 /**
  * Require Authentication routing middleware
  */
-exports.requiresAuthentication = function(req, res, next) {
+exports.requiresAuthentication = function requiresAuthentication(req, res, next) {
 	if (req.user.isAdmin) {
 		next();
 	} else {
