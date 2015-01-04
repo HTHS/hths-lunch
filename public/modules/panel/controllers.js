@@ -220,7 +220,20 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 		$scope.users = users;
 	});
 
-	$scope.inviteUser = function() {
+	$scope.inviteRequestedUser = function(requestedUser) {
+		User
+			.invite(requestedUser)
+			.$promise.then(function(user) {
+				requestedUser.status = 'Invited';
+				MessageService.showSuccessNotification('Successfully invited ' + user.email);
+			})
+			.catch(function(response) {
+				MessageService.showDefaultFailureNotification();
+				debugger;
+			});
+	};
+
+	$scope.inviteNewUser = function() {
 		User
 			.invite($scope.newUser)
 			.$promise.then(function(message) {

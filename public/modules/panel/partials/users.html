@@ -9,6 +9,7 @@
           <p flex>Email</p>
           <p flex>Admin</p>
           <p flex>Status</p>
+          <p flex>Invite</p>
         </div>
       </md-item-content>
       <md-divider></md-divider>
@@ -21,6 +22,7 @@
           <p flex>{{user.email}}</p>
           <p flex>{{user.isAdmin ? 'Yes' : 'No'}}</p>
           <p flex>{{user.status}}</p>
+          <p flex><md-button class="md-raised" ng-show="user.status === 'Pending invite'" ng-click="inviteRequestedUser(user)">Invite</md-button></p>
         </div>
       </md-item-content>
       <md-divider ng-if="!$last"></md-divider>
@@ -55,7 +57,7 @@
 
       <div class="row">
         <div class="small-9 small-offset-3 columns">
-          <a class="button" tabindex="4" ng-click="inviteUser()">Invite user!</a>
+          <a class="button" tabindex="4" ng-click="inviteNewUser()">Invite user!</a>
         </div>
       </div>
 

@@ -22,6 +22,8 @@ exports.createProfile = function createProfile(req, providerUserProfile, done) {
 				return done(err);
 			} else {
 				if (!user) {
+					console.log('User doesn\'t exist, profile: ', providerUserProfile);
+
 					var isAdmin = false;
 
 					if (req.query.state) {
@@ -55,12 +57,9 @@ exports.createProfile = function createProfile(req, providerUserProfile, done) {
 						providerData: providerUserProfile.providerData
 					});
 
-					user.update(user, {}, function() {
-						console.log('Arguments: ', arguments);
-						console.log('Updated user: ', user);
+					user.save(function(err) {
+						return done(err, user);
 					});
-
-					return done(err, user);
 				}
 			}
 		});
@@ -87,19 +86,45 @@ exports.requestInvite = function requestInvite(req, res) {
  * @param {String} status status of user
  */
 exports.createPlaceholder = function createPlaceholder(email, status) {
+	email = email.replace(/(\S+)\.(\S+@)/, '$1$2');
+
 	var p = Promise.defer();
 
-	var user = new User({
-		email: email,
-		status: status
-	});
-
-	user.save(function(err) {
+	User.findOne({
+		email: email
+	}).exec(function(err, user) {
 		if (err) {
-			console.log('Error: ', err);
+			console.log(err);
 			p.reject(err);
 		} else {
-			p.resolve(user);
+			if (!user) {
+				var user = new User({
+					email: email,
+					status: status
+				});
+
+				user.save(function(err) {
+					if (err) {
+						console.log('Error: ', err);
+						p.reject(err);
+					} else {
+						p.resolve(user);
+					}
+				});
+			} else {
+				user.update({
+					$set: {
+						status: 'Invited'
+					}
+				}, {}, function(err, numberUpdated, result) {
+					if (!err) {
+						user.status = 'Invited';
+						p.resolve(user);
+					} else {
+						p.reject(err);
+					}
+				});
+			}
 		}
 	});
 
