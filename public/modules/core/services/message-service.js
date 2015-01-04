@@ -36,4 +36,4 @@ angular.module('hthsLunch.core.messageService', []).factory('MessageService', ['
 	};
 
 	return service;
-}])
+}]);

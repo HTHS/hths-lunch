@@ -52,7 +52,7 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 				$scope.ordersPerDayData.labels.push($filter('date')(day.date, 'mediumDate'));
 			});
 		});
-}]).controller('DashboardItemsController', ['$scope', '$mdDialog', '$mdToast', 'PanelItem', function($scope, $mdDialog, $mdToast, Item) {
+}]).controller('DashboardItemsController', ['$scope', '$mdDialog', 'MessageService', 'PanelItem', function($scope, $mdDialog, MessageService, Item) {
 	$scope.createItem = function() {
 		Item
 			.save({
@@ -83,22 +83,12 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 				item
 					.$update()
 					.then(function(item) {
-						var successToast = $mdToast
-						.simple()
-						.content(item.title + ' successfully updated')
-						.position('top right');
-
-						$mdToast.show(successToast);
+						MessageService.showSuccessNotification(item.title + ' successfully updated');
 
 						$scope.items[index] = item;
 					})
 					.catch(function(response) {
-						var failureToast = $mdToast
-						.simple()
-						.content(item.title + ' not updated')
-						.position('top right');
-
-						$mdToast.show(failureToast);
+						MessageService.showFailureNotification(item.title + ' not updated');
 					});
 			});
 	};
@@ -108,20 +98,10 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 		item
 			.$update()
 			.then(function(item) {
-				var successToast = $mdToast
-					.simple()
-					.content(item.title + ' successfully updated')
-					.position('top right');
-
-				$mdToast.show(successToast);
+				MessageService.showSuccessNotification(item.title + ' successfully updated');
 			})
 			.catch(function(response) {
-				var failureToast = $mdToast
-					.simple()
-					.content(item.title + ' not updated')
-					.position('top right');
-
-				$mdToast.show(failureToast);
+				MessageService.showFailureNotification(item.title + ' not updated');
 
 				// reset item status, maybe figure out how to
 				// delay settings Item status until a response
