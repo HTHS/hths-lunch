@@ -54,7 +54,8 @@ module.exports = function(db, options) {
       return (/json|text|javascript|css/).test(res.getHeader(
         'Content-Type'));
     },
-    level: 9
+		threshold: '5kb',
+    level: 8
   }));
 
   // Use helmet to secure Express headers
