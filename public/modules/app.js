@@ -1,4 +1,7 @@
-angular.module('hthsLunch.landingPage', ['hthsLunch.core.authService']);
+angular.module('hthsLunch.landingPage', [
+  'hthsLunch.core.authService',
+  'hthsLunch.core.messageService'
+]);
 angular.module('hthsLunch.user', ['hthsLunch.core.authService']);
 angular.module('hthsLunch.order', [
   'hthsLunch.core.itemService',
