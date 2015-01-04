@@ -68,7 +68,7 @@ exports.getUsers = function(req, res) {
 };
 
 exports.inviteUser = function(req, res) {
-	var url = 'http://hths-lunch.tk/auth/google';
+  var url = req.headers.origin + '/auth/google';
 	var status = req.body.status || false;
 
 	var stateParams = encodeURIComponent(JSON.stringify({
