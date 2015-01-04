@@ -25,7 +25,9 @@ var UserSchema = new Schema({
 	email: {
 		type: String,
 		trim: true,
-		required: true
+		required: true,
+		index: true,
+		unqiue: true
 	},
 	isAdmin: {
 		type: Boolean,
@@ -64,6 +66,7 @@ var UserSchema = new Schema({
 UserSchema.pre('save', function(next) {
 	this.updated = new Date();
 	this.displayName = this.firstName + ' ' + this.lastName;
+	this.email = this.email.replace(/(\S+)\.(\S+@)/, '$1$2');
 
 	return next();
 });
