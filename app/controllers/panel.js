@@ -97,6 +97,7 @@ exports.inviteUser = function(req, res) {
         .catch(function(err) {
           res.status(400).json({
             success: true,
+            user: user,
             error: err
           });
         });

@@ -10,7 +10,7 @@ var transporter = nodemailer.createTransport(config.mailer.options);
 
 /**
  * Email constructor
- * @param {Object}  email   email object
+ * @param {Object} email   email object
  */
 function Email(email) {
 	this.email = _.extend({

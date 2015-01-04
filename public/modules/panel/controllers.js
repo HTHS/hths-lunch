@@ -236,8 +236,13 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 	$scope.inviteNewUser = function() {
 		User
 			.invite($scope.newUser)
-			.$promise.then(function(message) {
-					MessageService.showSuccessNotification('Successfully invited '+ $scope.newUser.email, 'top right', 2000);
+			.$promise.then(function(user) {
+				$scope.users.push(user);
+				MessageService.showSuccessNotification('Successfully invited ' + $scope.newUser.email);
+			})
+			.catch(function(response) {
+				MessageService.showDefaultFailureNotification();
+				debugger;
 			});
 	};
 }]).controller('EditItemController', ['$scope', '$mdDialog', 'editingItem', function($scope, $mdDialog, editingItem) {
