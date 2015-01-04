@@ -156,6 +156,17 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 	}
 ]).controller('DashboardScheduleController', ['$scope', 'PanelSchedule', function($scope, Schedule) {
 	$scope.newSchedule = {};
+	$scope.today = {
+		'date': new Date()
+	};
+	$scope.today.month = $scope.today.date.getMonth();
+	$scope.today.year = $scope.today.date.getFullYear();
+	$scope.today.daysInMonth = daysInMonth($scope.today.month, $scope.today.year);
+	$scope.schedule = [];
+
+	function daysInMonth(month, year) {
+		return new Date(year, month, 0).getDate();
+	};
 
 	$scope.createSchedule = function() {
 		$scope.newSchedule.endDate = new Date($scope.newSchedule.fakeEndDate);
@@ -173,17 +184,6 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 			});
 	};
 
-	$scope.daysInMonth = function(month, year) {
-		return new Date(year, month, 0).getDate();
-	};
-
-	$scope.today = {
-		'date': new Date()
-	};
-	$scope.today.month = $scope.today.date.getMonth();
-	$scope.today.year = $scope.today.date.getFullYear();
-	$scope.today.daysInMonth = $scope.daysInMonth($scope.today.month, $scope.today.year);
-
 	Schedule
 		.query()
 		.$promise.then(function(schedule) {
@@ -197,28 +197,19 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 				Array.prototype.splice.apply(schedule, args);
 			}
 
-			var weeks = schedule.length / 4 + schedule.length % 4;
-			var schoolDays = 5;
-			$scope.schedule = [];
-			for (var i = 0; i < weeks; i++) {
-				$scope.schedule[i] = [];
-				for (var z = 0; z < schoolDays; z++) {
-					$scope.schedule[i][z] = new Date(schedule[i * (schoolDays - 1) + z]);
-				}
+			var endingDayOfWeek = new Date(schedule[schedule.length - 1]).getDay();
+			if (endingDayOfWeek < 5) {
+				schedule.push('');
 			}
-			debugger;
 
-			/**
-			 * var weeks = schedule.week.length / 6 + schedule.week.length % 6;
-			var schoolDays = 7;
-			$scope.schedule = [];
+			var weeks = Math.round(schedule.length / 5);
+			var schoolDays = 5;
 			for (var i = 0; i < weeks; i++) {
 				$scope.schedule[i] = [];
 				for (var z = 0; z < schoolDays; z++) {
-					$scope.schedule[i][z] = new Date(schedule[i * (schoolDays - 1) + z]);
+					$scope.schedule[i][z] = schedule[i * (schoolDays) + z];
 				}
 			}
-			 */
 		});
 }]).controller('DashboardAnalyticsController', ['$scope', function($scope) {
 

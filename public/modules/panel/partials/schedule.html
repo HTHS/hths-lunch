@@ -13,7 +13,7 @@
         </thead>
         <tbody>
           <tr ng-repeat="week in schedule">
-            <td ng-repeat="day in week">{{day | date: 'fullDate'}}</td>
+            <td ng-repeat="day in week track by $index">{{day | date: 'mediumDate'}}</td>
           </tr>
         </tbody>
       </table>
