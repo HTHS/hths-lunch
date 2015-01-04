@@ -6,6 +6,7 @@ var _ = require('lodash'),
 	passport = require('passport'),
 	Promise = require('bluebird'),
 	User = mongoose.model('User'),
+	Email = require('./email'),
 	errorHandler = require('./error');
 
 /**
@@ -58,6 +59,26 @@ exports.createProfile = function createProfile(req, providerUserProfile, done) {
 					});
 
 					user.save(function(err) {
+						if (!err) {
+							var options = {
+								to: user.email,
+								subject: 'Welcome to HTHS-Lunch',
+								text: 'Welcome to HTHS-Lunch!',
+								html: 'Welcome to HTHS-Lunch!'
+							};
+
+							var welcomeEmail = new Email(options);
+
+							welcomeEmail
+							.send()
+							.then(function(info) {
+								console.log('Welcomed ', user.displayName);
+							})
+							.catch(function(err) {
+								console.error(err);
+							});
+						}
+
 						return done(err, user);
 					});
 				}
