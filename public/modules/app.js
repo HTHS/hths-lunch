@@ -30,6 +30,6 @@ angular.module('hthsLunch', [
     $mdThemingProvider
       .theme('default')
       .primaryColor('blue')
-      .accentColor('brown');
+      .accentColor('green');
   }
 ]);
