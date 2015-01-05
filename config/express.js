@@ -82,7 +82,8 @@ module.exports = function(db, options) {
     resave: true,
     secret: config.sessionSecret,
     store: new MongoStore({
-      mongooseConnection: db.connection,
+      //mongooseConnection: db.connection,
+      url: config.db,
       collection: config.sessionCollection
     })
   }));
