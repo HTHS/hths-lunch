@@ -6,9 +6,7 @@
       <span>HTHS Lunch</span>
       <!-- fill up the space between left and right area -->
       <span flex></span>
-      <md-button ng-click="signout()">
-        Sign out
-      </md-button>
+      <md-button ng-click="signout()">Sign out</md-button>
     </div>
   </md-toolbar>
   <md-content>
@@ -38,79 +36,29 @@
 </section>
   </nav> -->
   <form>
-    <div class="row" flex="80">
+    <div layout="column" layout-margin layout-align="center center">
       <md-text-float type="text" label="Name" placeholder="Johnny Appleseed" required="required" ng-model="newOrder.customer"></md-text-float>
-    </div>
-    <div class="row" layout="row" layout-margin layout-align="center center">
-      <div flex>
-        <md-list>
-          <md-item ng-repeat="item in menu">
-            <md-item-content>
-              <div class="md-tile-left">
-                <img ng-src="{{item.face}}" class="face" alt="{{item.who}}">
-              </div>
-              <div class="md-tile-content">
-                <h3>{{item.what}}</h3>
-                <h4>{{item.who}}</h4>
-                <p>
-                  {{item.notes}}
-                </p>
-              </div>
-            </md-item-content>
-          </md-item>
-        </md-list>
-      </div>
-    </div>
-      <div class="small-8">
-        <div class="row">
-          <div class="small-3 columns">
-            <label for="order-items" class="right inline">Description</label>
-          </div>
-          <div class="small-9 columns">
-            <table rules="none"><!-- get rid of border between cells -->
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Item</th>
-                  <th>Description</th>
-                  <th>Price</th>
-                  <th>Quantity</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="item" ng-repeat="item in menu" ng-show="item.active">
-                  <td><input type="checkbox" ng-click="toggleItemInOrder($index)"></td>
-                  <td>{{item.title}}</td>
-                  <td>{{item.description}}</td>
-                  <td>{{item.price | currency}}</td>
-                  <td><input type="number" min="0" step="1" pattern="^\d+$" required ng-disabled="newOrder.items[$index].toString() !== '[object Object]'" ng-model="item.quantity" ng-blur="recalculateTotal()"></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="row">
-          <div class="small-3 columns">
-            <label class="right inline">Total</label>
-          </div>
-          <div class="small-9 columns">
-            <span>{{newOrder.total | currency}}</span>
-          </div>
-        </div>
-        <div class="row">
-          <div class="small-9 small-offset-3 columns">
-            <md-button type="submit" class="md-raised md-primary" ng-click="submitOrder()">Submit Order!</md-button>
-          </div>
-        </div>
-        <div class="row" ng-show="orderProcessed">
-          <div class="small-9 small-offset-3 columns">
-            <div data-alert class="alert-box">
-              <p>Your order has been processed!</p>
-              <a href="#" class="close">&times;</a>
+      <md-list>
+        <md-item ng-repeat="item in menu" ng-show="item.active">
+          <md-item-content>
+            <div class="md-tile-left">
+              <md-switch ng-model="newOrder.items[$index]" ng-true-value="{{item}}" ng-change="recalculateTotal()" ng-false-value="null" aria-label="Toggle item"></md-switch>
             </div>
-          </div>
-        </div>
-      </div>
+            <div class="md-tile-content">
+              <h3>{{item.title}}</h3>
+              <h4>{{item.description}}</h4>
+              <p>{{item.price | currency}}</p>
+            </div>
+            <div>
+              <input type="number" min="0" step="1" pattern="^\d+$" required ng-disabled="newOrder.items[$index].toString() !== '[object Object]'" ng-model="item.quantity" ng-blur="recalculateTotal()">
+            </div>
+          </md-item-content>
+        </md-item>
+      </md-list>
+    </div>
+    <div layout="column" layout-margin layout-align="center center">
+      <p>Total: {{newOrder.total | currency}}</p>
+      <md-button type="submit" class="md-raised md-primary" ng-click="submitOrder()" ng-disabled="!newOrder.total">Submit Order!</md-button>
     </div>
   </form>
   </md-content>

@@ -17,8 +17,6 @@
     "angular-material": "v0.7.0-rc1",
     "angular-resource": "~1.3.8",
     "angular-ui-router": "~0.2.13",
-    "foundation": "~5.4.7",
-    "d3": "~3.5.2",
     "material-design-icons": "~1.0.1",
     "chartist": "~0.5.0"
   }

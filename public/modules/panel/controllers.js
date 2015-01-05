@@ -134,7 +134,7 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 				$scope.orders = orders;
 			});
 	}
-]).controller('DashboardScheduleController', ['$scope', 'PanelSchedule', function($scope, Schedule) {
+]).controller('DashboardScheduleController', ['$scope', 'MessageService', 'PanelSchedule', function($scope, MessageService, Schedule) {
 	$scope.newSchedule = {};
 	$scope.today = {
 		'date': new Date()
@@ -156,6 +156,8 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 		Schedule
 			.create($scope.newSchedule)
 			.$promise.then(function(schedule) {
+				MessageService.showSuccessNotification('Schedule created!');
+
 				$scope.schedule = schedule.map(function(day) {
 					return new Date(day);
 				});

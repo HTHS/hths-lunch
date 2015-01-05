@@ -1,5 +1,5 @@
-angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$state', 'Item', 'Order', 'User', 'Auth',
-	function($scope, $state, Item, Order, User, Auth) {
+angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$state', 'MessageService', 'Item', 'Order', 'User', 'Auth',
+	function($scope, $state, MessageService, Item, Order, User, Auth) {
 		$scope.user = user;
 
 		if (!$scope.user) {
@@ -49,6 +49,10 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 			});
 		}
 
+		$scope.itemInOrder = function(index) {
+			return $scope.newOrder.items[index] !== null;
+		};
+
 		$scope.toggleItemInOrder = function(index) {
 			if ($scope.newOrder.items[index] !== null && typeof $scope.newOrder.items[
 					index] === 'object') {
@@ -63,7 +67,7 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 		$scope.recalculateTotal = function() {
 			$scope.newOrder.total = 0;
 			for (var item in $scope.newOrder.items) {
-				if ($scope.newOrder.items.hasOwnProperty(item)) {
+				if ($scope.newOrder.items.hasOwnProperty(item) && $scope.newOrder.items[item]) {
 					$scope.newOrder.total += $scope.newOrder.items[item].price * $scope.newOrder
 						.items[item].quantity;
 				}
@@ -88,7 +92,7 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
           Order
             .update($scope.newOrder)
 						.$promise.then(function(order) {
-							$scope.orderProcessed = true;
+							MessageService.showSuccessNotification('Order updated!');
 
 							User
 								.update($scope.user)
@@ -100,7 +104,7 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 					Order
 						.save($scope.newOrder)
 						.$promise.then(function(order) {
-							$scope.orderProcessed = true;
+							MessageService.showSuccessNotification('Order placed!');
 
 							$scope.user.orderHistory.push(order._id);
 							User

@@ -30,37 +30,11 @@
   </md-list>
 </section>
 
-<form>
-  <div class="row">
+<form layout="row">
+  <div flex="40">
     <h2>Invite user</h2>
-  </div>
-  <div class="row">
-    <div class="small-8">
-
-      <div class="row">
-        <div class="small-3 columns">
-          <label for="user-email" class="right inline">Email</label>
-        </div>
-        <div class="small-9 columns">
-          <input type="email" id="user-email" required tabindex="2" ng-model="newUser.email">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="small-3 columns">
-          <label for="user-status" class="right inline">Admin</label>
-        </div>
-        <div class="small-9 columns">
-          <input type="checkbox" id="user-status" required tabindex="3" ng-model="newUser.isAdmin">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="small-9 small-offset-3 columns">
-          <a class="button" tabindex="4" ng-click="inviteNewUser()">Invite user!</a>
-        </div>
-      </div>
-
-    </div>
+    <md-text-float label="Email" placeholder="johnny.appleseed@gmail.com" required ng-model="newUser.email"></md-text-float>
+    <md-switch ng-model="newUser.isAdmin">Admin?</md-switch>
+    <md-button ng-click="inviteNewUser()">Invite user!</md-button>
   </div>
 </form>

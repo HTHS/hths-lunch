@@ -30,38 +30,11 @@
   </md-list>
 </section>
 
-<form>
-  <div class="row">
-    <div class="small-8">
-      <div class="row">
-        <div class="small-3 columns">
-          <label for="item-title" class="right inline">Title</label>
-        </div>
-        <div class="small-9 columns">
-          <input type="text" id="item-title" placeholder="Pizza" required tabindex="1" ng-model="newItem.title">
-        </div>
-      </div>
-      <div class="row">
-        <div class="small-3 columns">
-          <label for="item-description" class="right inline">Description</label>
-        </div>
-        <div class="small-9 columns">
-          <input type="text" id="item-description" placeholder="2 hot slices" required tabindex="2" ng-model="newItem.description">
-        </div>
-      </div>
-      <div class="row">
-        <div class="small-3 columns">
-          <label for="item-price" class="right inline">Price</label>
-        </div>
-        <div class="small-9 columns">
-          <input type="number" id="item-price" placeholder="4.00" required tabindex="3" ng-model="newItem.price">
-        </div>
-      </div>
-      <div class="row">
-        <div class="small-9 small-offset-3 columns">
-          <a class="button" tabindex="4" ng-click="createItem()">Create Item!</a>
-        </div>
-      </div>
-    </div>
+<form layout="row" layout-fill layout-align="space-around center">
+  <div flex="40" layout="column">
+    <md-text-float label="Title" ng-model="newItem.title" type="text" placeholder="Pizza" tabindex="1" required></md-text-float>
+    <md-text-float label="Description" ng-model="newItem.description" type="text" placeholder="2 hot slices" tabindex="2" required></md-text-float>
+    <md-text-float label="Price" ng-model="newItem.price" type="number" placeholder="4.00" tabindex="3" required></md-text-float>
+    <md-button class="md-button md-raised md-primary" tabindex="4" ng-click="createItem()">Create item!</md-button>
   </div>
 </form>
