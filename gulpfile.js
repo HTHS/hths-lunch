@@ -44,8 +44,6 @@ gulp.task('concat', function() {
 	del.sync('public/app.js');
 
 	return gulp.src([
-			'lib/jquery/dist/jquery.min.js',
-			'lib/d3/d3.min.js',
 			'lib/chartist/dist/chartist.min.js',
 			'lib/angular/angular.min.js',
 			'lib/angular-aria/angular-aria.min.js',
@@ -54,8 +52,6 @@ gulp.task('concat', function() {
 			'lib/angular-material/angular-material.min.js',
 			'lib/angular-resource/angular-resource.min.js',
 			'lib/angular-ui-router/release/angular-ui-router.min.js',
-			'lib/foundation/js/vendor/modernizr.js',
-			'lib/foundation/js/foundation.min.js',
 			'modules/app.js',
 			'modules/**/*.js'
 		], {
