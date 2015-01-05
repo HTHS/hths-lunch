@@ -11,7 +11,6 @@ exports.start = function() {
   mongoose
     .connect()
     .then(function(db) {
-      console.log(db);
       var options = require('./config/options');
 
       options.then(function(opts) {
