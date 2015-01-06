@@ -34,6 +34,7 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 					if (todaysDateTime - lastOrderDateTime > 0 && todaysDate.getHours() < 9 || todaysDateTime - lastOrderDateTime <
 						tomorrowsDate.getTime() - lastOrderDateTime) {
 						var orderToUpdate = $scope.user.orderHistory[$scope.user.orderHistory.length - 1];
+						$scope.newOrder._id = orderToUpdate._id;
 						$scope.newOrder.total = orderToUpdate.total;
 						$scope.newOrder.toBeUpdated = true;
 						for (var i = 0; i < orderToUpdate.items.length; i++) {
