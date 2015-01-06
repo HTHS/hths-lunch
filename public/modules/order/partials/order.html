@@ -42,7 +42,8 @@
         <md-item ng-repeat="item in menu" ng-show="item.active">
           <md-item-content>
             <div class="md-tile-left">
-              <md-switch ng-model="newOrder.items[$index]" ng-true-value="{{item}}" ng-change="recalculateTotal()" ng-false-value="null" aria-label="Toggle item"></md-switch>
+							<input type="checkbox" ng-click="toggleItemInOrder($index)">
+              <!-- <md-switch ng-model="newOrder.items[\$index]" ng-true-value="item" ng-false-value="null" ng-change="recalculateTotal()" aria-label="Toggle item"></md-switch> -->
             </div>
             <div class="md-tile-content">
               <h3>{{item.title}}</h3>
