@@ -25,7 +25,7 @@ exports.create = function(req, res) {
 	var exceptions = req.body.exceptions;
 
 	exports.schoolDays = later.parse.recur()
-		.on(time).minute()
+		.on(time).hour()
 		.onWeekday()
 		.on(1, 2, 3, 4, 5, 6, 9, 10, 11, 12).month();
 
@@ -186,10 +186,10 @@ function endSubmissionsForDay() {
 								console.log(rawResponse);
 							});
 					});
+				});
 
-					var orderIDs = orders.map(function(order) {
-						return order._id;
-					});
+				var orderIDs = orders.map(function(order) {
+					return order._id;
 				});
 
 				today = new Day({
