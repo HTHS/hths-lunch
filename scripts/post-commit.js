@@ -41,14 +41,14 @@ var server = http.createServer(function(request, response) {
 						if (stdout == commitSHA) {
 							console.log('Nothing new to deploy.');
 						} else {
-							console.log('Updating deployment at %s', (new Date()).toLocaleString());
+							console.log('%s: updating deployment', (new Date()).toLocaleString());
 
 							exec('./scripts/update.sh', function(error, stdout, stderr) {
 								if (error) {
 									console.log('Git pull error: ', error, stdout, stderr);
 								} else {
 									console.log('Commit %s\nAuthor: %s\n\t%s\n', commitSHA, author, commitMessage);
-									console.log('Updated deployment at %s', (new Date()).toLocaleString());
+									console.log('%s: finished updating deployment', (new Date()).toLocaleString());
 								}
 							});
 						}
