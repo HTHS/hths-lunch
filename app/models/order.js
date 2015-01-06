@@ -28,7 +28,15 @@ var OrderSchema = new Schema({
 	timestamp: {
 		type: Date,
 		default: Date.now
+	},
+	updated: {
+		type: Date,
+		default: Date.now
 	}
+});
+
+OrderSchema.pre('save', function() {
+	this.updated = new Date();
 });
 
 mongoose.model('Order', OrderSchema);
