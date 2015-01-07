@@ -21,7 +21,7 @@
     "test": "gulp test"
   },
   "dependencies": {
-    "bluebird": "~2.5.1",
+    "bluebird": "~2.6.0",
     "body-parser": "~1.10.0",
     "bower": "~1.3.12",
     "chalk": "~0.5.1",
@@ -32,7 +32,7 @@
     "csv-stringify": "~0.0.4",
     "del": "~1.1.1",
     "express": "~4.10.6",
-    "express-session": "~1.9.3",
+    "express-session": "~1.10.0",
     "forever": "~0.13.0",
     "glob": "~4.3.2",
     "gulp": "git://github.com/gulpjs/gulp.git#3eef36ab126e5b858884c44dfbee3a0aecd73fdb",
