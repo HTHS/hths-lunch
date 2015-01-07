@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
 	del = require('del'),
+	karma = require('karma').server,
 	concat = require('gulp-concat'),
 	rename = require('gulp-rename'),
 	sass = require('gulp-sass'),
@@ -13,36 +14,36 @@ var gulp = require('gulp'),
 /***********
  * Helpers *
  ***********/
-gulp.task('env:test', function() {
+function testEnv(cb) {
 	process.env.NODE_ENV = 'test';
-});
+
+	cb();
+}
+
+function clean() {
+	del.sync('public/app.js');
+}
 
 /*******
  * CSS *
  *******/
-gulp.task('sass', function() {
-	gulp.src([
-			'public/sass/**/*.scss'
-		])
+function sass() {
+	gulp.src('public/sass/**/*.scss')
 		.pipe(sass())
 		.pipe(gulp.dest('public/styles'));
 
-	gulp.src([
-			'public/modules/**/*.scss'
-		])
+	gulp.src('public/modules/**/*.scss')
 		.pipe(sass())
 		.pipe(rename(function(path) {
 			path.dirname = path.dirname.replace('sass', 'styles');
 		}))
 		.pipe(gulp.dest('public/modules/'));
-});
+}
 
 /**************
  * JavaScript *
  **************/
-gulp.task('concat', function() {
-	del.sync('public/app.js');
-
+function jsConcat() {
 	return gulp.src([
 			'lib/chartist/dist/chartist.min.js',
 			'lib/angular/angular.min.js',
@@ -64,16 +65,19 @@ gulp.task('concat', function() {
 		.pipe(rename('app.min.js'))
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('public'));
-});
+}
 
 /*********
  * Tests *
  *********/
-gulp.task('mocha', function() {
-	gulp.src(['app/**/*.js', 'config/**/*.js', 'public/modules/**/*.js'])
+function mochaTest() {
+	gulp.src([
+			'app/**/*.js',
+			'config/**/*.js',
+			'public/modules/**/*.js'
+		])
 		.pipe(istanbul())
 		.on('finish', function() {
-
 			var server = require('./server');
 
 			return gulp.src('./test/**/*.js')
@@ -85,12 +89,19 @@ gulp.task('mocha', function() {
 					server.kill();
 				});
 		});
-});
+}
+
+function karmaTest() {
+	return karma.start({
+		configFile: __dirname + '/karma.conf.js',
+		singleRun: true
+	});
+}
 
 /************
  * Analysis *
  ************/
-gulp.task('plato', function() {
+function plato() {
 	// plato.inspect([
 	// 	'app/**/*.js',
 	// 	'config/**/*.js',
@@ -104,38 +115,43 @@ gulp.task('plato', function() {
 	// 		}
 	// 	});
 
-	return gulp.src(['app/**/*.js', 'config/**/*.js', 'public/modules/**/*.js'])
+	return gulp.src([
+			'app/**/*.js',
+			'config/**/*.js',
+			'public/modules/**/*.js'
+		])
 		.pipe(plato('report', {
 			jshint: {},
 			complexity: {
 				trycatch: true
 			}
 		}));
-});
-
-gulp.task('analysis', gulp.parallel('plato'));
+}
 
 /*****************
  * Development   *
  *****************/
-gulp.task('watch', function() {
+function watch() {
 	gulp
-		.watch(['public/**/*.js', '!public/*.js'], 'concat')
+		.watch([
+			'public/**/*.js',
+			'!public/*.js'
+		], jsConcat)
 		.on('change', function(event) {
 			console.log('File %s was %s, running tasks...', event.path, event.type);
 		});
 
 	gulp
-		.watch('public/**/*.scss', 'sass')
+		.watch('public/**/*.scss', sass)
 		.on('change', function(event) {
 			console.log('File %s was %s, running tasks...', event.path, event.type);
 		});
-});
+};
 
-gulp.task('nodemon', function() {
+function nodemon() {
 	return nodemon({
 			script: 'server.js',
-			ext: 'js',
+			ext: 'js scss',
 			ignore: [
 				'node_modules/',
 				'coverage/',
@@ -145,8 +161,8 @@ gulp.task('nodemon', function() {
 				'gulpfile.js'
 			]
 		})
-		.on('change', gulp.parallel('sass', 'concat'));
-});
+		.on('change', 'build');
+}
 
 /*******************
  * Composite tasks *
@@ -155,17 +171,19 @@ gulp.task('nodemon', function() {
 /**************
  * Test tasks *
  **************/
-gulp.task('test', gulp.series('env:test', 'mocha'));
+gulp.task('test', gulp.series(testEnv, gulp.parallel(mochaTest)));
 
 /*********************
  * Development tasks *
  *********************/
-gulp.task('dev', gulp.parallel('sass', 'concat'));
+gulp.task('analysis', gulp.parallel(plato));
+gulp.task('watch', watch);
+gulp.task('dev', nodemon);
 
 /**********************
  * Production tasks   *
  **********************/
-gulp.task('build', gulp.parallel('sass', 'concat'));
+gulp.task('build', gulp.parallel(clean, sass, jsConcat));
 
 gulp.task('default', function() {
 	// place code for your default task here
