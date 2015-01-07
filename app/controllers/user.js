@@ -13,7 +13,7 @@ var _ = require('lodash'),
  * Signup
  */
 exports.createProfile = function createProfile(req, providerUserProfile, done) {
-	email = providerUserProfile.email.replace(/(\S+)\.(\S+@)/, '$1$2');
+	var email = providerUserProfile.email.replace(/(\S+)\.(\S+@)/, '$1$2');
 
 	if (!req.user) {
 		User.findOne({
@@ -119,7 +119,7 @@ exports.createPlaceholder = function createPlaceholder(email, status) {
 			p.reject(err);
 		} else {
 			if (!user) {
-				var user = new User({
+				user = new User({
 					email: email,
 					status: status
 				});
