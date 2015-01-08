@@ -42,12 +42,15 @@ router.route('/users')
   .get(panel.getUsers)
   .post(panel.inviteUser);
 
-router.route('/auth/:user')
+router.route('/users/:userId')
+  .delete(panel.deleteUser);
+
+router.route('/auth/:userId')
   .post(panel.userHasAuthorization);
 
-router.param('itemId', panel.itemByID);
-router.param('orderId', panel.orderByID);
-router.param('user', panel.userByID);
+router.param('itemId', panel.itemByID)
+  .param('orderId', panel.orderByID)
+  .param('userId', panel.userByID);
 
 module.exports.basePath = '/api/panel';
 module.exports.router = router;

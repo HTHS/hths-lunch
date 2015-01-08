@@ -67,6 +67,10 @@ exports.getUsers = function(req, res) {
   user.list(req, res);
 };
 
+exports.deleteUser = function(req, res) {
+  user.delete(req, res);
+};
+
 exports.inviteUser = function(req, res) {
   var url = req.headers.origin + '/auth/google';
   var isAdmin = req.body.isAdmin || false;
