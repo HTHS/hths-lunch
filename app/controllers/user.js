@@ -240,6 +240,30 @@ exports.update = function update(req, res) {
 	}
 };
 
+exports.delete = function remove(req, res) {
+	var user = req.body.user;
+
+	User.findOneAndRemove({email: user}).exec(function(err, user) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			if (user) {
+				return res.send({
+					success: true,
+					user: user
+				});
+			} else {
+				return res.send({
+					success: false,
+					user: null
+				});
+			}
+		}
+	});
+};
+
 /**
  * Syntactic sugar on top of exports.update
  */
