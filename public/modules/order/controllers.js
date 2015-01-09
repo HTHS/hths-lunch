@@ -118,6 +118,10 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 			}
 		};
 
+    $scope.goToDashboard = function() {
+      $state.go('dashboard');
+    };
+
 		$scope.signout = function() {
 			Auth
 				.signout()

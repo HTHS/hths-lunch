@@ -6,6 +6,7 @@
       <span>HTHS Lunch</span>
       <!-- fill up the space between left and right area -->
       <span flex></span>
+      <md-button ng-if="user.isAdmin" ng-click="goToDashboard()">Panel</md-button>
       <md-button ng-click="signout()">Sign out</md-button>
     </div>
   </md-toolbar>
