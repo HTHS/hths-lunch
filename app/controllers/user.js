@@ -73,6 +73,7 @@ exports.createProfile = function createProfile(req, providerUserProfile, done) {
 							.send()
 							.then(function(info) {
 								console.log('Welcomed ', user.displayName);
+                  console.log(info);
 							})
 							.catch(function(err) {
 								console.error(err);
@@ -199,7 +200,7 @@ exports.list = function(req, res) {
 		.sort('-created')
 		.exec(function(err, users) {
 			if (err) {
-				return res.status(400).send({
+        return res.status(400).json({
 					message: errorHandler.getErrorMessage(err)
 				});
 			} else {
@@ -220,13 +221,13 @@ exports.update = function update(req, res) {
 
 		user.save(function(err) {
 			if (err) {
-				return res.status(400).send({
+        return res.status(400).json({
 					message: errorHandler.getErrorMessage(err)
 				});
 			} else {
 				req.login(user, function(err) {
 					if (err) {
-						res.status(400).send(err);
+            res.status(400).json(err);
 					} else {
 						res.json(user);
 					}
@@ -234,7 +235,7 @@ exports.update = function update(req, res) {
 			}
 		});
 	} else {
-		res.status(400).send({
+    res.status(400).json({
 			message: 'User is not signed in'
 		});
 	}
@@ -312,12 +313,12 @@ exports.emailHasAccount = function emailHasAccount(req, res) {
  */
 exports.hasAuthorization = function hasAuthorization(req, res) {
 	if (req.user.isAdmin) {
-		return res.send({
+    return res.json({
 			authorized: true,
 			message: 'User is authorized'
 		});
 	} else {
-		return res.status(403).send({
+    return res.status(403).json({
 			authorized: false,
 			message: 'User is not authorized'
 		});
@@ -337,6 +338,7 @@ exports.userByID = function userByID(req, res, next, id) {
 		if (!user) {
 			return next(new Error('Failed to load User ' + id));
 		}
+
 		req.profile = user;
 		next();
 	});
@@ -347,7 +349,7 @@ exports.userByID = function userByID(req, res, next, id) {
  */
 exports.requiresLogin = function requiresLogin(req, res, next) {
 	if (!req.isAuthenticated()) {
-		return res.status(401).send({
+    return res.status(401).json({
 			message: 'User is not logged in'
 		});
 	}
@@ -362,7 +364,7 @@ exports.requiresAuthentication = function requiresAuthentication(req, res, next)
 	if (req.user.isAdmin) {
 		next();
 	} else {
-		return res.status(403).send({
+    return res.status(403).json({
 			message: 'User is not authorized'
 		});
 	}
