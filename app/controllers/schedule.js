@@ -5,11 +5,12 @@ var _ = require('lodash'),
 	later = require('later'),
 	mongoose = require('mongoose'),
 	Promise = require('bluebird'),
-	stringify = require('csv-stringify'),
 	Schedule = mongoose.model('Schedule'),
 	Order = mongoose.model('Order'),
 	Item = mongoose.model('Item'),
 	Day = mongoose.model('Day'),
+  csv = require('./csv'),
+  Email = require('./email'),
 	errorHandler = require('./error');
 
 // Use ET for calculating start end days of school year
@@ -147,7 +148,7 @@ exports.init = function scheduleOrderProcessing() {
 
 function endSubmissionsForDay() {
 	var now = new Date();
-	var yesterdayCutoff = new Date(Date.now() - later.DAY);
+  var yesterdayCutoff = new Date(now.getTime() - later.DAY);
 	yesterdayCutoff.setMinutes(1);
 
 	console.log('Ending submissions for this period from %s to %s',
