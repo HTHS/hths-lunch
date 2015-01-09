@@ -10,6 +10,7 @@
           <p flex>Admin</p>
           <p flex>Status</p>
           <p flex>Invite</p>
+          <p flex>Delete</p>
         </div>
       </md-item-content>
       <md-divider></md-divider>
@@ -23,6 +24,7 @@
           <p flex>{{user.isAdmin ? 'Yes' : 'No'}}</p>
           <p flex>{{user.status}}</p>
           <p flex><md-button class="md-raised" ng-show="user.status === 'Pending invite'" ng-click="inviteRequestedUser(user)">Invite</md-button></p>
+          <p flex><md-button class="md-raised" ng-click="deleteUser(user)">Delete</md-button></p>
         </div>
       </md-item-content>
       <md-divider ng-if="!$last"></md-divider>

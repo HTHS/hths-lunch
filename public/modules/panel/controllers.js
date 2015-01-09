@@ -1,123 +1,123 @@
 angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '$filter', 'PanelAnalytics', function($scope, $filter, PanelAnalytics) {
-	$scope.menuItems = [{
-		iconClass: 'icon-settings',
-		state: 'dashboard',
-		text: 'Dashboard'
-	}, {
-		iconClass: 'icon-tags',
-		state: 'dashboard.items',
-		text: 'Items'
-	}, {
-		iconClass: 'icon-cart',
-		state: 'dashboard.orders',
-		text: 'Orders'
-	}, {
-		iconClass: 'icon-schedule',
-		state: 'dashboard.schedule',
-		text: 'Schedule'
-	}, {
-		iconClass: 'icon-analytics',
-		state: 'dashboard.analytics',
-		text: 'Analytics'
-	}, {
-		iconClass: 'icon-stats',
-		state: 'dashboard.users',
-		text: 'Users'
-	}];
+		$scope.menuItems = [{
+			iconClass: 'icon-settings',
+			state: 'dashboard',
+			text: 'Dashboard'
+		}, {
+			iconClass: 'icon-tags',
+			state: 'dashboard.items',
+			text: 'Items'
+		}, {
+			iconClass: 'icon-cart',
+			state: 'dashboard.orders',
+			text: 'Orders'
+		}, {
+			iconClass: 'icon-schedule',
+			state: 'dashboard.schedule',
+			text: 'Schedule'
+		}, {
+			iconClass: 'icon-analytics',
+			state: 'dashboard.analytics',
+			text: 'Analytics'
+		}, {
+			iconClass: 'icon-stats',
+			state: 'dashboard.users',
+			text: 'Users'
+		}];
 
-	PanelAnalytics
-		.getTopItems()
-		.$promise.then(function(topItems) {
-			$scope.topItemsData = {
-				data: [],
-				labels: []
-			};
+		PanelAnalytics
+			.getTopItems()
+			.$promise.then(function(topItems) {
+				$scope.topItemsData = {
+					data: [],
+					labels: []
+				};
 
-			topItems.forEach(function(topItem) {
-				$scope.topItemsData.data.push(topItem.numberOrdered);
-				$scope.topItemsData.labels.push(topItem.title);
+				topItems.forEach(function(topItem) {
+					$scope.topItemsData.data.push(topItem.numberOrdered);
+					$scope.topItemsData.labels.push(topItem.title);
+				});
 			});
-		});
 
-	PanelAnalytics
-		.getDays()
-		.$promise.then(function(days) {
-			$scope.ordersPerDayData = {
-				data: [],
-				labels: []
-			};
+		PanelAnalytics
+			.getDays()
+			.$promise.then(function(days) {
+				$scope.ordersPerDayData = {
+					data: [],
+					labels: []
+				};
 
-			days.forEach(function(day) {
-				$scope.ordersPerDayData.data.push(day.orders.length);
+				days.forEach(function(day) {
+					$scope.ordersPerDayData.data.push(day.orders.length);
 				$scope.ordersPerDayData.labels.push($filter('date')(day.date, 'mediumDate'));
+				});
 			});
-		});
 }]).controller('DashboardItemsController', ['$scope', '$mdDialog', 'MessageService', 'PanelItem', function($scope, $mdDialog, MessageService, Item) {
-	$scope.createItem = function() {
-		Item
-			.save({
-				title: $scope.newItem.title,
-				description: $scope.newItem.description,
-				price: $scope.newItem.price
-			})
-			.$promise.then(function(item) {
-				$scope.items.push(item);
-			});
-	};
+		$scope.createItem = function() {
+			Item
+				.save({
+					title: $scope.newItem.title,
+					description: $scope.newItem.description,
+					price: $scope.newItem.price
+				})
+				.$promise.then(function(item) {
+					$scope.items.push(item);
+				});
+		};
 
-	$scope.editItem = function(item, index, $event) {
-		$scope.editingItem = new Item(item);
-		$scope.editingItem.index = index;
+		$scope.editItem = function(item, index, $event) {
+			$scope.editingItem = new Item(item);
+			$scope.editingItem.index = index;
 
-		$mdDialog.show({
-				controller: 'EditItemController',
-				templateUrl: '/modules/panel/partials/edit-item.html',
-				targetEvent: $event,
-				locals: {
-					editingItem: $scope.editingItem
-				}
-			})
-			.then(function(item) {
-				index = item.index;
+			$mdDialog.show({
+					controller: 'EditItemController',
+					templateUrl: '/modules/panel/partials/edit-item.html',
+					targetEvent: $event,
+					locals: {
+						editingItem: $scope.editingItem
+					}
+				})
+				.then(function(item) {
+					index = item.index;
 
-				item
-					.$update()
-					.then(function(item) {
+					item
+						.$update()
+						.then(function(item) {
 						MessageService.showSuccessNotification(item.title + ' successfully updated');
 
-						$scope.items[index] = item;
-					})
-					.catch(function(response) {
+							$scope.items[index] = item;
+						})
+						.catch(function(response) {
 						MessageService.showFailureNotification(item.title + ' not updated');
-					});
-			});
-	};
+						});
+				});
+		};
 
-	$scope.toggleActivity = function(item, index) {
-		item.index = index;
-		item
-			.$update()
-			.then(function(item) {
+		$scope.toggleActivity = function(item, index) {
+			item.index = index;
+			item
+				.$update()
+				.then(function(item) {
 				MessageService.showSuccessNotification(item.title + ' successfully updated');
-			})
-			.catch(function(response) {
+				})
+				.catch(function(response) {
 				MessageService.showFailureNotification(item.title + ' not updated');
 
-				// reset item status, maybe figure out how to
-				// delay settings Item status until a response
-				// is received from the server
+					// reset item status, maybe figure out how to
+					// delay settings Item status until a response
+					// is received from the server
 				$scope.items[response.config.data.index].active = !response.data.active;
-			});
-	};
+				});
+		};
 
-	Item
-		.query()
-		.$promise.then(function(items) {
-			$scope.items = items;
-		})
-		.catch(function(reponse) {
-			debugger;
-		});
+		Item
+			.query()
+			.$promise.then(function(items) {
+				$scope.items = items;
+			})
+			.catch(function(reponse) {
+				debugger;
+			});
 }]).controller('DashboardOrdersController', ['$scope', 'PanelOrder',
 	function($scope, Order) {
 		$scope.deleteOrder = function(index) {
@@ -135,106 +135,124 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 			});
 	}
 ]).controller('DashboardScheduleController', ['$scope', 'MessageService', 'PanelSchedule', function($scope, MessageService, Schedule) {
-	$scope.newSchedule = {};
-	$scope.today = {
-		'date': new Date()
-	};
-	$scope.today.month = $scope.today.date.getMonth();
-	$scope.today.year = $scope.today.date.getFullYear();
+		$scope.newSchedule = {};
+		$scope.today = {
+			'date': new Date()
+		};
+		$scope.today.month = $scope.today.date.getMonth();
+		$scope.today.year = $scope.today.date.getFullYear();
 	$scope.today.daysInMonth = daysInMonth($scope.today.month, $scope.today.year);
-	$scope.schedule = [];
+		$scope.schedule = [];
 
-	function daysInMonth(month, year) {
-		return new Date(year, month, 0).getDate();
-	};
+		function daysInMonth(month, year) {
+			return new Date(year, month, 0).getDate();
+		};
 
-	$scope.createSchedule = function() {
-		$scope.newSchedule.endDate = new Date($scope.newSchedule.fakeEndDate);
+		$scope.createSchedule = function() {
+			$scope.newSchedule.endDate = new Date($scope.newSchedule.fakeEndDate);
 		$scope.newSchedule.endDate.setDate($scope.newSchedule.endDate.getDate() + 1);
-		$scope.newSchedule.time = $scope.newSchedule.submissionTime.getHours();
+			$scope.newSchedule.time = $scope.newSchedule.submissionTime.getHours();
 		$scope.newSchedule.exceptions = $scope.newSchedule.datesToSkip ? $scope.newSchedule.datesToSkip.split(', ') : [];
-		Schedule
-			.create($scope.newSchedule)
-			.$promise.then(function(schedule) {
-				MessageService.showSuccessNotification('Schedule created!');
+			Schedule
+				.create($scope.newSchedule)
+				.$promise.then(function(schedule) {
+					MessageService.showSuccessNotification('Schedule created!');
 
-				$scope.schedule = schedule.map(function(day) {
-					return new Date(day);
+					$scope.schedule = schedule.map(function(day) {
+						return new Date(day);
+					});
+
+					debugger;
 				});
+		};
 
-				debugger;
+		Schedule
+			.query()
+			.$promise.then(function(schedule) {
+				var startingDayOfWeek = new Date(schedule[0]).getDay();
+
+				if (startingDayOfWeek > 1) {
+					var args = [0, 0];
+					for (var day = 0; day < startingDayOfWeek - 1; day++) {
+						args.push('');
+					}
+					Array.prototype.splice.apply(schedule, args);
+				}
+
+				var endingDayOfWeek = new Date(schedule[schedule.length - 1]).getDay();
+				if (endingDayOfWeek < 5) {
+					schedule.push('');
+				}
+
+				var weeks = Math.round(schedule.length / 5);
+				var schoolDays = 5;
+				for (var i = 0; i < weeks; i++) {
+					$scope.schedule[i] = [];
+					for (var z = 0; z < schoolDays; z++) {
+						$scope.schedule[i][z] = schedule[i * (schoolDays) + z];
+					}
+				}
 			});
-	};
-
-	Schedule
-		.query()
-		.$promise.then(function(schedule) {
-			var startingDayOfWeek = new Date(schedule[0]).getDay();
-
-			if (startingDayOfWeek > 1) {
-				var args = [0, 0];
-				for (var day = 0; day < startingDayOfWeek - 1; day++) {
-					args.push('');
-				}
-				Array.prototype.splice.apply(schedule, args);
-			}
-
-			var endingDayOfWeek = new Date(schedule[schedule.length - 1]).getDay();
-			if (endingDayOfWeek < 5) {
-				schedule.push('');
-			}
-
-			var weeks = Math.round(schedule.length / 5);
-			var schoolDays = 5;
-			for (var i = 0; i < weeks; i++) {
-				$scope.schedule[i] = [];
-				for (var z = 0; z < schoolDays; z++) {
-					$scope.schedule[i][z] = schedule[i * (schoolDays) + z];
-				}
-			}
-		});
 }]).controller('DashboardAnalyticsController', ['$scope', function($scope) {
 
 }]).controller('DashboardUsersController', ['$scope', 'MessageService', 'PanelUser', function($scope, MessageService, User) {
-	User
-	.query()
-	.$promise.then(function(users) {
-		$scope.users = users;
-	});
+		$scope.deleteUser = function(user) {
+			user
+				.$delete()
+				.then(function(deletedUser) {
+					if (deletedUser.email) {
+						debugger;
+						MessageService.showSuccessNotification('Deleted ' +
+							deletedUser.email);
+					}
+				})
+				.catch(function(response) {
+					MessageService.showFailureNotification('Failed to delete ' +
+						user.email);
+				});
+		};
 
-	$scope.inviteRequestedUser = function(requestedUser) {
-		User
-			.invite(requestedUser)
-			.$promise.then(function(user) {
-				requestedUser.status = 'Invited';
+		$scope.inviteRequestedUser = function(requestedUser) {
+			User
+				.invite(requestedUser)
+				.$promise.then(function(user) {
+					requestedUser.status = 'Invited';
 				MessageService.showSuccessNotification('Successfully invited ' + user.email);
-			})
-			.catch(function(response) {
-				MessageService.showDefaultFailureNotification();
-				debugger;
-			});
-	};
+				})
+				.catch(function(response) {
+					MessageService.showDefaultFailureNotification();
+					debugger;
+				});
+		};
 
-	$scope.inviteNewUser = function() {
-		User
-			.invite($scope.newUser)
-			.$promise.then(function(user) {
-				$scope.users.push(user);
+		$scope.inviteNewUser = function() {
+			User
+				.invite($scope.newUser)
+				.$promise.then(function(user) {
+					$scope.users.push(user);
 				MessageService.showSuccessNotification('Successfully invited ' + $scope.newUser.email);
-			})
-			.catch(function(response) {
-				MessageService.showDefaultFailureNotification();
-				debugger;
+				})
+				.catch(function(response) {
+					MessageService.showDefaultFailureNotification();
+					debugger;
+				});
+		};
+
+		User
+			.query()
+			.$promise.then(function(users) {
+				$scope.users = users;
 			});
-	};
-}]).controller('EditItemController', ['$scope', '$mdDialog', 'editingItem', function($scope, $mdDialog, editingItem) {
-	$scope.editingItem = editingItem;
+	}
+]).controller('EditItemController', ['$scope', '$mdDialog', 'editingItem',
+	function($scope, $mdDialog, editingItem) {
+		$scope.editingItem = editingItem;
 
-	$scope.update = function() {
-		$mdDialog.hide(editingItem);
-	};
+		$scope.update = function() {
+			$mdDialog.hide(editingItem);
+		};
 
-	$scope.cancel = function() {
-		$mdDialog.cancel();
-	};
+		$scope.cancel = function() {
+			$mdDialog.cancel();
+		};
 }]);
