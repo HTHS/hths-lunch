@@ -9,8 +9,8 @@ var _ = require('lodash'),
 	Order = mongoose.model('Order'),
 	Item = mongoose.model('Item'),
 	Day = mongoose.model('Day'),
-  csv = require('./csv'),
-  Email = require('./email'),
+	csv = require('./csv'),
+	Email = require('./email'),
 	errorHandler = require('./error');
 
 // Use ET for calculating start end days of school year
@@ -140,7 +140,7 @@ exports.init = function scheduleOrderProcessing() {
 			exports.job = later.setInterval(endSubmissionsForDay, exports.schoolDays);
 		}
 
-			p.resolve();
+		p.resolve();
 	});
 
 	return p.promise;
@@ -148,7 +148,7 @@ exports.init = function scheduleOrderProcessing() {
 
 function endSubmissionsForDay() {
 	var now = new Date();
-  var yesterdayCutoff = new Date(now.getTime() - later.DAY);
+	var yesterdayCutoff = new Date(now.getTime() - later.DAY);
 	yesterdayCutoff.setMinutes(1);
 
 	console.log('Ending submissions for this period from %s to %s',
@@ -171,20 +171,19 @@ function endSubmissionsForDay() {
 			if (orders.length) {
 				orders.forEach(function(order) {
 					order.items.forEach(function(item) {
-						item.numberOrdered++;
-
+						// TODO update to use .exec if possible
 						item
 							.update({
 								$inc: {
-									numberOrdered: 1
+									numberOrderd: 1
 								}
-							}, {
-								w: 1
-							})
-							.exec(function(err, numberAffected, rawResponse) {
-								console.log(err);
-								console.log(numberAffected);
-								console.log(rawResponse);
+							}, {}, function(err, numberUpdated, result) {
+								if (!err) {
+									user.status = 'Invited';
+									p.resolve(user);
+								} else {
+									p.reject(err);
+								}
 							});
 					});
 				});
@@ -206,31 +205,61 @@ function endSubmissionsForDay() {
 				if (err) {
 					throw new Error(err);
 				} else {
-					console.log(today);
+					var data = {
+						items: [],
+						quantity: [],
+					};
 
-					console.log('Generating CSVs now');
+					var csvData = [];
+
+					orders.forEach(function(order) {
+						order.items.forEach(function(item) {
+							var itemIndexInItems = data.items.indexOf(item.title);
+							if (itemIndexInItems !== -1) {
+								data.quantity[itemIndexInItems] ++;
+							} else {
+								data.items.push(item.title);
+								data.quantity.push(1);
+							}
+						});
+					});
+
+					for (var i = 0; i < data.items.length; i++) {
+						csvData.push([data.items[i], '', data.quantity[i]]);
+					}
+
+					console.log('Generating CSVs now from today: ', today);
+					var csvFileContent = csv.generate(csvData);
+					emailCSV(csv);
 				}
 			});
 		});
 }
 
-function generateCSV(day) {
-	Item
-		.find({})
-		.exec(function(err, items) {
-			if (err) {
-				throw new Error(err);
-			}
-			if (!items.length) {
-				throw new Error('Please add all the items on the menu.');
-			} else {
-				stringify(items, function(err, output) {
-					if (err) {
-						throw new Error(err);
-					} else {
-						console.log(output);
-					}
-				});
-			}
+function emailCSV(csv) {
+	var today = new Date();
+
+	var options = {
+		to: 'ibiala@ctemc.org',
+		subject: 'HTHS-Lunch CSV',
+		text: 'Attached is the CSV.',
+		html: 'Attached is the CSV.',
+		attachments: [{
+			filename: 'HTHS-' + today.getDate() + '/' + (today.getMonth() + 1) +
+				'/' + today.getFullYear() + '.csv',
+			content: csv
+		}]
+	};
+
+	var orderEmail = new Email(options);
+
+	orderEmail
+		.send()
+		.then(function(info) {
+			console.log('Sent order CSV for ', today.toDateString());
+			console.log(info);
+		})
+		.catch(function(err) {
+			console.error(err);
 		});
 }
