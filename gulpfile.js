@@ -11,12 +11,69 @@ var gulp = require('gulp'),
   plato = require('gulp-plato'),
   nodemon = require('gulp-nodemon');
 
+var assets = {
+  test: {
+    scss: [
+      'public/sass/**/*.scss',
+      'public/modules/**/*.scss'
+    ],
+    js: [
+      'lib/chartist/dist/chartist.js',
+      'lib/angular/angular.js',
+      'lib/angular-mocks/angular-mocks.js',
+      'lib/angular-aria/angular-aria.js',
+      'lib/angular-animate/angular-animate.js',
+      'lib/hammerjs/hammer.js',
+      'lib/angular-material/angular-material.js',
+      'lib/angular-resource/angular-resource.js',
+      'lib/angular-ui-router/release/angular-ui-router.js',
+      'modules/app.js',
+      'modules/**/*.js'
+    ]
+  },
+  development: {
+    scss: [
+      'public/sass/**/*.scss',
+      'public/modules/**/*.scss'
+    ],
+    js: [
+      'lib/chartist/dist/chartist.js',
+      'lib/angular/angular.js',
+      'lib/angular-aria/angular-aria.js',
+      'lib/angular-animate/angular-animate.js',
+      'lib/hammerjs/hammer.js',
+      'lib/angular-material/angular-material.js',
+      'lib/angular-resource/angular-resource.js',
+      'lib/angular-ui-router/release/angular-ui-router.js',
+      'modules/app.js',
+      'modules/**/*.js'
+    ]
+  },
+  production: {
+    scss: [
+      'public/sass/**/*.scss',
+      'public/modules/**/*.scss'
+    ],
+    js: [
+      'lib/chartist/dist/chartist.min.js',
+      'lib/angular/angular.min.js',
+      'lib/angular-aria/angular-aria.min.js',
+      'lib/angular-animate/angular-animate.min.js',
+      'lib/hammerjs/hammer.min.js',
+      'lib/angular-material/angular-material.min.js',
+      'lib/angular-resource/angular-resource.min.js',
+      'lib/angular-ui-router/release/angular-ui-router.min.js',
+      'modules/app.js',
+      'modules/**/*.js'
+    ]
+  }
+};
+
 /***********
  * Helpers *
  ***********/
 function testEnv(cb) {
   process.env.NODE_ENV = 'test';
-
   cb();
 }
 
@@ -43,19 +100,24 @@ function sass() {
 /**************
  * JavaScript *
  **************/
-function jsConcat() {
-  return gulp.src([
-      'lib/chartist/dist/chartist.min.js',
-      'lib/angular/angular.min.js',
-      'lib/angular-aria/angular-aria.min.js',
-      'lib/angular-animate/angular-animate.min.js',
-      'lib/hammerjs/hammer.min.js',
-      'lib/angular-material/angular-material.min.js',
-      'lib/angular-resource/angular-resource.min.js',
-      'lib/angular-ui-router/release/angular-ui-router.min.js',
-      'modules/app.js',
-      'modules/**/*.js'
-    ], {
+function jsConcat(cb) {
+  var jsFiles;
+
+  switch (process.env.NODE_ENV) {
+    case 'development':
+      jsFiles = assets.development.js;
+      break;
+    case 'production':
+      jsFiles = assets.production.js;
+      break;
+    case 'test':
+      jsFiles = assets.test.js;
+      break;
+    default:
+      jsFiles = assets.development.js;
+  }
+
+  return gulp.src(jsFiles, {
       cwd: 'public'
     })
     .pipe(sourcemaps.init())
@@ -65,6 +127,10 @@ function jsConcat() {
     .pipe(rename('app.min.js'))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('public'));
+
+  if (cb) {
+    cb();
+  }
 }
 
 /*********
@@ -171,7 +237,8 @@ function nodemon() {
 /**************
  * Test tasks *
  **************/
-gulp.task('test', gulp.series(testEnv, gulp.parallel(mochaTest, karmaTest)));
+// gulp.task('test', gulp.series(testEnv, jsConcat, gulp.parallel(mochaTest, karmaTest)));
+gulp.task('test', gulp.series(testEnv, jsConcat, gulp.parallel(mochaTest)));
 
 /*********************
  * Development tasks *
