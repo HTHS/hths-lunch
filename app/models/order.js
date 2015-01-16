@@ -35,8 +35,9 @@ var OrderSchema = new Schema({
 	}
 });
 
-OrderSchema.pre('save', function() {
+OrderSchema.pre('save', function(next) {
 	this.updated = new Date();
+	return next();
 });
 
 mongoose.model('Order', OrderSchema);
