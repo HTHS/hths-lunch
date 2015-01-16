@@ -25,7 +25,7 @@ var OrderSchema = new Schema({
 		type: Number,
 		required: true
 	},
-	timestamp: {
+	created: {
 		type: Date,
 		default: Date.now
 	},
@@ -33,6 +33,16 @@ var OrderSchema = new Schema({
 		type: Date,
 		default: Date.now
 	}
+}, {
+	toObject: {
+		virtuals: true
+	}
+});
+
+OrderSchema.virtual('toUpdate').get(function() {
+	return this._toUpdate;
+}).set(function(toUpdate) {
+	return this._toUpdate = toUpdate;
 });
 
 OrderSchema.pre('save', function(next) {

@@ -146,6 +146,18 @@ exports.init = function scheduleOrderProcessing() {
 	return p.promise;
 };
 
+exports.isBetween = function(date) {
+	var now = new Date();
+	var prev1 = later.schedule(exports.schoolDays).prev(1, now);
+	var next1 = later.schedule(exports.schoolDays).next(1, now);
+
+	if (next1 - prev1 > date - prev1) {
+		return true;
+	} else {
+		return false;
+	}
+};
+
 function endSubmissionsForDay() {
 	var now = new Date();
 	var yesterdayCutoff = new Date(now.getTime() - later.DAY);

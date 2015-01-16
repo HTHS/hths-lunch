@@ -7,6 +7,7 @@ var _ = require('lodash'),
 	Promise = require('bluebird'),
 	User = mongoose.model('User'),
 	Email = require('./email'),
+	schedule = require('./schedule'),
 	errorHandler = require('./error');
 
 /**
@@ -188,7 +189,18 @@ exports.signout = function signout(req, res) {
  * Send User
  */
 exports.me = function(req, res) {
-	res.json(req.user || null);
+	if (req.user) {
+		var user = req.user;
+
+		if (user.orderHistory.length) {
+			var lastOrder = user.orderHistory[user.orderHistory.length - 1];
+			lastOrder.toUpdate = schedule.isBetween(lastOrder.created);
+		}
+
+		res.json(user);
+	} else {
+		res.json(null);
+	}
 };
 
 /**
