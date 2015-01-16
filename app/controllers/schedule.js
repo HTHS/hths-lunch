@@ -147,6 +147,10 @@ exports.init = function scheduleOrderProcessing() {
 };
 
 exports.isBetween = function(date) {
+  if (!exports.schoolDays) {
+    return false;
+  }
+
 	var now = new Date();
 	var prev1 = later.schedule(exports.schoolDays).prev(1, now);
 	var next1 = later.schedule(exports.schoolDays).next(1, now);
