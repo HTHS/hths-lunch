@@ -319,9 +319,7 @@ exports.hasAuthorization = function hasAuthorization(req, res) {
  * User middleware
  */
 exports.userByID = function userByID(req, res, next, id) {
-	User.findOne({
-		_id: id
-	}).populate('orderHistory').exec(function(err, user) {
+	User.findById(id).populate('orderHistory').exec(function(err, user) {
 		if (err) {
 			return next(err);
 		}

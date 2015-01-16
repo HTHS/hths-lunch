@@ -18,7 +18,7 @@ exports.create = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(order);
+			res.json(order);
 		}
 	});
 };
@@ -27,7 +27,7 @@ exports.create = function(req, res) {
  * Show the current Item
  */
 exports.read = function(req, res) {
-	res.jsonp(req.order);
+	res.json(req.order);
 };
 
 /**
@@ -44,7 +44,7 @@ exports.update = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(order);
+			res.json(order);
 		}
 	});
 };
@@ -61,7 +61,7 @@ exports.delete = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(order);
+			res.json(order);
 		}
 	});
 };
@@ -80,7 +80,7 @@ exports.list = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(orders);
+			res.json(orders);
 		}
 	});
 };
@@ -89,14 +89,17 @@ exports.list = function(req, res) {
  * Order middleware
  */
 exports.orderByID = function(req, res, next, id) {
-	Order.findById(id).populate('items').exec(function(err, order) {
-		if (err) {
-			return next(err);
-		}
-		if (!order) {
-			return next(new Error('Failed to load Order ' + id));
-		}
-		req.order = order;
-		next();
-	});
+	Order
+		.findById(id)
+		.populate('items')
+		.exec(function(err, order) {
+			if (err) {
+				return next(err);
+			}
+			if (!order) {
+				return next(new Error('Failed to load Order ' + id));
+			}
+			req.order = order;
+			next();
+		});
 };

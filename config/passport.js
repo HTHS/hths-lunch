@@ -1,6 +1,6 @@
-var passport = require('passport'),
+var path = require('path'),
+	passport = require('passport'),
 	User = require('mongoose').model('User'),
-	path = require('path'),
 	config = require('./config');
 
 module.exports = function() {
@@ -11,11 +11,14 @@ module.exports = function() {
 
 	// Deserialize sessions
 	passport.deserializeUser(function(id, done) {
-		User.findOne({
-			_id: id
-		}).populate('orderHistory').exec(function(err, user) {
-			done(err, user);
-		});
+		User
+			.findOne({
+				_id: id
+			})
+			.populate('orderHistory')
+			.exec(function(err, user) {
+				done(err, user);
+			});
 	});
 
 	// Initialize strategies
