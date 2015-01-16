@@ -9,6 +9,12 @@ angular.module('hthsLunch.order')
 							controller: 'OrderController',
 							templateUrl: '/modules/order/partials/order.html'
 						}
+					},
+					resolve: {
+						Database: 'Database',
+						data: function(Database) {
+							return Database.fetchAll();
+						}
 					}
 				});
 		}

@@ -7,7 +7,8 @@ angular.module('hthsLunch.order', [
   'hthsLunch.core.itemService',
   'hthsLunch.core.orderService',
   'hthsLunch.core.userService',
-  'hthsLunch.core.authService'
+  'hthsLunch.core.authService',
+  'hthsLunch.core.databaseService'
 ]);
 angular.module('hthsLunch.panel', [
   'ngResource',

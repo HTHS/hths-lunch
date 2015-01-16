@@ -1,6 +1,6 @@
-angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$state', 'MessageService', 'Item', 'Order', 'User', 'Auth',
-	function($scope, $state, MessageService, Item, Order, User, Auth) {
-		$scope.user = user;
+angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$state', 'Database', 'MessageService', 'Item', 'Order', 'User', 'Auth',
+	function($scope, $state, Database, MessageService, Item, Order, User, Auth) {
+		$scope.user = Database.getMe();
 
 		if (!$scope.user) {
 			$state.go('landingPage');
@@ -20,27 +20,15 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 				});
 
 				if ($scope.user.orderHistory.length > 0) {
-					var lastOrderDate = new Date($scope.user.orderHistory[$scope.user.orderHistory.length - 1].timestamp);
-					var todaysDate = new Date();
-					var lastOrderDateTime = lastOrderDate.getTime();
-					var todaysDateTime = todaysDate.getTime();
-					var tomorrowsDate = new Date();
-					tomorrowsDate.setDate(todaysDate.getDate() + 1);
-					tomorrowsDate.setHours(9);
-					tomorrowsDate.setMinutes(0);
-					tomorrowsDate.setSeconds(0);
-					// Let's update the order, not create a new one, because it's before the cutoff time
-					// if order time is before now, and right now is before 9 AM or 9 AM tomorrow - right now < 9 AM tomorrow - order time
-					if (todaysDateTime - lastOrderDateTime > 0 && todaysDate.getHours() < 9 || todaysDateTime - lastOrderDateTime <
-						tomorrowsDate.getTime() - lastOrderDateTime) {
-						var orderToUpdate = $scope.user.orderHistory[$scope.user.orderHistory.length - 1];
-						$scope.newOrder._id = orderToUpdate._id;
-						$scope.newOrder.total = orderToUpdate.total;
+					var lastOrder = $scope.user.orderHistory[$scope.user.orderHistory.length - 1];
+					if (lastOrder.toUpdate) {
+						$scope.newOrder._id = lastOrder._id;
+						$scope.newOrder.total = lastOrder.total;
 						$scope.newOrder.toBeUpdated = true;
-						for (var i = 0; i < orderToUpdate.items.length; i++) {
+						for (var i = 0; i < lastOrder.items.length; i++) {
 							for (var z = 0; z < $scope.menu.length; z++) {
-								if (orderToUpdate.items[i] === $scope.menu[z]._id) {
-									$scope.menu[z].quantity = orderToUpdate.quantity[i];
+								if (lastOrder.items[i] === $scope.menu[z]._id) {
+									$scope.menu[z].quantity = lastOrder.quantity[i];
 									$scope.toggleItemInOrder(z);
 								}
 							}
