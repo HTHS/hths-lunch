@@ -45,6 +45,27 @@ exports.createProfile = function createProfile(req, providerUserProfile, done) {
 
 					// Save the user
 					user.save(function(err) {
+						if (!err) {
+							var options = {
+								to: user.email,
+								subject: 'Welcome to HTHS-Lunch',
+								text: 'Welcome to HTHS-Lunch!',
+								html: 'Welcome to HTHS-Lunch!'
+							};
+
+							var welcomeEmail = new Email(options);
+
+							welcomeEmail
+							.send()
+							.then(function(info) {
+								console.log('Welcomed ', user.displayName);
+								console.log(info);
+							})
+							.catch(function(err) {
+								console.error(err);
+							});
+						}
+
 						return done(err, user);
 					});
 				} else {
@@ -59,27 +80,6 @@ exports.createProfile = function createProfile(req, providerUserProfile, done) {
 					});
 
 					user.save(function(err) {
-						if (!err) {
-							var options = {
-								to: user.email,
-								subject: 'Welcome to HTHS-Lunch',
-								text: 'Welcome to HTHS-Lunch!',
-								html: 'Welcome to HTHS-Lunch!'
-							};
-
-							var welcomeEmail = new Email(options);
-
-							welcomeEmail
-								.send()
-								.then(function(info) {
-									console.log('Welcomed ', user.displayName);
-									console.log(info);
-								})
-								.catch(function(err) {
-									console.error(err);
-								});
-						}
-
 						return done(err, user);
 					});
 				}
