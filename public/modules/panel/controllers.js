@@ -118,13 +118,17 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
       .catch(function(reponse) {
         debugger;
       });
-}]).controller('DashboardOrdersController', ['$scope', 'PanelOrder',
-  function($scope, Order) {
+}]).controller('DashboardOrdersController', ['$scope', 'MessageService', 'PanelOrder',
+  function($scope, MessageService, Order) {
     $scope.deleteOrder = function(index) {
       $scope.orders[index]
         .$delete()
         .then(function(order) {
           $scope.orders.splice($scope.orders[index], 1);
+          MessageService.showSuccessNotification('Successfully deleted order');
+        })
+        .catch(function(response) {
+          MessageService.showFailureNotification('Failed to delete order');
         });
     };
 
