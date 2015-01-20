@@ -245,8 +245,7 @@ function endSubmissionsForDay() {
 					}
 
 					console.log('Generating CSVs now from today: ', today);
-					var csvFileContent = csv.generate(csvData);
-					emailCSV(csvFileContent);
+					emailCSV(csv.generate(csvData));
 				}
 			});
 		});
@@ -254,6 +253,8 @@ function endSubmissionsForDay() {
 
 function emailCSV(csv) {
 	var today = new Date();
+
+	console.log('Today\'s CSV: ', csv);
 
 	var options = {
 		to: 'ibiala@ctemc.org',
