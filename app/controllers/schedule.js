@@ -146,6 +146,22 @@ exports.init = function scheduleOrderProcessing() {
 	return p.promise;
 };
 
+exports.isBetween = function(date) {
+	if (!exports.schoolDays) {
+		return false;
+	}
+
+	var now = new Date();
+	var prev1 = later.schedule(exports.schoolDays).prev(1, now);
+	var next1 = later.schedule(exports.schoolDays).next(1, now);
+
+	if (next1 - prev1 > date - prev1) {
+		return true;
+	} else {
+		return false;
+	}
+};
+
 function endSubmissionsForDay() {
 	var now = new Date();
 	var yesterdayCutoff = new Date(now.getTime() - later.DAY);
@@ -157,10 +173,10 @@ function endSubmissionsForDay() {
 
 	Order
 		.find({})
-		.where('timestamp')
+		.where('created')
 		.lt(now)
 		.gt(yesterdayCutoff)
-		.sort('timestamp')
+		.sort('created')
 		.exec(function(err, orders) {
 			if (err) {
 				throw new Error(err);
@@ -229,8 +245,7 @@ function endSubmissionsForDay() {
 					}
 
 					console.log('Generating CSVs now from today: ', today);
-					var csvFileContent = csv.generate(csvData);
-					emailCSV(csvFileContent);
+					emailCSV(csv.generate(csvData));
 				}
 			});
 		});
@@ -238,6 +253,8 @@ function endSubmissionsForDay() {
 
 function emailCSV(csv) {
 	var today = new Date();
+
+	console.log('Today\'s CSV: ', csv);
 
 	var options = {
 		to: 'ibiala@ctemc.org',

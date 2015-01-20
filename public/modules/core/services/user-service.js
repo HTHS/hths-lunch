@@ -4,6 +4,9 @@ angular.module('hthsLunch.core.userService', ['ngResource']).factory('User', [
 		return $resource('/api/users/:userId', {
 			'userId': '@_id'
 		}, {
+			me: {
+				url: '/api/users/me'
+			},
 			update: {
 				method: 'PUT'
 			},

@@ -21,7 +21,7 @@
           <p flex="20">{{order.customer}}</p>
           <p flex>{{order | prettyprint}}</p>
           <p flex="10">{{order.total | currency}}</p>
-          <p flex="10">{{order.timestamp | date:'medium'}}</p>
+          <p flex="10">{{order.created | date:'medium'}}</p>
           <md-button class="md-raised md-warn" ng-click="deleteOrder($index)" aria-label="Delete order" flex="5">&times;</md-button>
         </div>
       </md-item-content>

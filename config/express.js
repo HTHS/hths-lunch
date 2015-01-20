@@ -3,11 +3,11 @@
  */
 var path = require('path'),
 	express = require('express'),
-	morgan = require('morgan'),
 	bodyParser = require('body-parser'),
+  cookieParser = require('cookie-parser'),
 	session = require('express-session'),
 	compress = require('compression'),
-	cookieParser = require('cookie-parser'),
+  morgan = require('morgan'),
 	helmet = require('helmet'),
 	MongoStore = require('connect-mongo')(session),
 	passport = require('passport'),
@@ -59,22 +59,23 @@ module.exports = function(db, options) {
 	}));
 
 	// Use helmet to secure Express headers
-	app.use(helmet.frameguard());
-	app.use(helmet.xssFilter());
-	app.use(helmet.nosniff());
-	app.use(helmet.ienoopen());
-	app.disable('x-powered-by');
+  app.use(helmet.frameguard())
+    .use(helmet.xssFilter())
+    .use(helmet.nosniff())
+    .use(helmet.ienoopen())
+    .disable('x-powered-by');
 
 	// Setting the app router and static folder
 	app.use(express.static(path.resolve('./public')));
 
 	app.use(bodyParser.urlencoded({
 		extended: true
-	}));
-	app.use(bodyParser.json());
-
-	// CookieParser should be above session
-	app.use(cookieParser());
+    }))
+    .use(bodyParser.json())
+    .use(multer({
+      inMemory: true
+    }))
+    .use(cookieParser()); // CookieParser should be above session
 
 	// Express MongoDB session storage
 	app.use(session({

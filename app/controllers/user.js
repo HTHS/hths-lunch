@@ -7,6 +7,7 @@ var _ = require('lodash'),
 	Promise = require('bluebird'),
 	User = mongoose.model('User'),
 	Email = require('./email'),
+	schedule = require('./schedule'),
 	errorHandler = require('./error');
 
 /**
@@ -45,6 +46,27 @@ exports.createProfile = function createProfile(req, providerUserProfile, done) {
 
 					// Save the user
 					user.save(function(err) {
+						if (!err) {
+							var options = {
+								to: user.email,
+								subject: 'Welcome to HTHS-Lunch',
+								text: 'Welcome to HTHS-Lunch!',
+								html: 'Welcome to HTHS-Lunch!'
+							};
+
+							var welcomeEmail = new Email(options);
+
+							welcomeEmail
+							.send()
+							.then(function(info) {
+								console.log('Welcomed ', user.displayName);
+								console.log(info);
+							})
+							.catch(function(err) {
+								console.error(err);
+							});
+						}
+
 						return done(err, user);
 					});
 				} else {
@@ -59,27 +81,6 @@ exports.createProfile = function createProfile(req, providerUserProfile, done) {
 					});
 
 					user.save(function(err) {
-						if (!err) {
-							var options = {
-								to: user.email,
-								subject: 'Welcome to HTHS-Lunch',
-								text: 'Welcome to HTHS-Lunch!',
-								html: 'Welcome to HTHS-Lunch!'
-							};
-
-							var welcomeEmail = new Email(options);
-
-							welcomeEmail
-								.send()
-								.then(function(info) {
-									console.log('Welcomed ', user.displayName);
-									console.log(info);
-								})
-								.catch(function(err) {
-									console.error(err);
-								});
-						}
-
 						return done(err, user);
 					});
 				}
@@ -188,7 +189,18 @@ exports.signout = function signout(req, res) {
  * Send User
  */
 exports.me = function(req, res) {
-	res.json(req.user || null);
+	if (req.user) {
+		var user = req.user;
+
+		if (user.orderHistory.length) {
+			var lastOrder = user.orderHistory[user.orderHistory.length - 1];
+			lastOrder.toUpdate = schedule.isBetween(lastOrder.created);
+		}
+
+		res.json(user);
+	} else {
+		res.json(null);
+	}
 };
 
 /**
@@ -319,19 +331,20 @@ exports.hasAuthorization = function hasAuthorization(req, res) {
  * User middleware
  */
 exports.userByID = function userByID(req, res, next, id) {
-	User.findOne({
-		_id: id
-	}).populate('orderHistory').exec(function(err, user) {
-		if (err) {
-			return next(err);
-		}
-		if (!user) {
-			return next(new Error('Failed to load User ' + id));
-		}
+	User
+		.findById(id)
+		.populate('orderHistory')
+		.exec(function(err, user) {
+			if (err) {
+				return next(err);
+			}
+			if (!user) {
+				return next(new Error('Failed to load User ' + id));
+			}
 
-		req.profile = user;
-		next();
-	});
+			req.profile = user;
+			next();
+		});
 };
 
 /**

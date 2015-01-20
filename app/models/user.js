@@ -58,6 +58,13 @@ var UserSchema = new Schema({
 		ref: 'Order',
 		default: []
 	}]
+}, {
+	toJSON: {
+		virtuals: true
+	},
+	toObject: {
+		virtuals: true
+	}
 });
 
 /**
