@@ -12,9 +12,7 @@ module.exports = function() {
 	// Deserialize sessions
 	passport.deserializeUser(function(id, done) {
 		User
-			.findOne({
-				_id: id
-			})
+			.findById(id)
 			.populate('orderHistory')
 			.exec(function(err, user) {
 				done(err, user);

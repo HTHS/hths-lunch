@@ -331,17 +331,20 @@ exports.hasAuthorization = function hasAuthorization(req, res) {
  * User middleware
  */
 exports.userByID = function userByID(req, res, next, id) {
-	User.findById(id).populate('orderHistory').exec(function(err, user) {
-		if (err) {
-			return next(err);
-		}
-		if (!user) {
-			return next(new Error('Failed to load User ' + id));
-		}
+	User
+		.findById(id)
+		.populate('orderHistory')
+		.exec(function(err, user) {
+			if (err) {
+				return next(err);
+			}
+			if (!user) {
+				return next(new Error('Failed to load User ' + id));
+			}
 
-		req.profile = user;
-		next();
-	});
+			req.profile = user;
+			next();
+		});
 };
 
 /**
