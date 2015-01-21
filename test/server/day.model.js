@@ -67,19 +67,6 @@ describe('Day model unit tests:', function() {
 
       day.save(done);
     });
-
-    it('fails to create a Day with missing field', function(done) {
-      var day = new Day({
-        date: new Date()
-          // orders: [], missing field
-      });
-
-      day.save(function(err) {
-        (err !== null).should.be.true;
-        done();
-      });
-
-    });
   });
 
   after(function(done) {
