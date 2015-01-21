@@ -3,7 +3,7 @@
   <md-list layout="column">
     <md-item>
       <md-item-content>
-        <div class="md-tile-left"></div>
+        <div class="md-tile-left" hide-sm></div>
         <div class="md-tile-content" layout="row">
           <p flex>Name</p>
           <p flex>Email</p>
@@ -17,14 +17,16 @@
     </md-item>
     <md-item ng-repeat="user in users">
       <md-item-content>
-        <div class="md-tile-left"><img ng-src="{{user.providerData.picture}}" class="face" width="48"></div>
+        <div class="md-tile-left" hide-sm>
+          <img ng-src="{{user.providerData.picture}}" class="face" width="48">
+        </div>
         <div class="md-tile-content" layout="row">
           <p flex>{{user.displayName}}</p>
           <p flex>{{user.email}}</p>
           <p flex>{{user.isAdmin ? 'Yes' : 'No'}}</p>
           <p flex>{{user.status}}</p>
           <p flex><md-button class="md-raised" ng-show="user.status === 'Pending invite'" ng-click="inviteRequestedUser(user)">Invite</md-button></p>
-          <p flex><md-button class="md-raised" ng-click="deleteUser(user)">Delete</md-button></p>
+          <p flex><md-button class="md-raised md-warn" ng-click="deleteUser(user)">Delete</md-button></p>
         </div>
       </md-item-content>
       <md-divider ng-if="!$last"></md-divider>

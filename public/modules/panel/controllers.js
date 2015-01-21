@@ -247,8 +247,7 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
       .$promise.then(function(users) {
         $scope.users = users;
       });
-  }
-]).controller('EditItemController', ['$scope', '$mdDialog', 'editingItem',
+}]).controller('EditItemController', ['$scope', '$mdDialog', 'editingItem',
   function($scope, $mdDialog, editingItem) {
     $scope.editingItem = editingItem;
 
