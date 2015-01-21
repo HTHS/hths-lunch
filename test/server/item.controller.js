@@ -6,7 +6,7 @@ var should = require('should'),
 	mongoose = require('mongoose'),
 	request = require('supertest'),
 	Item = mongoose.model('Item'),
-	item = require('../app/controllers/item');
+	item = require('../../app/controllers/item');
 
 // app.route('/api/items')
 // 	.post(item.create);

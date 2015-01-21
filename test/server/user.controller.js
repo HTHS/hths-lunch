@@ -6,7 +6,7 @@ var should = require('should'),
 	mongoose = require('mongoose'),
 	request = require('supertest'),
 	User = mongoose.model('User'),
-	user = require('../app/controllers/user');
+	user = require('../../app/controllers/user');
 
 // TODO finish tests
 

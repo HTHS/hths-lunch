@@ -151,7 +151,7 @@ function mochaTest() {
     .on('finish', function() {
       var server = require('./server');
 
-      return gulp.src('./test/**/*.js')
+      gulp.src('./test/server/**/*.js')
         .pipe(mocha({
           // reporter: 'mocha-lcov-reporter'
         }))
