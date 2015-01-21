@@ -13,8 +13,8 @@ module.exports = function(config) {
 
 		// list of files / patterns to load in the browser
 		files: [
-			'lib/angular-mocks/angular-mocks.js',
-			'app.js'
+			'app.js',
+			'../test/client/**/*.js'
 		],
 
 		// list of files to exclude
