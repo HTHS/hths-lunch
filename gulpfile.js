@@ -74,17 +74,22 @@ var assets = {
  ***********/
 function testEnv(cb) {
   process.env.NODE_ENV = 'test';
+
   cb();
 }
 
-function clean() {
-  del.sync('public/app.js');
+function clean(cb) {
+  del.sync('public/app.*');
+  del.sync('public/styles/');
+  del.sync('public/modules/*/styles/');
+
+  cb();
 }
 
 /*******
  * CSS *
  *******/
-function sass() {
+function scss(cb) {
   gulp.src('public/sass/**/*.scss')
     .pipe(sass())
     .pipe(gulp.dest('public/styles'));
@@ -95,12 +100,14 @@ function sass() {
       path.dirname = path.dirname.replace('sass', 'styles');
     }))
     .pipe(gulp.dest('public/modules/'));
+
+  cb();
 }
 
 /**************
  * JavaScript *
  **************/
-function jsConcat(cb) {
+function js(cb) {
   var jsFiles;
 
   switch (process.env.NODE_ENV) {
@@ -117,7 +124,7 @@ function jsConcat(cb) {
       jsFiles = assets.development.js;
   }
 
-  return gulp.src(jsFiles, {
+  gulp.src(jsFiles, {
       cwd: 'public'
     })
     .pipe(sourcemaps.init())
@@ -128,9 +135,7 @@ function jsConcat(cb) {
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('public'));
 
-  if (cb) {
-    cb();
-  }
+  cb();
 }
 
 /*********
@@ -202,13 +207,13 @@ function watch() {
     .watch([
       'public/**/*.js',
       '!public/*.js'
-    ], jsConcat)
+    ], js)
     .on('change', function(event) {
       console.log('File %s was %s, running tasks...', event.path, event.type);
     });
 
   gulp
-    .watch('public/**/*.scss', sass)
+    .watch('public/**/*.scss', scss)
     .on('change', function(event) {
       console.log('File %s was %s, running tasks...', event.path, event.type);
     });
@@ -238,7 +243,7 @@ function nodemon() {
  * Test tasks *
  **************/
 // gulp.task('test', gulp.series(testEnv, jsConcat, gulp.parallel(mochaTest, karmaTest)));
-gulp.task('test', gulp.series(testEnv, jsConcat, gulp.parallel(mochaTest)));
+gulp.task('test', gulp.series(testEnv, js, gulp.parallel(mochaTest)));
 
 /*********************
  * Development tasks *
@@ -250,7 +255,7 @@ gulp.task('dev', nodemon);
 /**********************
  * Production tasks   *
  **********************/
-gulp.task('build', gulp.parallel(sass, gulp.series(clean, jsConcat)));
+gulp.task('build', gulp.series(clean, gulp.parallel(scss, js)));
 
 gulp.task('default', function() {
   // place code for your default task here
