@@ -35,7 +35,7 @@
     "express-session": "~1.10.0",
     "forever": "~0.13.0",
     "glob": "~4.3.2",
-    "gulp": "git://github.com/gulpjs/gulp.git#3eef36ab126e5b858884c44dfbee3a0aecd73fdb",
+    "gulp": "gulpjs/gulp#4.0",
     "gulp-concat": "~2.4.3",
     "gulp-istanbul": "~0.5.0",
     "gulp-mocha": "~2.0.0",
