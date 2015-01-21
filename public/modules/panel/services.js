@@ -68,6 +68,10 @@ angular.module('hthsLunch.panel').factory(
 			invite: {
 				method: 'POST'
 			},
+			inviteBulk: {
+				method: 'POST',
+				url: '/api/panel/users/bulk'
+			},
 			hasAuthorization: {
 				url: '/api/panel/auth/:user',
 				params: {

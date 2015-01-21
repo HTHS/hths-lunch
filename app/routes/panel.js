@@ -42,6 +42,9 @@ router.route('/users')
 	.get(panel.getUsers)
 	.post(panel.inviteUser);
 
+router.route('/users/bulk')
+	.post(panel.inviteBulkUsers);
+
 router.route('/users/:userId')
 	.delete(panel.deleteUser);
 

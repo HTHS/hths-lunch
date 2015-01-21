@@ -114,6 +114,10 @@ exports.inviteUser = function(req, res) {
 		});
 };
 
+exports.inviteBulkUsers = function inviteBulkUsers(req, res) {
+	res.json({});
+};
+
 /**
  * Authorization check
  */
