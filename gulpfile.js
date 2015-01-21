@@ -141,25 +141,36 @@ function js(cb) {
 /*********
  * Tests *
  *********/
-function mochaTest() {
-  gulp.src([
-      'app/**/*.js',
-      'config/**/*.js',
-      'public/modules/**/*.js'
-    ])
-    .pipe(istanbul())
-    .on('finish', function() {
-      var server = require('./server');
+function mochaTest(cb) {
+  // gulp.src([
+  //     'app/**/*.js',
+  //     'config/**/*.js',
+  //     'public/modules/**/*.js'
+  //   ])
+  //   .pipe(istanbul())
+  //   .on('finish', function() {
+  //     var server = require('./server');
+  //
+  //     gulp.src('./test/**/*.js')
+  //       .pipe(mocha({
+  //         // reporter: 'mocha-lcov-reporter'
+  //       }))
+  //       .pipe(istanbul.writeReports())
+  //       .on('end', function() {
+  //         server.kill();
+  //
+  //         cb();
+  //       });
+  //   });
+  var server = require('./server');
 
-      gulp.src('./test/server/**/*.js')
-        .pipe(mocha({
-          // reporter: 'mocha-lcov-reporter'
-        }))
-        .pipe(istanbul.writeReports())
-        .once('end', function() {
-          server.kill();
-        });
-    });
+  gulp.src('./test/server/**/*.js')
+  .pipe(mocha())
+  .on('end', function() {
+    server.kill();
+
+    cb();
+  });
 }
 
 function karmaTest() {
