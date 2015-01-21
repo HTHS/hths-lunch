@@ -37,8 +37,10 @@
 <form layout="row">
   <div flex="40">
     <h2>Invite user</h2>
-    <md-text-float label="Email" placeholder="johnny.appleseed@gmail.com" required ng-model="newUser.email"></md-text-float>
+    <md-text-float label="Email" placeholder="johnny.appleseed@gmail.com" ng-model="newUser.email"></md-text-float>
     <md-switch ng-model="newUser.isAdmin">Admin?</md-switch>
+    OR
+    <md-text-float type="file" label="CSV" placeholder="users.csv" ng-model="csvFile"></md-text-float>
     <md-button class="md-primary md-raised" ng-click="inviteNewUser()">Invite user!</md-button>
   </div>
 </form>

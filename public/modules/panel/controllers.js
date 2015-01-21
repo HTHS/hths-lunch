@@ -200,6 +200,9 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 }]).controller('DashboardAnalyticsController', ['$scope', function($scope) {
 
 }]).controller('DashboardUsersController', ['$scope', 'MessageService', 'PanelUser', function($scope, MessageService, User) {
+  $scope.csvFile = null;
+  $scope.newUser = {};
+
   $scope.deleteUser = function(user) {
     user
       .$delete()
@@ -230,17 +233,32 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
   };
 
   $scope.inviteNewUser = function() {
+    if ($scope.csvFile) {
+      User
+        .inviteBulk({
+          users: $scope.csvFile
+        })
+        .$promise.then(function() {
+          debugger;
+        })
+        .catch(function(response) {
+          debugger;
+        });
+    } else if ($scope.newUser.email) {
       User
         .invite($scope.newUser)
         .$promise.then(function(user) {
           $scope.users.push(user);
-				MessageService.showSuccessNotification('Successfully invited ' + $scope.newUser.email);
+          MessageService.showSuccessNotification('Successfully invited ' + $scope.newUser.email);
         })
         .catch(function(response) {
           MessageService.showDefaultFailureNotification();
           debugger;
         });
-    };
+    } else {
+      MessageService.showFailureNotification('Please provide an email or a CSV file');
+    }
+  };
 
   User
     .query()
