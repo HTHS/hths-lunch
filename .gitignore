@@ -5,8 +5,9 @@ node_modules
 public/lib
 
 # Compiled files
-public/app.js
-public/app.min.js
+public/modules/*/styles/
+public/styles/
+public/app.*
 *.js.map
 *.css.map
 
