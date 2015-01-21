@@ -84,7 +84,7 @@ exports.update = function(req, res) {
     exports.schoolDays.schedules[0].h[0] = req.body.time;
   }
 
-  Schedule.findOneAndUpdate().exec(function(err, schedule) {
+  Schedule.findOneAndUpdate({}).exec(function(err, schedule) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -164,7 +164,7 @@ exports.isBetween = function(date) {
 
 function endSubmissionsForDay() {
   var now = new Date();
-  var yesterdayCutoff = new Date(now.getTime() - later.DAY);
+  var yesterdayCutoff = later.schedule(exports.schoolDays).prev(1, now);
   yesterdayCutoff.setSeconds(1);
 
   console.log('Ending submissions for this period from %s to %s',
