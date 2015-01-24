@@ -37,7 +37,10 @@
 <form layout="row">
   <div flex="40">
     <h2>Invite user</h2>
-    <md-text-float label="Email" placeholder="johnny.appleseed@gmail.com" required ng-model="newUser.email"></md-text-float>
+    <md-input-container>
+      <label>Email</label>
+      <input type="email" placeholder="johnny.appleseed@gmail.com" required="required" ng-model="newUser.email">
+    </md-input-container>
     <md-switch ng-model="newUser.isAdmin">Admin?</md-switch>
     <md-button class="md-primary md-raised" ng-click="inviteNewUser()">Invite user!</md-button>
   </div>

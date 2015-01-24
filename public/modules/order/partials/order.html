@@ -38,7 +38,10 @@
   </nav> -->
   <form>
     <div layout="column" layout-margin layout-align="center center">
-      <md-text-float type="text" label="Name" placeholder="Johnny Appleseed" required="required" ng-model="newOrder.customer"></md-text-float>
+      <md-input-container>
+        <label>Name</label>
+        <input type="text" placeholder="Johnny Appleseed" required="required" ng-model="newOrder.customer">
+      </md-input-container>
       <md-list>
         <md-item ng-repeat="item in menu" ng-show="item.active">
           <md-item-content>
