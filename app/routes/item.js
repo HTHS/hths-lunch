@@ -1,15 +1,12 @@
 var router = require('express').Router(),
-	item = require('../controllers/item');
+  item = require('../controllers/item');
 
 // Item Routes
 router.route('/')
-	.get(item.list)
-	.post(item.create);
+  .get(item.list);
 
 router.route('/:itemId')
-	.get(item.read)
-	.put(item.update)
-	.delete(item.delete);
+  .get(item.read);
 
 // Finish by binding the Item middleware
 router.param('itemId', item.itemByID);
