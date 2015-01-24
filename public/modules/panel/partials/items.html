@@ -32,9 +32,21 @@
 
 <form layout="row" layout-fill layout-align="space-around center">
   <div flex="40" layout="column">
-    <md-text-float label="Title" ng-model="newItem.title" type="text" placeholder="Pizza" tabindex="1" required></md-text-float>
-    <md-text-float label="Description" ng-model="newItem.description" type="text" placeholder="2 hot slices" tabindex="2" required></md-text-float>
-    <md-text-float label="Price" ng-model="newItem.price" type="number" placeholder="4.00" tabindex="3" required></md-text-float>
+    <md-input-container>
+      <label>Title</label>
+      <input type="text" placeholder="Pizza" required="required" ng-model="newItem.title">
+    </md-input-container>
+
+    <md-input-container>
+      <label>Description</label>
+      <input type="text" placeholder="2 hot slices" required="required" ng-model="newItem.description">
+    </md-input-container>
+
+    <md-input-container>
+      <label>Price</label>
+      <input type="number" min="0" placeholder="4.00" required="required" ng-model="newItem.price">
+    </md-input-container>
+
     <md-button class="md-button md-raised md-primary" tabindex="4" ng-click="createItem()">Create item!</md-button>
   </div>
 </form>

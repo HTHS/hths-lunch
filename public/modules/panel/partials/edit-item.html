@@ -3,13 +3,22 @@
     <md-subheader class="md-sticky-no-effect">Edit item</md-subheader>
     <form>
       <div>
-        <md-text-float type="text" label="Title" ng-model="editingItem.title"></md-text-float>
+        <md-input-container>
+          <label>Title</label>
+          <input type="text" required="required" ng-model="editingItem.title">
+        </md-input-container>
       </div>
       <div>
-        <md-text-float type="text" label="Description" ng-model="editingItem.description"></md-text-float>
+        <md-input-container>
+          <label>Description</label>
+          <input type="text" required="required" ng-model="editingItem.description">
+        </md-input-container>
       </div>
       <div>
-        <md-text-float type="number" label="Price" ng-model="editingItem.price"></md-text-float>
+        <md-input-container>
+          <label>Price</label>
+          <input type="number" required="required" ng-model="editingItem.price">
+        </md-input-container>
       </div>
     </form>
   </md-content>

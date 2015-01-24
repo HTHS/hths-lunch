@@ -8,7 +8,10 @@
   <div layout="row" layout-align="center center">
     <div flex></div>
     <div flex="55">
-      <md-text-float label="Email" class="long" placeholder="johnny.appleseed@gmail.com" autofocus="autofocus" required="required" ng-model="email"></md-text-float>
+      <md-input-container>
+        <label>Email</label>
+        <input type="email" placeholder="johnny.appleseed@gmail.com" required="required" autofocus="autofocus" ng-model="email">
+      </md-input-container>
     </div>
     <div flex="5"></div>
     <div flex="20">

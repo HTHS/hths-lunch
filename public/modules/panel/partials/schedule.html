@@ -24,10 +24,26 @@
       <form layout="row">
         <div flex="40">
           <h2>Create schedule</h2>
-          <md-text-float type="date" label="Start date" required ng-model="newSchedule.startDate"></md-text-float>
-          <md-text-float type="date" label="End date" required ng-model="newSchedule.fakeEndDate"></md-text-float>
-          <md-text-float type="time" label="Submission time" required ng-model="newSchedule.submissionTime"></md-text-float>
-          <md-text-float type="text" label="Dates to skip (mm/dd/yyyy, mm/dd/yyyy)" placeholder="mm/dd/yyyy, mm/dd/yyyy" required ng-model="newSchedule.datesToSkip"></md-text-float>
+          <md-input-container>
+            <label>Start date</label>
+            <input type="date" placeholder="2 hot slices" required="required" ng-model="newSchedule.startDate">
+          </md-input-container>
+
+          <md-input-container>
+            <label>End date</label>
+            <input type="date" placeholder="2 hot slices" required="required" ng-model="newSchedule.fakeEndDate">
+          </md-input-container>
+
+          <md-input-container>
+            <label>Submission time</label>
+            <input type="time" placeholder="2 hot slices" required="required" ng-model="newSchedule.submissionTime">
+          </md-input-container>
+
+          <md-input-container>
+            <label>Dates to skip</label>
+            <input type="text" placeholder="mm/dd/yyyy, mm/dd/yyyy" ng-model="newSchedule.datesToSkip">
+          </md-input-container>
+
           <md-button class="md-primary md-raised" type="submit" ng-click="createSchedule()">Create Schedule!</md-button>
         </div>
       </form>
