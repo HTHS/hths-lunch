@@ -164,7 +164,7 @@ exports.isBetween = function(date) {
 
 function endSubmissionsForDay() {
   var now = new Date();
-  var yesterdayCutoff = later.schedule(exports.schoolDays).prev(1, now);
+  var yesterdayCutoff = later.schedule(exports.schoolDays).prev(2, now)[0];
   yesterdayCutoff.setSeconds(1);
 
   console.log('Ending submissions for this period from %s to %s',
@@ -173,9 +173,7 @@ function endSubmissionsForDay() {
 
   Order
     .find({})
-    .where('created')
-    .lt(now)
-    .gt(yesterdayCutoff)
+    .where('created').gte(yesterdayCutoff).lte(now)
     .sort('created')
     .exec(function(err, orders) {
       if (err) {
