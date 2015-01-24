@@ -1,33 +1,32 @@
 describe("Unit: Testing Filters", function() {
 
-	beforeEach(module('hthsLunch'));
+  var $filter;
 
-	it('should contain a prettyprint filter',
-		inject(['prettyprint', function(prettyprint) {
-			expect(prettyprint).not.to.equal(null);
-		}]));
+  beforeEach(module('hthsLunch.panel'));
+  beforeEach(inject(function(_$filter_) {
+    $filter = _$filter_;
+  }));
 
-	it('should prettyprint data properly',
-		inject(['prettyprint', function(prettyprint) {
-			var testData = {
-				items: [{
-					title: 'Pizza'
-				}, {
-					title: 'Hamburgers'
-				}, {
-					title: 'Sandwiches'
-				}, {
-					title: 'Yogurt'
-				}],
-				quantity: [
-					1,
-					2,
-					3,
-					4
-				]
-			};
-			var prettyPrintedData = prettyprint(testData);
-			expect(prettyPrintedData).to.equal(
-				'Pizza x1, Hamburgers x2, Sandwiches x3, Yogurt x4');
-		}]));
+  it('should prettyprint data properly', function() {
+    var testData = {
+      items: [{
+        title: 'Pizza'
+      }, {
+        title: 'Hamburgers'
+      }, {
+        title: 'Sandwiches'
+      }, {
+        title: 'Yogurt'
+      }],
+      quantity: [
+        1,
+        2,
+        3,
+        4
+      ]
+    };
+
+    var prettyPrintedData = $filter('prettyprint')(testData);
+    expect(prettyPrintedData).toEqual('Pizza x1, Hamburgers x2, Sandwiches x3, Yogurt x4');
+  });
 });
