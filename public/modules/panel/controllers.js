@@ -53,15 +53,19 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
       });
     });
 }]).controller('DashboardItemsController', ['$scope', '$mdDialog', 'MessageService', 'PanelItem', function($scope, $mdDialog, MessageService, Item) {
+  $scope.newItem = {
+    active: true
+  };
+
   $scope.createItem = function() {
     Item
-      .save({
-        title: $scope.newItem.title,
-        description: $scope.newItem.description,
-        price: $scope.newItem.price
-      })
+      .save($scope.newItem)
       .$promise.then(function(item) {
         $scope.items.push(item);
+        $scope.newItem = {
+          active: true
+        };
+        $scope.createItemForm.$setPristine();
       });
   };
 
@@ -200,6 +204,8 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 }]).controller('DashboardAnalyticsController', ['$scope', function($scope) {
 
 }]).controller('DashboardUsersController', ['$scope', 'MessageService', 'PanelUser', function($scope, MessageService, User) {
+  $scope.newUser = {};
+
   $scope.deleteUser = function(user) {
     user
       .$delete()
@@ -230,17 +236,19 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
   };
 
   $scope.inviteNewUser = function() {
-      User
-        .invite($scope.newUser)
-        .$promise.then(function(user) {
-          $scope.users.push(user);
-				MessageService.showSuccessNotification('Successfully invited ' + $scope.newUser.email);
-        })
-        .catch(function(response) {
-          MessageService.showDefaultFailureNotification();
-          debugger;
-        });
-    };
+    User
+      .invite($scope.newUser)
+      .$promise.then(function(user) {
+        $scope.users.push(user);
+        $scope.newUser = {};
+        $scope.inviteUserForm.$setPristine();
+        MessageService.showSuccessNotification('Successfully invited ' + $scope.newUser.email);
+      })
+      .catch(function(response) {
+        MessageService.showDefaultFailureNotification();
+        debugger;
+      });
+  };
 
   User
     .query()
