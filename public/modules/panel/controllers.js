@@ -266,6 +266,8 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
         .invite($scope.newUser)
         .$promise.then(function(user) {
           $scope.users.push(user);
+          $scope.newUser = {};
+          $scope.inviteUserForm.$setPristine();
           MessageService.showSuccessNotification('Successfully invited ' + $scope.newUser.email);
         })
         .catch(function(response) {
@@ -294,7 +296,7 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
           debugger;
         });
     } else {
-
+      // TODO show some sort of error
     }
   };
 

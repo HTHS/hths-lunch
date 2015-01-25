@@ -7,29 +7,55 @@
         <div class="md-tile-content" layout="row">
           <p flex>Name</p>
           <p flex>Email</p>
-          <p flex>Admin</p>
-          <p flex>Status</p>
-          <p flex>Invite</p>
-          <p flex>Delete</p>
+          <p flex="10">Admin</p>
+          <p flex="15">Status</p>
+          <p flex="10">Invite</p>
+          <p flex="10">Delete</p>
         </div>
       </md-item-content>
       <md-divider></md-divider>
     </md-item>
+
     <md-item ng-repeat="user in users">
       <md-item-content>
         <div class="md-tile-left" hide-sm>
           <img ng-src="{{user.providerData.picture}}" class="face" width="48">
         </div>
         <div class="md-tile-content" layout="row">
-          <p flex>{{user.displayName}}</p>
-          <p flex>{{user.email}}</p>
-          <p flex>{{user.isAdmin ? 'Yes' : 'No'}}</p>
-          <p flex>{{user.status}}</p>
-          <p flex><md-button class="md-raised" ng-show="user.status === 'Pending invite'" ng-click="inviteRequestedUser(user)">Invite</md-button></p>
-          <p flex><md-button class="md-raised md-warn" ng-click="deleteUser(user)">Delete</md-button></p>
+          <h3 flex>{{user.displayName}}</h3>
+          <h4 flex>{{user.email}}</h4>
+          <h4 flex="10">{{user.isAdmin ? 'Yes' : 'No'}}</h4>
+          <h4 flex="15">{{user.status}}</h4>
+          <p flex="10"><md-button class="md-raised" ng-show="user.status === 'Pending invite'" ng-click="inviteRequestedUser(user)">Invite</md-button></p>
+          <p flex="10"><md-button class="md-raised md-warn" ng-click="deleteUser(user)">Delete</md-button></p>
         </div>
       </md-item-content>
-      <md-divider ng-if="!$last"></md-divider>
+      <md-divider></md-divider>
+    </md-item>
+
+    <md-item>
+      <form name="inviteUserForm">
+        <md-item-content>
+          <div class="md-tile-left" hide-sm></div>
+          <div class="md-tile-content" layout="row">
+            <h3 flex>Invite user</h3>
+            <h4 flex>
+              <md-input-container>
+                <label>Email</label>
+                <input type="email" placeholder="johnny.appleseed@gmail.com" required="required" ng-model="newUser.email">
+              </md-input-container>
+            </h4>
+            <h4 flex="10">
+              <md-switch ng-model="newUser.isAdmin" aria-label="Admin?"></md-switch>
+            </h4>
+            <h4 flex="15"></h4>
+            <p flex="10">
+              <md-button class="md-primary md-raised" ng-click="inviteNewUser()">Invite!</md-button>
+            </p>
+            <p flex="10"></p>
+          </div>
+        </md-item-content>
+      </form>
     </md-item>
   </md-list>
 </section>

@@ -14,6 +14,7 @@
       </md-item-content>
       <md-divider></md-divider>
     </md-item>
+
     <md-item ng-repeat="item in items">
       <md-item-content>
         <div class="md-tile-left" hide-sm></div>
@@ -25,28 +26,41 @@
           <md-button class="md-raised icon-pencil" flex="5" ng-click="editItem(item, $index, $event)" aria-label="Edit item"></md-button>
         </div>
       </md-item-content>
-      <md-divider ng-if="!$last"></md-divider>
+      <md-divider></md-divider>
+    </md-item>
+
+    <md-item>
+      <form name="createItemForm">
+      <md-item-content>
+        <div class="md-tile-left" hide-sm></div>
+        <div class="md-tile-content" layout="row">
+          <h3 flex>
+            <md-input-container>
+              <label>Title</label>
+              <input type="text" placeholder="Pizza" required="required" ng-model="newItem.title">
+            </md-input-container>
+          </h3>
+          <h4 flex>
+            <md-input-container>
+              <label>Description</label>
+              <input type="text" placeholder="2 hot slices" required="required" ng-model="newItem.description">
+            </md-input-container>
+          </h4>
+          <h4 flex="10">
+            <md-input-container>
+              <label>Price</label>
+              <input type="number" min="0" placeholder="4.00" required="required" ng-model="newItem.price">
+            </md-input-container>
+          </h4>
+          <p flex="10">
+            <md-checkbox ng-model="newItem.active" aria-label="New item status"></md-checkbox>
+          </p>
+          <p flex="5">
+            <md-button type="submit" class="md-button md-raised md-primary" ng-click="createItem()">Create!</md-button>
+          </p>
+        </div>
+      </md-item-content>
+      </form>
     </md-item>
   </md-list>
 </section>
-
-<form layout="row" layout-fill layout-align="space-around center">
-  <div flex="40" layout="column">
-    <md-input-container>
-      <label>Title</label>
-      <input type="text" placeholder="Pizza" required="required" ng-model="newItem.title">
-    </md-input-container>
-
-    <md-input-container>
-      <label>Description</label>
-      <input type="text" placeholder="2 hot slices" required="required" ng-model="newItem.description">
-    </md-input-container>
-
-    <md-input-container>
-      <label>Price</label>
-      <input type="number" min="0" placeholder="4.00" required="required" ng-model="newItem.price">
-    </md-input-container>
-
-    <md-button class="md-button md-raised md-primary" tabindex="4" ng-click="createItem()">Create item!</md-button>
-  </div>
-</form>
