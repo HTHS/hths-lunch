@@ -17,7 +17,7 @@ describe('User controller unit tests:', function() {
 		done();
 	});
 
-	describe('Creating an User', function() {
+	describe('Creating a User', function() {
 		// it('should invite a User when not authenticated', function(done) {
 		// 	request
 		// 		.post('/api/panel/users')
