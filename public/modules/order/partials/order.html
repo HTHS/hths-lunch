@@ -46,7 +46,7 @@
         <md-item ng-repeat="item in menu" ng-show="item.active">
           <md-item-content>
             <div class="md-tile-left">
-							<input type="checkbox" ng-click="toggleItemInOrder($index)">
+							<md-checkbox ng-click="toggleItemInOrder($index)">
               <!-- <md-switch ng-model="newOrder.items[\$index]" ng-true-value="item" ng-false-value="null" ng-change="recalculateTotal()" aria-label="Toggle item"></md-switch> -->
             </div>
             <div class="md-tile-content">
@@ -55,7 +55,7 @@
               <p>{{item.price | currency}}</p>
             </div>
             <div>
-              <input type="number" min="0" step="1" pattern="^\d+$" required ng-disabled="newOrder.items[$index].toString() !== '[object Object]'" ng-model="item.quantity" ng-blur="recalculateTotal()">
+              <input type="number" min="0" step="1" pattern="^\d+$" required ng-disabled="newOrder.items[$index].toString() !== '[object Object]'" ng-model="item.quantity" ng-change="recalculateTotal()">
             </div>
           </md-item-content>
         </md-item>
