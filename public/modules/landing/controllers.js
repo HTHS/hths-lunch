@@ -1,6 +1,7 @@
-angular.module('hthsLunch.landingPage').controller('LandingPageController', ['$scope', '$window', '$state', 'MessageService', 'User',
-	function($scope, $window, $state, MessageService, User) {
-		if (user) {
+angular.module('hthsLunch.landingPage').controller('LandingPageController', ['$scope', '$window', '$state', 'Database',
+	'MessageService', 'User',
+	function($scope, $window, $state, Database, MessageService, User) {
+		if (!Database.getMe()) {
 			$state.go('order');
 		}
 
@@ -19,13 +20,15 @@ angular.module('hthsLunch.landingPage').controller('LandingPageController', ['$s
 								email: $scope.email
 							})
 							.$promise.then(function(user) {
-								MessageService.showSuccessNotification('Successfully requested invite for ' + user.email, 'top right', 2000);
+								MessageService.showSuccessNotification('Successfully requested invite for ' + user.email,
+									'top right', 2000);
 							})
 							.catch(function(response) {
 								MessageService.showDefaultFailureNotification();
 							});
 					} else if (result.hasAccount && result.pending) {
-						MessageService.showFailureNotification('Please wait for an administrator to approve your request.', 'top right', 5000);
+						MessageService.showFailureNotification('Please wait for an administrator to approve your request.',
+							'top right', 5000);
 					}
 				})
 				.catch(function(response) {
