@@ -1,21 +1,28 @@
-angular.module('hthsLunch.core.databaseService', ['hthsLunch.core.itemService', 'hthsLunch.core.orderService', 'hthsLunch.core.userService'])
-	.factory('Database', ['$q', 'Item', 'Order', 'User', function($q, Item, Order, User) {
-		var service = {};
+angular.module('hthsLunch.core.databaseService', ['hthsLunch.core.itemService', 'hthsLunch.core.orderService',
+    'hthsLunch.core.userService', 'hthsLunch.core.authService'
+  ])
+  .factory('Database', ['$q', 'Item', 'Order', 'User', 'Auth', function($q, Item, Order, User, Auth) {
+    var service = {};
 
-		var me;
+    var me;
 
-		var meQuery = User.me().$promise;
-		meQuery.then(function(user) {
-			me = user;
-		});
+    service.getMe = function() {
+      return me;
+    };
 
-		service.getMe = function() {
-			return me;
-		};
+    service.fetchMe = function() {
+      var query = User.me().$promise;
 
-		service.fetchAll = function() {
-			return $q.all([meQuery]);
-		};
+      query.then(function(user) {
+        me = user;
+      });
 
-		return service;
-	}]);
+      return query;
+    };
+
+    service.fetchAll = function() {
+      return $q.all([this.fetchMe()]);
+    };
+
+    return service;
+  }]);
