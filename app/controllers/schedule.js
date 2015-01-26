@@ -185,18 +185,15 @@ function endSubmissionsForDay() {
       if (orders.length) {
         orders.forEach(function(order) {
           order.items.forEach(function(item) {
-            // TODO update to use .exec if possible
             item
               .update({
                 $inc: {
                   numberOrderd: 1
                 }
               }, {}, function(err, numberUpdated, result) {
-                if (!err) {
-                  user.status = 'Invited';
-                  p.resolve(user);
-                } else {
-                  p.reject(err);
+                if (err) {
+                  console.error('Error: Tried to increment numberOrdered on item: ', item);
+                  console.error(err);
                 }
               });
           });
