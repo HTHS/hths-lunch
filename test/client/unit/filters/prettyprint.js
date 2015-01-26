@@ -1,4 +1,4 @@
-describe("Unit: Testing Filters", function() {
+describe('Unit: Testing Filters', function() {
 
   var $filter;
 
