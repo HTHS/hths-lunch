@@ -4,6 +4,33 @@ angular.module('hthsLunch.core.messageService', []).factory('MessageService', ['
 	var defaultPosition = 'top right';
 	var defaultHideDelay = 3000;
 
+	service.getDefaultErrorMessage = function() {
+		return defaultErrorMessage;
+	};
+
+	service.getDefaultPosition = function() {
+		return defaultPosition;
+	};
+
+	service.getDefaultHideDelay = function() {
+		return defaultHideDelay;
+	};
+
+	service.setDefaultErrorMessage = function(message) {
+		defaultErrorMessage = message;
+		return this;
+	};
+
+	service.setDefaultPosition = function(position) {
+		defaultPosition = position;
+		return this;
+	};
+
+	service.setDefaultHideDelay = function(hideDelay) {
+		defaultHideDelay = hideDelay;
+		return this;
+	};
+
 	service.showSuccessNotification = function(message, position, hideDelay) {
 		return $mdToast.show(
 			$mdToast.simple()
