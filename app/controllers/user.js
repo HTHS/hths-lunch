@@ -57,14 +57,14 @@ exports.createProfile = function createProfile(req, providerUserProfile, done) {
 							var welcomeEmail = new Email(options);
 
 							welcomeEmail
-							.send()
-							.then(function(info) {
-								console.log('Welcomed ', user.displayName);
-								console.log(info);
-							})
-							.catch(function(err) {
-								console.error(err);
-							});
+								.send()
+								.then(function(info) {
+									console.log('Welcomed ', user.displayName);
+									console.log(info);
+								})
+								.catch(function(err) {
+									console.error(err);
+								});
 						}
 
 						return done(err, user);
@@ -194,18 +194,14 @@ exports.signout = function signout(req, res) {
  * Send User
  */
 exports.me = function(req, res) {
-	if (req.user) {
-		var user = req.user;
+	var user = req.user;
 
-		if (user.orderHistory.length) {
-			var lastOrder = user.orderHistory[user.orderHistory.length - 1];
-			lastOrder.toUpdate = schedule.isBetween(lastOrder.created);
-		}
-
-		res.json(user);
-	} else {
-		res.json(null);
+	if (user.orderHistory.length) {
+		var lastOrder = user.orderHistory[user.orderHistory.length - 1];
+		lastOrder.toUpdate = schedule.isBetween(lastOrder.created);
 	}
+
+	res.json(user);
 };
 
 /**
