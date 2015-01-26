@@ -47,10 +47,11 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
           index] === 'object') {
         delete $scope.newOrder.items[index];
         $scope.menu[index].quantity = 0;
-        $scope.recalculateTotal();
       } else {
         $scope.newOrder.items[index] = $scope.menu[index];
+        $scope.menu[index].quantity = 1;
       }
+      $scope.recalculateTotal();
     };
 
     $scope.recalculateTotal = function() {
