@@ -108,6 +108,7 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 							User
 								.update($scope.user)
 								.$promise.then(function(user) {
+									$scope.newOrder.toBeUpdated = true;
 									debugger;
 								});
 						});
