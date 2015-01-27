@@ -21,22 +21,27 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 
 					if ($scope.user.orderHistory.length > 0) {
 						var lastOrder = $scope.user.orderHistory[$scope.user.orderHistory.length - 1];
-						if (lastOrder.toUpdate) {
-							$scope.newOrder._id = lastOrder._id;
-							$scope.newOrder.total = lastOrder.total;
-							$scope.newOrder.toBeUpdated = true;
-							for (var i = 0; i < lastOrder.items.length; i++) {
+						populateForm(lastOrder);
+					}
+				});
+		}
+
+		function populateForm(order) {
+			for (var i = 0; i < order.items.length; i++) {
 								for (var z = 0; z < $scope.menu.length; z++) {
-									if (lastOrder.items[i] === $scope.menu[z]._id) {
-										$scope.menu[z].quantity = lastOrder.quantity[i];
+					if (order.items[i] === $scope.menu[z]._id) {
+						$scope.menu[z].quantity = order.quantity[i];
 										$scope.toggleItemInOrder(z);
 									}
 								}
 							}
+
+			if (order.toUpdate) {
+				$scope.newOrder._id = order._id;
+				$scope.newOrder.total = order.total;
+				$scope.newOrder.toBeUpdated = true;
 						}
 					}
-				});
-		}
 
 		$scope.itemInOrder = function(index) {
 			return $scope.newOrder.items[index] !== null;
