@@ -54,20 +54,17 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 			$scope.recalculateTotal();
 		};
 
-		$scope.checkZero = function(index){
-			console.log($scope.menu[index].quantity)
-			if (!$scope.menu[index].quantity) {
-				$scope.toggleItemInOrder(index);
+		$scope.checkIfBlank = function(index) {
+			if ($scope.menu[index].quantity === undefined) {
+				$scope.menu[index].quantity = 0;
 			}
 		}
 
 		$scope.recalculateTotal = function() {
 			$scope.newOrder.total = 0;
 			for (var item in $scope.newOrder.items) {
-				if ($scope.newOrder.items.hasOwnProperty(item) && $scope.newOrder.items[item]
-						&& $scope.newOrder.items[item].quantity) {
-					$scope.newOrder.total += $scope.newOrder.items[item].price * $scope.newOrder
-						.items[item].quantity;
+				if ($scope.newOrder.items.hasOwnProperty(item) && $scope.newOrder.items[item] && $scope.newOrder.items[item].quantity) {
+					$scope.newOrder.total += $scope.newOrder.items[item].price * $scope.newOrder.items[item].quantity;
 				}
 			}
 		};
