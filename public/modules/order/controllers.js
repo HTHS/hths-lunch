@@ -54,6 +54,13 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 			$scope.recalculateTotal();
 		};
 
+		$scope.checkZero = function(index){
+			console.log($scope.menu[index].quantity)
+			if (!$scope.menu[index].quantity) {
+				$scope.toggleItemInOrder(index);
+			}
+		}
+
 		$scope.recalculateTotal = function() {
 			$scope.newOrder.total = 0;
 			for (var item in $scope.newOrder.items) {

@@ -55,7 +55,7 @@
               <p>{{item.price | currency}}</p>
             </div>
             <div>
-              <input type="number" min="0" step="1" pattern="^\d+$" required ng-disabled="newOrder.items[$index].toString() !== '[object Object]'" ng-model="item.quantity" ng-change="recalculateTotal()">
+              <input type="number" min="0" step="1" pattern="^\d+$" required ng-disabled="newOrder.items[$index].toString() !== '[object Object]'" ng-model="item.quantity" ng-change="recalculateTotal()" ng-blur="checkZero($index)">
             </div>
           </md-item-content>
         </md-item>
