@@ -6,9 +6,9 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 			$state.go('landingPage');
 		} else {
 			$scope.newOrder = {
-				'total': 0,
-				'items': {},
-				'customer': $scope.user.displayName
+				total: 0,
+				items: {},
+				customer: $scope.user.displayName
 			};
 
 			Item
