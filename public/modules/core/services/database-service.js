@@ -1,34 +1,60 @@
 angular.module('hthsLunch.core.databaseService', ['hthsLunch.core.itemService', 'hthsLunch.core.orderService',
-		'hthsLunch.core.userService', 'hthsLunch.core.authService'
-	])
-	.factory('Database', ['$q', 'Item', 'Order', 'User', 'Auth', function($q, Item, Order, User, Auth) {
-		var service = {};
+    'hthsLunch.core.userService', 'hthsLunch.core.authService'
+  ])
+  .factory('Database', ['$q', 'Item', 'Order', 'User', 'Auth', function($q, Item, Order, User, Auth) {
+    var service = {};
 
-		var me;
+    var me;
+    var items;
 
-		service.getMe = function() {
-			return me;
-		};
+    service.getMe = function() {
+      return me;
+    };
 
-		service.fetchMe = function() {
-			var promise = User.me().$promise;
+    service.fetchMe = function() {
+      var promise = User.me().$promise;
 
-			promise
-				.then(function(user) {
-					me = user;
-				})
-				.catch(function(response) {
-					if (response.status === 401) {
-						me = null;
-					}
-				});
+      promise
+        .then(function(user) {
+          me = user;
+        })
+        .catch(function(response) {
+          if (response.status === 401) {
+            me = null;
+          }
+        });
 
-			return promise;
-		};
+      return promise;
+    };
 
-		service.fetchAll = function() {
-			return $q.all([this.fetchMe()]);
-		};
+    service.updateMe = function() {
+      var promise = User.update(me).$promise;
 
-		return service;
-	}]);
+      promise.then(function(newMe) {
+        me = newMe;
+      });
+
+      return promise;
+    };
+
+    service.saveOrder = function(order) {
+      return Order
+        .save(order)
+        .$promise.then(function(order) {
+          me.orderHistory.push(order._id);
+          return service.updateMe();
+        });
+    };
+
+    service.updateOrder = function(order) {
+      var promise = Order.update(order).$promise;
+
+      return promise;
+    };
+
+    service.fetchAll = function() {
+      return $q.all([this.fetchMe()]);
+    };
+
+    return service;
+  }]);
