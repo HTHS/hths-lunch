@@ -250,7 +250,7 @@ function nodemon() {
  * Composite tasks *
  *******************/
 var tasks = {
-  test: gulp.series(testEnv, js, gulp.parallel(mochaTest, karmaTest)),
+  test: gulp.series(testEnv, js, mochaTest, karmaTest),
   analysis: gulp.parallel(plato),
   build: gulp.series(clean, gulp.parallel(scss, js))
 };
