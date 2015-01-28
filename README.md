@@ -1,4 +1,4 @@
-[ ![Codeship Status for ilanbiala/hths-lunch](https://codeship.io/projects/daa86da0-37ac-0132-52d3-6ed5aaf58bcd/status)](https://codeship.io/projects/41783)
+[ ![Codeship Status for HTHS/hths-lunch](https://codeship.com/projects/64ca23f0-86cd-0132-fc1b-7afd75d0abea/status?branch=master)](https://codeship.com/projects/59016)
 
 material icons:
 action
