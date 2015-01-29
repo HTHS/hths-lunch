@@ -268,7 +268,7 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
           $scope.users.push(user);
           $scope.newUser = {};
           $scope.inviteUserForm.$setPristine();
-          MessageService.showSuccessNotification('Successfully invited ' + $scope.newUser.email);
+          MessageService.showSuccessNotification('Successfully invited ' + user.email);
         })
         .catch(function(response) {
           MessageService.showDefaultFailureNotification();
