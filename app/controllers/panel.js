@@ -4,6 +4,7 @@
 var mongoose = require('mongoose'),
 	Item = mongoose.model('Item'),
 	Email = require('./email'),
+	csv = require('./csv'),
 	item = require('./item'),
 	order = require('./order'),
 	schedule = require('./schedule'),
@@ -73,7 +74,7 @@ exports.deleteUser = function(req, res) {
 
 exports.inviteUser = function(req, res) {
 	var url = req.headers.origin + '/auth/google';
-	var isAdmin = req.body.isAdmin || false;
+	var isAdmin = req.profile.isAdmin || false;
 
 	var stateParams = encodeURIComponent(JSON.stringify({
 		isAdmin: isAdmin
@@ -81,12 +82,10 @@ exports.inviteUser = function(req, res) {
 	url += '?state=' + stateParams;
 
 	var options = {
-		to: req.body.email,
+		to: req.profile.email,
 		subject: 'Join HTHS-Lunch',
-		text: 'Join HTHS-Lunch (' + url +
-			') and start ordering lunch the right way.',
-		html: 'Join <a href="' + url +
-			'">HTHS-Lunch</a> and start ordering lunch the right way.'
+		text: 'Join HTHS-Lunch (' + url + ') and start ordering lunch the right way.',
+		html: 'Join <a href="' + url + '">HTHS-Lunch</a> and start ordering lunch the right way.'
 	};
 
 	var email = new Email(options);
@@ -94,7 +93,7 @@ exports.inviteUser = function(req, res) {
 		.send()
 		.then(function(info) {
 			user
-				.createPlaceholder(req.body.email, 'Invited')
+				.createPlaceholder(req.profile.email, 'Invited')
 				.then(function(user) {
 					res.json(user);
 				})
@@ -115,7 +114,22 @@ exports.inviteUser = function(req, res) {
 };
 
 exports.inviteBulkUsers = function inviteBulkUsers(req, res) {
-	res.json({});
+	var csvFileContents = req.files.users.buffer.toString();
+	csv
+		.parse(csvFileContents)
+		.then(function(users) {
+			for (var i = 0; i < users.length; i++) {
+				var user = users[i];
+			}
+			res.json(users);
+		})
+		.catch(function(err) {
+			console.error(err);
+			res.status(500).json({
+				message: 'An error occurred',
+				error: err
+			});
+		});
 };
 
 /**

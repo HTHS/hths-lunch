@@ -70,7 +70,11 @@ angular.module('hthsLunch.panel').factory(
 			},
 			inviteBulk: {
 				method: 'POST',
-				url: '/api/panel/users/bulk'
+				url: '/api/panel/users/bulk',
+				headers: {
+					'Content-Type': undefined // workaround to get multipart/form-data file uploads working, browser sets it
+				},
+				isArray: true
 			},
 			hasAuthorization: {
 				url: '/api/panel/auth/:user',
