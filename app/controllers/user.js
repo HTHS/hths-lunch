@@ -91,6 +91,11 @@ exports.createProfile = function createProfile(req, providerUserProfile, done) {
 	}
 };
 
+/**
+ * Request invite and create placeholder user to prevent duplicate requests
+ * @param {Object} req Request
+ * @param {Object} res Response
+ */
 exports.requestInvite = function requestInvite(req, res) {
 	exports.createPlaceholder(req.body.email, 'Pending invite')
 		.then(function(user) {
