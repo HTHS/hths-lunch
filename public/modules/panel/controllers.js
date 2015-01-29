@@ -250,6 +250,7 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
     //     debugger;
     //   });
 
+    // TODO cleanup
     if ($scope.csvFile) {
       User
         .inviteBulk({
@@ -290,7 +291,7 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
       User
         .inviteBulk(data)
         .$promise.then(function(users) {
-          debugger;
+          $scope.users = $scope.users.concat(users);
         })
         .catch(function(response) {
           debugger;

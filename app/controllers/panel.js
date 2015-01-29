@@ -2,6 +2,7 @@
  * Module dependencies
  */
 var mongoose = require('mongoose'),
+	Promise = require('bluebird'),
 	Item = mongoose.model('Item'),
 	Email = require('./email'),
 	csv = require('./csv'),
@@ -104,34 +105,46 @@ exports.inviteBulkUsers = function inviteBulkUsers(req, res) {
 	csv
 		.parse(csvFileContents)
 		.then(function(users) {
+			var newUsers = [];
+			var promises = [];
+
 			for (var i = 0; i < users.length; i++) {
 				var u = users[i];
 				var email = u.EmailAddress;
 				var url = req.headers.origin;
 				var isAdmin = u.Admin;
 
-				user
-					.invite(email, url, isAdmin)
-					.then(function(user, err) {
+				var promise = user.invite(email, url, isAdmin);
+				promise
+					.then(function(u, err) {
 						if (err) {
 							// email failed to send, but user was created
-							res.status(400).json({
-								success: true,
-								user: user,
-								error: err
-							});
+							// res.status(400).json({
+							// 	success: true,
+							// 	user: user,
+							// 	error: err
+							// });
+
+							newUsers.push(u);
 						} else {
-							res.json(user);
+							newUsers.push(u);
 						}
 					})
 					.catch(function(err) {
-						res.status(500).json({
-							success: false,
-							error: err
-						});
+						// res.status(500).json({
+						// 	success: false,
+						// 	error: err
+						// });
 					});
+
+				promises.push(promise);
 			}
-			res.json(users);
+
+			Promise
+				.all(promises)
+				.then(function() {
+					res.json(newUsers);
+				});
 		})
 		.catch(function(err) {
 			console.error(err);
