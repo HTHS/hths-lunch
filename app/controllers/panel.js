@@ -73,37 +73,23 @@ exports.deleteUser = function(req, res) {
 };
 
 exports.inviteUser = function(req, res) {
-	var url = req.headers.origin + '/auth/google';
+	var email = req.profile.email;
+	var url = req.headers.origin;
 	var isAdmin = req.profile.isAdmin || false;
 
-	var stateParams = encodeURIComponent(JSON.stringify({
-		isAdmin: isAdmin
-	}));
-	url += '?state=' + stateParams;
-
-	var options = {
-		to: req.profile.email,
-		subject: 'Join HTHS-Lunch',
-		text: 'Join HTHS-Lunch (' + url + ') and start ordering lunch the right way.',
-		html: 'Join <a href="' + url + '">HTHS-Lunch</a> and start ordering lunch the right way.'
-	};
-
-	var email = new Email(options);
-	email
-		.send()
-		.then(function(info) {
-			user
-				.createPlaceholder(req.profile.email, 'Invited')
-				.then(function(user) {
-					res.json(user);
-				})
-				.catch(function(err) {
-					res.status(400).json({
-						success: true,
-						user: user,
-						error: err
-					});
+	user
+		.invite(email, url, isAdmin)
+		.then(function(user, err) {
+			if (err) {
+				// email failed to send, but user was created
+				res.status(400).json({
+					success: true,
+					user: user,
+					error: err
 				});
+			} else {
+				res.json(user);
+			}
 		})
 		.catch(function(err) {
 			res.status(500).json({
@@ -119,7 +105,31 @@ exports.inviteBulkUsers = function inviteBulkUsers(req, res) {
 		.parse(csvFileContents)
 		.then(function(users) {
 			for (var i = 0; i < users.length; i++) {
-				var user = users[i];
+				var u = users[i];
+				var email = u.EmailAddress;
+				var url = req.headers.origin;
+				var isAdmin = u.Admin;
+
+				user
+					.invite(email, url, isAdmin)
+					.then(function(user, err) {
+						if (err) {
+							// email failed to send, but user was created
+							res.status(400).json({
+								success: true,
+								user: user,
+								error: err
+							});
+						} else {
+							res.json(user);
+						}
+					})
+					.catch(function(err) {
+						res.status(500).json({
+							success: false,
+							error: err
+						});
+					});
 			}
 			res.json(users);
 		})
