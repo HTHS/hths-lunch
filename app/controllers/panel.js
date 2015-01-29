@@ -73,9 +73,9 @@ exports.deleteUser = function(req, res) {
 };
 
 exports.inviteUser = function(req, res) {
-	var email = req.profile.email;
+	var email = req.body.email;
 	var url = req.headers.origin;
-	var isAdmin = req.profile.isAdmin || false;
+	var isAdmin = req.body.isAdmin || false;
 
 	user
 		.invite(email, url, isAdmin)
