@@ -297,6 +297,15 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 
 		}
 	};
+
+  User
+    .query()
+    .$promise.then(function(users) {
+      $scope.users = users;
+    })
+    .catch(function(reponse) {
+      debugger;
+    });
 }]).controller('EditItemController', ['$scope', '$mdDialog', 'editingItem',
 	function($scope, $mdDialog, editingItem) {
 		$scope.editingItem = editingItem;
