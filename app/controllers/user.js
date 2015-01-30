@@ -108,6 +108,42 @@ exports.requestInvite = function requestInvite(req, res) {
     });
 };
 
+exports.invite = function(email, url, status) {
+  var p = Promise.defer();
+
+  url += '/auth/google';
+  var stateParams = encodeURIComponent(JSON.stringify({
+    isAdmin: status
+  }));
+  url += '?state=' + stateParams;
+
+  var options = {
+    to: email,
+    subject: 'Join HTHS-Lunch',
+    text: 'Join HTHS-Lunch (' + url + ') and start ordering lunch the right way.',
+    html: 'Join <a href="' + url + '">HTHS-Lunch</a> and start ordering lunch the right way.'
+  };
+
+  exports
+    .createPlaceholder(email, 'Invited')
+    .then(function(user) {
+      var email = new Email(options);
+      email
+        .send()
+        .then(function(info) {
+          p.resolve(user);
+        })
+        .catch(function(err) {
+          p.resolve(user, err);
+        });
+    })
+    .catch(function(err) {
+      p.reject(err);
+    });
+
+  return p.promise;
+};
+
 /**
  * Create placeholder user for invited/requesting users
  * @param {String} email  email address of user
