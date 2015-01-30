@@ -1,15 +1,16 @@
 angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$state', 'Database', 'MessageService', 'Item', 'Order', 'User', 'Auth',
 	function($scope, $state, Database, MessageService, Item, Order, User, Auth) {
 		$scope.user = Database.getMe();
+		var BLANK_ORDER = {
+			total: 0,
+			items: {},
+			customer: $scope.user.displayName
+		};
 
 		if (!$scope.user) {
 			$state.go('landingPage');
 		} else {
-			$scope.newOrder = {
-				total: 0,
-				items: {},
-				customer: $scope.user.displayName
-			};
+			$scope.newOrder = BLANK_ORDER;
 
 			Item
 				.query()
@@ -135,6 +136,17 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 				}
 			}
 		};
+
+		$scope.deleteOrder = function(){
+			Order
+				.delete({'orderId': $scope.newOrder._id})
+				.$promise.then(function(){
+					MessageService.showSuccessNotification('Order deleted!');
+					$scope.newOrder = BLANK_ORDER;
+					$scope.newOrder.toBeUpdated = false;
+					populateForm(BLANK_ORDER);
+				});
+		}
 
 		$scope.goToDashboard = function() {
 			$state.go('dashboard');
