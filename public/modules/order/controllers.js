@@ -21,7 +21,9 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 
 					if ($scope.user.orderHistory.length > 0) {
 						var lastOrder = $scope.user.orderHistory[$scope.user.orderHistory.length - 1];
-						populateForm(lastOrder);
+						if (lastOrder.toUpdate){
+							populateForm(lastOrder);
+						}
 					}
 				});
 		}
