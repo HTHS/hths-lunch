@@ -44,6 +44,8 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 				return i;
 			});
 
+			$scope.recalculateTotal();
+
 			if (order.toUpdate) {
 				$scope.newOrder._id = order._id;
 				$scope.newOrder.total = order.total;
