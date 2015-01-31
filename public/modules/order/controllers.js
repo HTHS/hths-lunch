@@ -33,8 +33,8 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 			for (var i = 0; i < order.items.length; i++) {
 				for (var z = 0; z < $scope.menu.length; z++) {
 					if (order.items[i] === $scope.menu[z]._id) {
-						$scope.menu[z].quantity = order.quantity[i];
 						$scope.toggleItemInOrder(z);
+            $scope.menu[z].quantity = order.quantity[i];
 					}
 				}
 			}
