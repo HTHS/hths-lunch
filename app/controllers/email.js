@@ -2,9 +2,9 @@
  * Module dependencies
  */
 var _ = require('lodash'),
-	nodemailer = require('nodemailer'),
-	Promise = require('bluebird'),
-	config = require('../../config/config');
+  nodemailer = require('nodemailer'),
+  Promise = require('bluebird'),
+  config = require('../../config/config');
 
 var transporter = nodemailer.createTransport(config.mailer.options);
 
@@ -13,25 +13,26 @@ var transporter = nodemailer.createTransport(config.mailer.options);
  * @param {Object} email   email object
  */
 function Email(email) {
-	this.email = _.extend({
-		from: config.mailer.from
-	}, email);
-	this.isSent = false;
+  this.email = _.extend({
+    from: config.mailer.from
+  }, email);
+  this.isSent = false;
 }
 
 Email.prototype.send = function() {
-	var p = Promise.defer();
+  var email = this;
+  var p = Promise.defer();
 
-	transporter.sendMail(this.email, function(err, info) {
-		if (err) {
-			p.reject(err);
-		} else {
-			this.isSent = true;
-			p.resolve(info);
-		}
-	});
+  transporter.sendMail(this.email, function(err, info) {
+    if (err) {
+      p.reject(err);
+    } else {
+      email.isSent = true;
+      p.resolve(info);
+    }
+  });
 
-	return p.promise;
+  return p.promise;
 };
 
 module.exports = Email;
