@@ -113,6 +113,9 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
                   $scope.newOrder.toBeUpdated = true;
                   debugger;
                 });
+            })
+            .catch(function(response) {
+              MessageService.showFailureNotification('Failed to place order');
             });
         }
       }
