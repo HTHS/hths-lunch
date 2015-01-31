@@ -32,11 +32,17 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 			for (var i = 0; i < order.items.length; i++) {
 				for (var z = 0; z < $scope.menu.length; z++) {
 					if (order.items[i] === $scope.menu[z]._id) {
-						$scope.menu[z].quantity = order.quantity[i];
+						$scope.menu[z].checked = order.quantity[i] > 0;
 						$scope.toggleItemInOrder(z);
+						$scope.menu[z].quantity = order.quantity[i];
 					}
 				}
 			}
+
+			$scope.menu = $scope.menu.map(function(i){
+				i.checked = i.checked || false;
+				return i;
+			});
 
 			if (order.toUpdate) {
 				$scope.newOrder._id = order._id;
@@ -50,8 +56,8 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 		};
 
 		$scope.toggleItemInOrder = function(index) {
-			if ($scope.newOrder.items[index] !== null && typeof $scope.newOrder.items[
-					index] === 'object') {
+			//if ($scope.newOrder.items[index] !== null && typeof $scope.newOrder.items[index] === 'object') {
+			if (!$scope.menu[index].checked){
 				delete $scope.newOrder.items[index];
 				$scope.menu[index].quantity = null;
 			} else {
@@ -62,10 +68,12 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 		};
 
 		$scope.checkIfBlank = function(index) {
-			if ($scope.menu[index].quantity === undefined) {
+			if ($scope.menu[index].quantity === undefined || $scope.menu[index].quantity === 0) {
 				$scope.menu[index].quantity = null;
+				$scope.menu[index].checked = false;
+				$scope.toggleItemInOrder(index);
 			}
-		}
+		};
 
 		$scope.recalculateTotal = function() {
 			$scope.newOrder.total = 0;
@@ -93,6 +101,7 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 						.update($scope.newOrder)
 						.$promise.then(function(order) {
 							MessageService.showSuccessNotification('Order updated!');
+							populateForm($scope.newOrder);
 
 							User
 								.update($scope.user)
@@ -105,6 +114,7 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 						.save($scope.newOrder)
 						.$promise.then(function(order) {
 							MessageService.showSuccessNotification('Order placed!');
+							populateForm($scope.newOrder);
 
 							$scope.user.orderHistory.push(order._id);
 							User
