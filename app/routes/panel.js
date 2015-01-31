@@ -39,13 +39,13 @@ router.route('/analytics/days')
 
 // Users routes
 router.route('/users')
+	.post(panel.inviteUser)
 	.get(panel.getUsers);
 
 router.route('/users/bulk')
 	.post(panel.inviteBulkUsers);
 
 router.route('/users/:userId')
-	.post(panel.inviteUser)
 	.delete(panel.deleteUser);
 
 router.route('/auth/:userId')

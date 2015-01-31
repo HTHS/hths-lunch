@@ -174,6 +174,7 @@ function endSubmissionsForDay() {
   Order
     .find({})
     .where('created').gte(yesterdayCutoff).lte(now)
+    .populate('items')
     .sort('created')
     .exec(function(err, orders) {
       if (err) {
@@ -219,9 +220,12 @@ function endSubmissionsForDay() {
           var data = {
             items: [],
             quantity: [],
+            total: 0
           };
 
-          var csvData = [];
+          var csvData = [
+            ['Items', 'Quantity', 'Total']
+          ];
 
           orders.forEach(function(order) {
             order.items.forEach(function(item) {
@@ -236,8 +240,13 @@ function endSubmissionsForDay() {
           });
 
           for (var i = 0; i < data.items.length; i++) {
-            csvData.push([data.items[i], '', data.quantity[i]]);
+            var itemTotal = data.items[i].price * data.quantity[i];
+            csvData.push([data.items[i], data.quantity[i], '$' + itemTotal]);
+            data.total += itemTotal;
           }
+
+          csvData.push([]);
+          csvData.push(['Grand total:', '', '$' + data.total]);
 
           console.log('Generating CSVs now from today: ', today);
           csv
