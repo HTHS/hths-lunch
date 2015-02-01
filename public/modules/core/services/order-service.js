@@ -6,7 +6,7 @@ angular.module('hthsLunch.core.orderService', ['ngResource']).factory('Order', [
 		}, {
 			update: {
 				method: 'PUT'
-			},
+			}
 		});
 	}
 ]);
