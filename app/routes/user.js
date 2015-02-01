@@ -9,7 +9,7 @@ var router = require('express').Router(),
 
 // User profile API
 router.route('/api/users/me').get(users.requiresLogin, users.me);
-router.route('/api/users/:userId').put(users.requiresIdentity, users.update);
+router.route('/api/users/:userId').put(users.requiresLogin, users.requiresIdentity, users.update);
 
 router.route('/api/users/requestInvite').post(users.requestInvite);
 router.route('/api/users/hasAccount').post(users.emailHasAccount);

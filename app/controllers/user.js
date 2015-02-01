@@ -409,12 +409,22 @@ exports.requiresLogin = function requiresLogin(req, res, next) {
  * Require user logged in to be the same as user being modified routing middleware
  */
 exports.requiresIdentity = function requiresIdentity(req, res, next) {
-	if (req.user._id.toString() !== req.profile._id.toString()) { // stringify ObjectId
-		return res.status(401).json({
-			message: 'Unauthorized operation'
-		});
-	} else {
-		next();
+	if (req.profile) {
+		if (req.user._id.toString() !== req.profile._id.toString()) { // stringify ObjectId
+			return res.status(401).json({
+				message: 'Unauthorized operation'
+			});
+		} else {
+			next();
+		}
+	} else if (req.order) {
+		if (req.user._id.toString() !== req.order.user.toString()) { // stringify ObjectId
+			return res.status(401).json({
+				message: 'Unauthorized operation'
+			});
+		} else {
+			next();
+		}
 	}
 };
 
