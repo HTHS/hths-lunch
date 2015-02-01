@@ -66,6 +66,17 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
       return $scope.newOrder.items[index] !== null;
     };
 
+    $scope.canLoadOrder = function() {
+      var numberOfOrders = $scope.user.orderHistory.length;
+      if ($scope.newOrder.toBeUpdated) {
+        // grab 2nd to last order
+        return numberOfOrders - 2 >= 0 ? true : false;
+      } else {
+        // last order
+        return numberOfOrders - 1 >= 0 ? true : false;
+      }
+    };
+
     $scope.toggleItemInOrder = function(index) {
       //if ($scope.newOrder.items[index] !== null && typeof $scope.newOrder.items[index] === 'object') {
       if (!$scope.menu[index].checked) {

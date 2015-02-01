@@ -68,7 +68,7 @@
       <p>Total: {{newOrder.total | currency}}</p>
       <md-button type="submit" class="md-raised md-primary" ng-click="submitOrder()" ng-disabled="!newOrder.total">{{newOrder.toBeUpdated ? 'Update' : 'Submit'}} Order!</md-button>
       <br>
-      <md-button class="md-raised md-primary" ng-click="loadLastOrder()">Load Previous Order</md-button>
+      <md-button class="md-raised md-primary" ng-click="loadLastOrder()" ng-disabled="!canLoadOrder()">Load Previous Order</md-button>
       <br>
       <md-button class="md-raised md-warn" ng-click="deleteOrder()" ng-disabled="!newOrder.toBeUpdated">Delete Order</md-button>
     </div>
