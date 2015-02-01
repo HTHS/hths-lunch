@@ -1,29 +1,29 @@
 <md-dialog aria-label="Edit item" flex="40">
-  <md-content>
-    <md-subheader class="md-sticky-no-effect">Edit item</md-subheader>
-    <form>
+  <form name="editItemForm" ng-submit="update()">
+    <md-content>
+      <md-subheader class="md-sticky-no-effect">Edit item</md-subheader>
       <div>
         <md-input-container>
           <label>Title</label>
-          <input type="text" required="required" ng-model="editingItem.title">
+          <input type="text" required ng-model="editingItem.title">
         </md-input-container>
       </div>
       <div>
         <md-input-container>
           <label>Description</label>
-          <input type="text" required="required" ng-model="editingItem.description">
+          <input type="text" required ng-model="editingItem.description">
         </md-input-container>
       </div>
       <div>
         <md-input-container>
           <label>Price</label>
-          <input type="number" required="required" ng-model="editingItem.price">
+          <input type="number" min="0" step="any" required ng-model="editingItem.price">
         </md-input-container>
       </div>
-    </form>
-  </md-content>
-  <div class="md-actions" layout="row">
-    <md-button class="md-primary" ng-click="update()">Update</md-button>
-    <md-button class="md-warn" ng-click="cancel()">Cancel</md-button>
-  </div>
+    </md-content>
+    <div class="md-actions" layout="row">
+      <md-button type="submit" class="md-primary">Update</md-button>
+      <md-button type="button" class="md-warn" ng-click="cancel()">Cancel</md-button>
+    </div>
+  </form>
 </md-dialog>
