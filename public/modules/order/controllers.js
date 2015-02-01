@@ -113,16 +113,12 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
         if (numberOfUserOrders - 2 >= 0) {
           clearForm();
           populateForm($scope.user.orderHistory[numberOfUserOrders - 2]);
-        } else {
-          MessageService.showFailureNotification('No orders to load');
         }
       } else {
         // last order
         if (numberOfUserOrders - 1 >= 0) {
           clearForm();
           populateForm($scope.user.orderHistory[numberOfUserOrders - 1]);
-        } else {
-          MessageService.showFailureNotification('No orders to load');
         }
       }
     };
