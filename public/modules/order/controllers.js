@@ -29,6 +29,13 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 				});
 		}
 
+		function clearForm(){
+			for (var i = 0; i < $scope.menu.length; i++){
+				$scope.menu[i].checked = false;
+				$scope.toggleItemInOrder(i);
+			}
+		}
+
 		function populateForm(order) {
 			for (var i = 0; i < order.items.length; i++) {
 				for (var z = 0; z < $scope.menu.length; z++) {
@@ -144,7 +151,9 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 					MessageService.showSuccessNotification('Order deleted!');
 					$scope.newOrder = BLANK_ORDER;
 					$scope.newOrder.toBeUpdated = false;
-					populateForm(BLANK_ORDER);
+				})
+				.finally(function(){
+					clearForm();
 				});
 		}
 
