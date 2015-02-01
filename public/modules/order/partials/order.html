@@ -57,7 +57,7 @@
             <div>
             	<md-input-container>
             		<label>Quantity</label>
-              	<input type="number" min="0" step="1" pattern="^\d+$" required ng-disabled="!item.checked" ng-model="item.quantity" ng-change="recalculateTotal()" ng-blur="checkIfBlank($index)">
+              	<input type="number" min="0" step="1" pattern="\d*" required ng-disabled="!item.checked" ng-model="item.quantity" ng-change="recalculateTotal()" ng-blur="checkIfBlank($index)">
               </md-input-container>
             </div>
           </md-item-content>
@@ -69,6 +69,7 @@
       <md-button class="md-raised md-primary" ng-click="loadLastOrder()">Load Previous Order</md-button>
       <br>
       <md-button type="submit" class="md-raised md-primary" ng-click="submitOrder()" ng-disabled="!newOrder.total">Submit Order!</md-button>
+      <md-button class="md-raised md-warn" ng-click="deleteOrder()" ng-disabled="!newOrder.toBeUpdated">Delete Order</md-button>
     </div>
   </form>
   </md-content>

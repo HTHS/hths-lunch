@@ -1,15 +1,16 @@
 angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$state', 'Database', 'MessageService', 'Item', 'Order', 'User', 'Auth',
   function($scope, $state, Database, MessageService, Item, Order, User, Auth) {
     $scope.user = Database.getMe();
+    var BLANK_ORDER = {
+      total: 0,
+      items: {},
+      customer: $scope.user.displayName
+    };
 
     if (!$scope.user) {
       $state.go('landingPage');
     } else {
-      $scope.newOrder = {
-        total: 0,
-        items: {},
-        customer: $scope.user.displayName
-      };
+      $scope.newOrder = BLANK_ORDER;
 
       Item
         .query()
@@ -26,6 +27,14 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
             }
           }
         });
+    }
+
+    function clearForm() {
+      for (var i = 0; i < $scope.menu.length; i++) {
+        $scope.menu[i].checked = false;
+        $scope.toggleItemInOrder(i);
+      }
+      $scope.orderForm.$setPristine();
     }
 
     function populateForm(order) {
@@ -139,12 +148,14 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
             .$promise.then(function(order) {
               MessageService.showSuccessNotification('Order placed!');
               populateForm($scope.newOrder);
+              $scope.newOrder._id = order._id;
+              $scope.newOrder.toBeUpdated = true;
+              console.log($scope.newOrder._id);
 
               $scope.user.orderHistory.push(order._id);
               User
                 .update($scope.user)
                 .$promise.then(function(user) {
-                  $scope.newOrder.toBeUpdated = true;
                   debugger;
                 });
             })
@@ -153,6 +164,26 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
             });
         }
       }
+    };
+
+    $scope.deleteOrder = function() {
+      Order
+        .delete({
+          'orderId': $scope.newOrder._id
+        })
+        .$promise.then(function() {
+          MessageService.showSuccessNotification('Order deleted!');
+          $scope.newOrder = BLANK_ORDER;
+          $scope.newOrder.toBeUpdated = false;
+          clearForm();
+
+          $scope.user.orderHistory.pop();
+          User
+            .update($scope.user)
+            .$promise.then(function(user) {
+              debugger;
+            });
+        });
     };
 
     $scope.goToDashboard = function() {
