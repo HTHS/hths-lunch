@@ -384,7 +384,7 @@ exports.userByID = function userByID(req, res, next, id) {
         return next(err);
       }
       if (!user) {
-        return next(new Error('Failed to load User ' + id));
+				return next(new Error('No User with ID ' + id + ' found'));
       }
 
       req.profile = user;
