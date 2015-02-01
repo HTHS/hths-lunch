@@ -155,6 +155,13 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 					$scope.newOrder = BLANK_ORDER;
 					$scope.newOrder.toBeUpdated = false;
 					clearForm();
+
+					$scope.user.orderHistory.pop();
+					User
+						.update($scope.user)
+						.$promise.then(function(user) {
+							debugger;
+						});
 				});
 		}
 
