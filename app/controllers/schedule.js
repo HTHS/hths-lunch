@@ -185,7 +185,7 @@ function createDay(orders) {
 				item
 					.update({
 						$inc: {
-							numberOrderd: 1
+							numberOrdered: 1
 						}
 					}, {}, function(err, numberUpdated, result) {
 						if (err) {
