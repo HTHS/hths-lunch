@@ -163,18 +163,27 @@ exports.isBetween = function(date) {
 };
 
 function findOrdersBetween(d1, d2) {
-	return Order
+  var p = Promise.defer();
+
+  Order
 		.find({})
 		.where('created').gte(d1).lte(d2)
 		.sort('created')
 		.populate('items')
-		.exec()
-		.then(function(orders) {
-			return orders;
+    .exec(function(err, orders) {
+      if (err) {
+        p.reject(err);
+      } else {
+        p.resolve(orders);
+      }
 		});
+
+  return p.promise;
 }
 
 function createDay(orders) {
+  var p = Promise.defer();
+
 	var today;
 
 	if (orders.length) {
@@ -191,8 +200,6 @@ function createDay(orders) {
 						if (err) {
 							console.error('Error: Tried to increment numberOrdered on item: ', item);
 							console.error(err);
-						} else {
-							console.log('Updated item ', result);
 						}
 					});
 			});
@@ -214,7 +221,9 @@ function createDay(orders) {
 	today.save(function(err, today) {
 		if (err) {
 			p.reject(err);
+      console.error(err);
 		} else {
+      console.log('Saved today: ', today);
 			p.resolve(today);
 		}
 	});
@@ -233,7 +242,19 @@ function createCSVInput(today) {
 		['Items', 'Quantity', 'Total']
 	];
 
-	today.orders.forEach(function(order) {
+  var orderTallyPromises = [];
+  today.orders.forEach(function(orderID) {
+    var p = Promise.defer();
+    orderTallyPromises.push(p.promise);
+
+    Order
+      .findById(orderID)
+      .populate('items')
+      .exec(function(err, order) {
+        if (err) {
+          // TODO do something
+          p.reject(err);
+        } else {
 		order.items.forEach(function(item) {
 			var itemIndexInItems = data.items.indexOf(item.title);
 			if (itemIndexInItems !== -1) {
@@ -243,8 +264,14 @@ function createCSVInput(today) {
 				data.quantity.push(1);
 			}
 		});
+
+          p.resolve(order);
+        }
 	});
 
+    return Promise
+      .all(orderTallyPromises)
+      .then(function() {
 	for (var i = 0; i < data.items.length; i++) {
 		var item = data.items[i];
 		var quantity = data.quantity[i];
@@ -263,6 +290,8 @@ function createCSVInput(today) {
 		.then(function(csv) {
 			return csv;
 		});
+      });
+  });
 }
 
 function emailCSV(csv) {
@@ -276,8 +305,7 @@ function emailCSV(csv) {
 		text: 'Attached is the CSV.',
 		html: 'Attached is the CSV.',
 		attachments: [{
-			filename: 'HTHS-' + today.getDate() + '-' + (today.getMonth() + 1) +
-				'-' + today.getFullYear() + '.csv',
+      filename: 'HTHS-' + today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear() + '.csv',
 			content: csv
 		}]
 	};
