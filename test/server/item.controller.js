@@ -14,7 +14,6 @@ var itemID;
  */
 describe('Item controller unit tests:', function() {
 	before(function(done) {
-
 		var item = new Item({
 			title: 'A delicious test item',
 			description: 'A description',
