@@ -31,5 +31,5 @@ var passport = require('passport'),
 module.exports = function(app, options) {
 	// create your verify function on your own -- should do similar things as the "real" one.
 	passport.use(new MockStrategy(options, verifyFunction));
-	app.get('/auth/google', passport.authenticate('mock'));
+	app.get('/auth/mock', passport.authenticate('mock'));
 };
