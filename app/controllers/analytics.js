@@ -31,6 +31,7 @@ exports.topItems = function(req, res) {
 exports.getDays = function(req, res) {
   Day
     .find()
+    .sort('-date')
     .limit(10)
     .exec(function(err, days) {
       if (err) {
