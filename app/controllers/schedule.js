@@ -246,8 +246,10 @@ function createCSVInput(today) {
 	});
 
 	for (var i = 0; i < data.items.length; i++) {
-		var itemTotal = data.items[i].price * data.quantity[i];
-		csvData.push([data.items[i], data.quantity[i], '$' + itemTotal]);
+		var item = data.items[i];
+		var quantity = data.quantity[i];
+		var itemTotal = item.price * quantity;
+		csvData.push([item, quantity, '$' + itemTotal]);
 		data.total += itemTotal;
 	}
 
