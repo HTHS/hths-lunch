@@ -188,8 +188,6 @@ function createDay(orders) {
 
 	if (orders.length) {
 		orders.forEach(function(order) {
-			console.log('Order: ', order);
-
 			order.items.forEach(function(item) {
 				item
 					.update({
@@ -223,7 +221,6 @@ function createDay(orders) {
 			p.reject(err);
       console.error(err);
 		} else {
-      console.log('Saved today: ', today);
 			p.resolve(today);
 		}
 	});
@@ -233,7 +230,7 @@ function createDay(orders) {
 
 function createCSVInput(today) {
 	var data = {
-		items: [],
+    items: {},
 		quantity: [],
 		total: 0
 	};
@@ -256,34 +253,38 @@ function createCSVInput(today) {
           p.reject(err);
         } else {
 		order.items.forEach(function(item) {
-			var itemIndexInItems = data.items.indexOf(item.title);
-			if (itemIndexInItems !== -1) {
-				data.quantity[itemIndexInItems] ++;
+						if (data.items[item._id]) {
+							data.items[item._id].quantity++;
 			} else {
-				data.items.push(item.title);
-				data.quantity.push(1);
+							data.items[item._id] = {
+								title: item.title,
+								quantity: 1,
+								price: item.price
+							};
 			}
 		});
 
           p.resolve(order);
         }
 	});
+  });
 
     return Promise
       .all(orderTallyPromises)
       .then(function() {
+			data.items = Object.keys(data.items).map(function(key) {
+				return data.items[key];
+			});
+
 	for (var i = 0; i < data.items.length; i++) {
 		var item = data.items[i];
-		var quantity = data.quantity[i];
+        var quantity = item.quantity;
 		var itemTotal = item.price * quantity;
-		csvData.push([item, quantity, '$' + itemTotal]);
+        csvData.push([item.title, quantity, '$' + itemTotal]);
 		data.total += itemTotal;
 	}
-
 	csvData.push([]);
 	csvData.push(['Grand total:', '', '$' + data.total]);
-
-	console.log('Generating CSVs now from today: ', today);
 
 	return csv
 		.generate(csvData)
@@ -291,13 +292,12 @@ function createCSVInput(today) {
 			return csv;
 		});
       });
-  });
 }
 
 function emailCSV(csv) {
 	var today = new Date();
 
-	console.log('Today\'s CSV: ', csv);
+  console.log('Today\'s CSV:\n', csv);
 
 	var options = {
 		to: 'ibiala@ctemc.org',
