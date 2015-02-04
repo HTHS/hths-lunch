@@ -10,6 +10,8 @@ var mongoose = require('mongoose'),
  * Order items by number of ordered
  */
 exports.topItems = function(req, res) {
+	var howMany = req.body.howMany || 5;
+
 	Item
 		.find()
 		.sort('-numberOrdered')
@@ -29,6 +31,8 @@ exports.topItems = function(req, res) {
  * Get last 10 days
  */
 exports.getDays = function(req, res) {
+	var howMany = req.body.howMany || 10;
+
 	Day
 		.find()
 		.sort('-date')
