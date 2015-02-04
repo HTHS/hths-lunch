@@ -229,14 +229,17 @@ function createDay(orders) {
 }
 
 function createCSVInput(today) {
-  var data = {
+  var orderData = {
     items: {},
     quantity: [],
     total: 0
   };
 
-  var csvData = [
+  var orderCSVData = [
     ['Items', 'Quantity', 'Total']
+  ];
+  var customerCSVData = [
+    ['Customer', 'Items', 'Total']
   ];
 
   var orderTallyPromises = [];
@@ -247,22 +250,30 @@ function createCSVInput(today) {
     Order
       .findById(orderID)
       .populate('items')
+      .populate('user')
       .exec(function(err, order) {
         if (err) {
           // TODO do something
           p.reject(err);
         } else {
           order.items.forEach(function(item) {
-            if (data.items[item._id]) {
-              data.items[item._id].quantity++;
+            if (orderData.items[item._id]) {
+              orderData.items[item._id].quantity++;
             } else {
-              data.items[item._id] = {
+              orderData.items[item._id] = {
                 title: item.title,
                 quantity: 1,
                 price: item.price
               };
             }
           });
+
+          var user = order.user.displayName;
+          var itemsOrdered = order.items.map(function(item, index) {
+            return item.title + ' x' + order.quantity[index];
+          }).join(', ');
+          var total = order.total;
+          customerCSVData.push([user, itemsOrdered, total]);
 
           p.resolve(order);
         }
@@ -272,41 +283,49 @@ function createCSVInput(today) {
   return Promise
     .all(orderTallyPromises)
     .then(function() {
-      data.items = Object.keys(data.items).map(function(key) {
-        return data.items[key];
+      orderData.items = Object.keys(orderData.items).map(function(key) {
+        return orderData.items[key];
       });
 
-      for (var i = 0; i < data.items.length; i++) {
-        var item = data.items[i];
+      for (var i = 0; i < orderData.items.length; i++) {
+        var item = orderData.items[i];
         var quantity = item.quantity;
         var itemTotal = item.price * quantity;
-        csvData.push([item.title, quantity, '$' + itemTotal]);
-        data.total += itemTotal;
+        orderCSVData.push([item.title, quantity, '$' + itemTotal]);
+        orderData.total += itemTotal;
       }
-      csvData.push([]);
-      csvData.push(['Grand total:', '', '$' + data.total]);
+      orderCSVData.push([]);
+      orderCSVData.push(['Grand total:', '', '$' + orderData.total]);
 
-      return csv
-        .generate(csvData)
-        .then(function(csv) {
-          return csv;
-        });
+      return Promise.join(csv.generate(orderCSVData).then(function(csv) {
+        return csv;
+      }), csv.generate(customerCSVData).then(function(csv) {
+        return csv;
+      }), function(orderCSV, customerCSV) {
+        return {
+          orderCSV: orderCSV,
+          customerCSV: customerCSV
+        };
+      });
     });
 }
 
-function emailCSV(csv) {
+function emailCSV(csvContents) {
   var today = new Date();
 
-  console.log('Today\'s CSV:\n', csv);
+  console.log('Today\'s CSVs:\n', csvContents);
 
   var options = {
     to: 'ibiala@ctemc.org',
     subject: 'HTHS-Lunch CSV',
-    text: 'Attached is the CSV.',
-    html: 'Attached is the CSV.',
+    text: 'Attached are the CSVs.',
+    html: 'Attached are the CSVs.',
     attachments: [{
-      filename: 'HTHS-' + today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear() + '.csv',
-      content: csv
+      filename: 'HTHS-bcc-' + today.toDateString().replace(/\s/g, '-') + '.csv',
+      content: csvContents.orderCSV
+    }, {
+      filename: 'HTHS-orders-' + today.toDateString().replace(/\s/g, '-') + '.csv',
+      content: csvContents.customerCSV
     }]
   };
 
@@ -315,7 +334,7 @@ function emailCSV(csv) {
   email
     .send()
     .then(function(info) {
-      console.log('Sent order CSV for ', today.toDateString());
+      console.log('Sent CSVs for ', today.toDateString());
       console.log(info);
     })
     .catch(function(err) {
