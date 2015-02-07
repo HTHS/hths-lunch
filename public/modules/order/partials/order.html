@@ -51,15 +51,13 @@
             </div>
             <div class="md-tile-content">
               <h3>{{item.title}}</h3>
-              <h4>{{item.description}}</h4>
+              <h4 hide-sm>{{item.description}}</h4>
               <p>{{item.price | currency}}</p>
             </div>
-            <div>
-            	<md-input-container>
-            		<label>Quantity</label>
-              	<input type="number" min="0" step="1" pattern="\d*" required ng-disabled="!item.checked" ng-model="item.quantity" ng-change="recalculateTotal()" ng-blur="checkIfBlank($index)">
-              </md-input-container>
-            </div>
+          	<md-input-container>
+          		<label>Quantity</label>
+            	<input type="number" min="0" step="1" pattern="\d*" required ng-disabled="!item.checked" ng-model="item.quantity" ng-change="recalculateTotal()" ng-blur="checkIfBlank($index)">
+            </md-input-container>
           </md-item-content>
         </md-item>
       </md-list>
