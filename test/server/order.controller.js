@@ -3,10 +3,13 @@
  */
 var should = require('should'),
   mongoose = require('mongoose'),
-  request = require('supertest')('http://localhost:3001'),
+  request = require('supertest')
+  agent = request.agent('http://localhost:3001'),
   Order = mongoose.model('Order'),
   Item = mongoose.model('Item'),
-  order = require('../../app/controllers/order');
+  order = require('../../app/controllers/order'),
+  router = require('express').Router(),
+  mock_strat = require('./mock-strategy');
 
 var itemID,
   order;
@@ -16,7 +19,6 @@ var itemID,
  */
 describe('Order controller unit tests:', function() {
   before(function(done) {
-
     var item = new Item({
       title: 'A delicious test item',
       description: 'A description',
@@ -29,9 +31,14 @@ describe('Order controller unit tests:', function() {
     item.save(done);
   });
 
+  beforeEach(function(done){
+  	mock_strat(router, {callbackUrl: '/auth/mock'});
+    agent.get('/auth/mock').end(done);
+  });
+
   it('POSTs an Order (/api/orders)', function(done) {
-    request
-      .post('/api/orders')
+   	agent
+   		.post('/api/orders')
       .send({
         "total": 9,
         "items": [itemID.toString()],
@@ -56,7 +63,7 @@ describe('Order controller unit tests:', function() {
   });
 
   it('GETs an Order by ID (/api/orders/:id)', function(done) {
-    request
+    agent
       .get('/api/orders/' + order._id.toString())
       .expect('Content-Type', /json/)
       .expect(200)
@@ -78,7 +85,7 @@ describe('Order controller unit tests:', function() {
   });
 
   it('PUTs an Order (/api/orders/:id)', function(done) {
-    request
+    agent
       .put('/api/orders/' + order._id.toString())
       .send({
         "total": 4.5,
@@ -104,7 +111,7 @@ describe('Order controller unit tests:', function() {
   });
 
   it('GETs an updated Order by ID (/api/orders/:id)', function(done) {
-    request
+    agent
       .get('/api/orders/' + order._id.toString())
       .expect('Content-Type', /json/)
       .expect(200)
@@ -126,7 +133,7 @@ describe('Order controller unit tests:', function() {
   });
 
   it('DELETEs an Order by ID (/api/orders/:id)', function(done) {
-    request
+    agent
       .delete('/api/orders/' + order._id.toString())
       .expect('Content-Type', /json/)
       .expect(200)
