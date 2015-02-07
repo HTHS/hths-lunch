@@ -2,8 +2,8 @@
  * Module dependencies.
  */
 var router = require('express').Router(),
-  passport = require('passport'),
-  users = require('../controllers/user');
+	passport = require('passport'),
+	users = require('../controllers/user');
 
 // User Routes
 
@@ -21,15 +21,24 @@ router.route('/api/auth/signout').get(users.requiresLogin, users.signout);
 // Google OAuth routes
 // "Signup" link
 router.route('/auth/google').get(function(req, res) {
-  (passport.authenticate('google', {
-    scope: [
-      'https://www.googleapis.com/auth/userinfo.profile',
-      'https://www.googleapis.com/auth/userinfo.email',
-      'https://www.googleapis.com/auth/plus.login'
-    ],
-    state: req.query.state
-  }))(req, res);
+	(passport.authenticate('google', {
+		scope: [
+			'https://www.googleapis.com/auth/userinfo.profile',
+			'https://www.googleapis.com/auth/userinfo.email',
+			'https://www.googleapis.com/auth/plus.login'
+		],
+		state: req.query.state
+	}))(req, res);
 });
+
+if (process.env.NODE_ENV === 'test') {
+	router.route('/auth/mock').get(function(req, res) {
+		(passport.authenticate('mock', {
+			scope: [],
+			state: req.query.state
+		}))(req, res);
+	});
+}
 
 // "Callback/Signin" link
 router.route('/auth/callback').get(users.signin('google'));
