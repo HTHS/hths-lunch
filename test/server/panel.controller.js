@@ -49,14 +49,16 @@
  * Module dependencies
  */
 var should = require('should'),
-	mongoose = require('mongoose'),
-	request = require('supertest')('http://localhost:3001'),
-	Order = mongoose.model('Order'),
-	Item = mongoose.model('Item'),
-	panel = require('../../app/controllers/panel');
+  mongoose = require('mongoose'),
+  request = require('supertest')('http://localhost:3001'),
+  User = mongoose.model('User'),
+  Order = mongoose.model('Order'),
+  Item = mongoose.model('Item'),
+  panel = require('../../app/controllers/panel');
 
 var item,
-	order;
+  order,
+  user;
 
 // TODO finish tests
 
@@ -64,61 +66,71 @@ var item,
  * Unit tests
  */
 describe('Panel controller unit tests:', function() {
-	before(function(done) {
+  before(function(done) {
 
-		item = new Item({
-			title: 'A delicious test item',
-			description: 'A description',
-			price: 4.5,
-			active: true
-		});
+    item = new Item({
+      title: 'A delicious test item',
+      description: 'A description',
+      price: 4.5,
+      active: true
+    });
 
-		item.save(function(err) {
-			if (err) {
-				return done(err);
-			}
+    item.save(function(err) {
+      if (err) {
+        return done(err);
+      }
 
-			order = new Order({
-				"total": 4.5,
-				"items": [item._id],
-				"customer": "Ilan Biala",
-				"quantity": [1]
-			});
+      user = new User({
+        firstName: 'Test',
+        lastName: 'User',
+        displayName: 'Test User',
+        email: 'testuser@gmail.com',
+        provider: 'local'
+      });
 
-			order.save(done);
-		});
-	});
+      order = new Order({
+        user: user._id,
+        total: 4.5,
+        items: [item._id],
+        customer: 'Ilan Biala',
+        quantity: [1]
+      });
 
-	it('Returns 401 when not logged in (/api/panel/items)', function(done) {
-		request.get('/api/panel/items')
-			.expect(401, done);
-	});
+      order.save(done);
+    });
+  });
 
-	// it('GETs all Items (/api/panel/items)', function(done) {
-	// 	request
-	// 		.get('/api/panel/items')
-	// 		.expect('Content-Type', /json/)
-	// 		.expect(200)
-	// 		.end(function(err, res) {
-	// 			if (err) {
-	// 				return done(err);
-	// 			}
-	//
-	// 			var items = res.body;
-	//
-	// 			Array.isArray(items).should.be.true;
-	// 			items.length.should.equal(1);
-	// 			items[0].price.should.equal(4.5);
-	// 			items[0].active.should.be.true;
-	//
-	// 			done();
-	// 		});
-	// });
+  it('Returns 401 when not logged in (/api/panel/items)', function(done) {
+    request.get('/api/panel/items')
+      .expect(401, done);
+  });
 
-	after(function(done) {
-		Order.remove().exec();
-		Item.remove().exec();
+  // it('GETs all Items (/api/panel/items)', function(done) {
+  // 	request
+  // 		.get('/api/panel/items')
+  // 		.expect('Content-Type', /json/)
+  // 		.expect(200)
+  // 		.end(function(err, res) {
+  // 			if (err) {
+  // 				return done(err);
+  // 			}
+  //
+  // 			var items = res.body;
+  //
+  // 			Array.isArray(items).should.be.true;
+  // 			items.length.should.equal(1);
+  // 			items[0].price.should.equal(4.5);
+  // 			items[0].active.should.be.true;
+  //
+  // 			done();
+  // 		});
+  // });
 
-		done();
-	});
+  after(function(done) {
+    User.remove().exec();
+    Order.remove().exec();
+    Item.remove().exec();
+
+    done();
+  });
 });
