@@ -39,7 +39,7 @@ if (process.env.NODE_ENV === 'test') {
 					return next(err);
 				}
 				if (!user) {
-					return res.json({
+					return res.status(500).json({
 						success: false
 					});
 				}

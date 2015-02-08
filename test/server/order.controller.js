@@ -38,6 +38,10 @@ describe('Order controller unit tests:', function() {
           return done(err);
         }
 
+        res.body.should.eql({
+          success: true
+        });
+
         done();
       });
   });
