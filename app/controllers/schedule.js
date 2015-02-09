@@ -284,7 +284,7 @@ function createCSVInput(today) {
 						return item.title + ' x' + order.quantity[index];
 					}).join(', ');
 					var total = order.total;
-					customerCSVData.push([user, itemsOrdered, '$' + total]);
+					customerCSVData.push([user, itemsOrdered, '$' + total.toFixed(2)]);
 
 					p.resolve(order);
 				}
@@ -302,11 +302,11 @@ function createCSVInput(today) {
 				var item = orderData.items[i];
 				var quantity = item.quantity;
 				var itemTotal = item.price * quantity;
-				orderCSVData.push([item.title, quantity, '$' + itemTotal]);
+				orderCSVData.push([item.title, quantity, '$' + itemTotal.toFixed(2)]);
 				orderData.total += itemTotal;
 			}
 			orderCSVData.push([]);
-			orderCSVData.push(['Grand total:', '', '$' + orderData.total]);
+			orderCSVData.push(['Grand total:', '', '$' + orderData.total.toFixed(2)]);
 
 			return Promise.join(csv.generate(orderCSVData).then(function(csv) {
 				return csv;
