@@ -1,18 +1,28 @@
 var passport = require('passport'),
+	mongoose = require('mongoose'),
+	User = mongoose.model('User'),
 	util = require('util');
 
 function MockStrategy(options, verify) {
 	this.name = 'mock';
 	this.passAuthentication = options.passAuthentication || true;
 	this.userId = options.userId || 1;
+	this.user = new User({
+		firstName: 'Test',
+		lastName: 'User',
+		displayName: 'Test User',
+		email: 'testuser@gmail.com',
+		provider: 'local',
+		password: 'testuser',
+		isAdmin: true
+	});
+	this.user.save();
 	this._verify = verify;
 }
 
 util.inherits(MockStrategy, passport.Strategy);
 
 MockStrategy.prototype.authenticate = function(req, options) {
-	var username = 'testuser';
-	var password = 'testuser';
 	var self = this;
 	options = options || {};
 
@@ -23,14 +33,19 @@ MockStrategy.prototype.authenticate = function(req, options) {
 		if (!user) {
 			return self.fail(info);
 		}
-		self.success(user, info);
+		req.login(user, function(err) {
+			if (err) {
+				return self.error(err);
+			}
+			return self.success(user, info);
+		});
 	}
 
 	try {
 		if (self._passReqToCallback) {
-			this._verify(req, username, password, verified);
+			this._verify(req, self.user, verified);
 		} else {
-			this._verify(username, password, verified);
+			this._verify(self.user, verified);
 		}
 	} catch (e) {
 		return self.error(e);
@@ -42,10 +57,7 @@ module.exports = function() {
 	passport.use(new MockStrategy({
 		callbackURL: '/auth/mock/callback',
 		passReqToCallback: true
-	}, function(username, password, cb) {
-		cb(null, {
-			username: username,
-			password: password
-		});
+	}, function(user, cb) {
+		cb(null, user);
 	}));
 };
