@@ -9,6 +9,8 @@ var should = require('should'),
   Item = mongoose.model('Item'),
   order = require('../../app/controllers/order');
 
+var agent = require('supertest').agent('http://localhost:3001');
+
 var itemID,
   order;
 
@@ -30,7 +32,7 @@ describe('Order controller unit tests:', function() {
   });
 
   beforeEach(function(done) {
-    request
+    agent
       .get('/auth/mock')
       .expect(200)
       .end(function(err, res) {
@@ -47,7 +49,7 @@ describe('Order controller unit tests:', function() {
   });
 
   it('POSTs an Order (/api/orders)', function(done) {
-    request
+    agent
       .post('/api/orders')
       .send({
         total: 9,
@@ -73,7 +75,7 @@ describe('Order controller unit tests:', function() {
   });
 
   it('GETs an Order by ID (/api/orders/:id)', function(done) {
-    request
+    agent
       .get('/api/orders/' + order._id.toString())
       .expect('Content-Type', /json/)
       .expect(200)
@@ -95,7 +97,7 @@ describe('Order controller unit tests:', function() {
   });
 
   it('PUTs an Order (/api/orders/:id)', function(done) {
-    request
+    agent
       .put('/api/orders/' + order._id.toString())
       .send({
         total: 4.5,
@@ -121,7 +123,7 @@ describe('Order controller unit tests:', function() {
   });
 
   it('GETs an updated Order by ID (/api/orders/:id)', function(done) {
-    request
+    agent
       .get('/api/orders/' + order._id.toString())
       .expect('Content-Type', /json/)
       .expect(200)
@@ -143,7 +145,7 @@ describe('Order controller unit tests:', function() {
   });
 
   it('DELETEs an Order by ID (/api/orders/:id)', function(done) {
-    request
+    agent
       .delete('/api/orders/' + order._id.toString())
       .expect('Content-Type', /json/)
       .expect(200)
