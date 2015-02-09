@@ -267,13 +267,13 @@ function createCSVInput(today) {
 					// TODO do something
 					p.reject(err);
 				} else {
-					order.items.forEach(function(item) {
+					order.items.forEach(function(item, index) {
 						if (orderData.items[item._id]) {
 							orderData.items[item._id].quantity++;
 						} else {
 							orderData.items[item._id] = {
 								title: item.title,
-								quantity: 1,
+								quantity: order.quantity[index],
 								price: item.price
 							};
 						}
