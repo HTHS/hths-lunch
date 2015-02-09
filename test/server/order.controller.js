@@ -31,7 +31,7 @@ describe('Order controller unit tests:', function() {
     item.save(done);
   });
 
-  beforeEach(function(done) {
+  before(function(done) {
     agent
       .get('/auth/mock')
       .expect(200)
