@@ -50,10 +50,10 @@ describe('Order controller unit tests:', function() {
     request
       .post('/api/orders')
       .send({
-        "total": 9,
-        "items": [itemID.toString()],
-        "customer": "Ilan Biala",
-        "quantity": [2]
+        total: 9,
+        items: [itemID.toString()],
+        customer: 'Ilan Biala',
+        quantity: [2]
       })
       .expect('Content-Type', /json/)
       .expect(200)
@@ -84,7 +84,7 @@ describe('Order controller unit tests:', function() {
 
         var order = res.body;
 
-        (order !== null).should.be.true;
+        (order !== null).should.equal(true);
         order.total.should.equal(9);
         order.quantity[0].should.equal(2);
         order.items.length.should.equal(order.quantity.length);
@@ -98,10 +98,10 @@ describe('Order controller unit tests:', function() {
     request
       .put('/api/orders/' + order._id.toString())
       .send({
-        "total": 4.5,
-        "items": [itemID.toString()],
-        "customer": "Ilan Biala",
-        "quantity": [1]
+        total: 4.5,
+        items: [itemID.toString()],
+        customer: 'Ilan Biala',
+        quantity: [1]
       })
       .expect('Content-Type', /json/)
       .expect(200)
@@ -132,7 +132,7 @@ describe('Order controller unit tests:', function() {
 
         var order = res.body;
 
-        (order !== null).should.be.true;
+        (order !== null).should.equal(true);
         order.total.should.equal(4.5);
         order.quantity[0].should.equal(1);
         order.items.length.should.equal(order.quantity.length);
@@ -154,7 +154,7 @@ describe('Order controller unit tests:', function() {
 
         var order = res.body;
 
-        (order !== null).should.be.true;
+        (order !== null).should.equal(true);
         order.total.should.equal(4.5);
         order.quantity[0].should.equal(1);
         order.items.length.should.equal(order.quantity.length);
