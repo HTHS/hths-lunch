@@ -307,6 +307,10 @@ function createCSVInput(today) {
 			}
 			orderCSVData.push([]);
 			orderCSVData.push(['Grand total:', '', '$' + orderData.total.toFixed(2)]);
+			orderCSVData.push(['', '', '']);
+			orderCSVData.push(['', 'PLEASE BRING KETCHUP EVERYDAY - THANK YOU', '']);
+			orderCSVData.push(['', '', '']);
+			orderCSVData.push(['', 'Please send condiments today', '']);
 
 			return Promise.join(csv.generate(orderCSVData).then(function(csv) {
 				return csv;
