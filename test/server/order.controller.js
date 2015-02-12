@@ -6,12 +6,14 @@ var should = require('should'),
   request = require('supertest')('http://localhost:3001'),
   passport = require('passport'),
   Order = mongoose.model('Order'),
+  User = mongoose.model('User'),
   Item = mongoose.model('Item'),
   order = require('../../app/controllers/order');
 
 var agent = require('supertest').agent('http://localhost:3001');
 
 var itemID,
+  user,
   order;
 
 /**
@@ -27,6 +29,14 @@ describe('Order controller unit tests:', function() {
     });
 
     itemID = item._id;
+
+    user = new User({
+      firstName: 'Test',
+      lastName: 'User',
+      displayName: 'Test User',
+      email: 'testuser@gmail.com',
+      provider: 'local'
+    });
 
     item.save(done);
   });
@@ -55,7 +65,8 @@ describe('Order controller unit tests:', function() {
         total: 9,
         items: [itemID.toString()],
         customer: 'Ilan Biala',
-        quantity: [2]
+        quantity: [2],
+        user: user._id
       })
       .expect('Content-Type', /json/)
       .expect(200)
