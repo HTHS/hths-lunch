@@ -15,7 +15,7 @@ var itemID;
 describe('Item controller unit tests:', function() {
 	before(function(done) {
 		var item = new Item({
-			title: 'A delicious test item',
+			title: 'Item controller test item',
 			description: 'A description',
 			price: 4.5,
 			active: true
@@ -39,7 +39,7 @@ describe('Item controller unit tests:', function() {
 
 					var items = res.body;
 
-					Array.isArray(items).should.be.true;
+					Array.isArray(items).should.equal(true);
 					items.length.should.equal(1);
 
 					done();
@@ -58,7 +58,7 @@ describe('Item controller unit tests:', function() {
 
 					var item = res.body;
 
-					(item !== null).should.be.true;
+					(item !== null).should.equal(true);
 					item._id.should.equal(itemID.toString());
 
 					done();
