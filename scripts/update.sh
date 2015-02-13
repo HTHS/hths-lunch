@@ -6,5 +6,5 @@ chmod +x ./update.sh;
 npm install;
 bower --allow-root install;
 gulp build;
-forever restartall;
+forever restart ../server.js;
 echo "Updated to latest version, rebuilt dependencies and scripts, and restarted server.";
