@@ -31,8 +31,28 @@ router.route('/auth/google').get(function(req, res) {
   }))(req, res);
 });
 
+if (process.env.NODE_ENV === 'test') {
+  router.route('/auth/mock').post(function(req, res) {
+    (passport.authenticate('mock', {
+			user: req.body
+		}, function(err, user, info) {
+			if (err || !user) {
+				return res.status(500).json({
+					success: false
+				});
+			}
+
+      res.json({
+        success: true,
+				user: user
+      });
+    }))(req, res);
+  });
+}
+
 // "Callback/Signin" link
 router.route('/auth/callback').get(users.signin('google'));
+router.route('/auth/mock/callback').get(users.signin('mock'));
 
 // User middleware
 router.param('userId', users.userByID);

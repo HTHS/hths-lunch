@@ -40,8 +40,6 @@ exports.kill = function() {
   mongoose.disconnect();
 
 	console.log(chalk.red('Application killed. Port %s now available.'), config.port);
-
-  exports.server = null;
 };
 
 exports.start();

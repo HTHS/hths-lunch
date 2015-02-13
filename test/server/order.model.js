@@ -4,9 +4,10 @@
 var should = require('should'),
   mongoose = require('mongoose'),
   Item = mongoose.model('Item'),
+  User = mongoose.model('User'),
   Order = mongoose.model('Order');
 
-var item1, item2;
+var item1, item2, user1;
 
 /**
  * Unit tests
@@ -27,6 +28,14 @@ describe('Order model unit tests:', function() {
       active: true
     });
 
+    user1 = new User({
+      firstName: 'Test',
+      lastName: 'User',
+      displayName: 'Test User',
+      email: 'testuser@gmail.com',
+      provider: 'local'
+    });
+
     done();
   });
 
@@ -34,6 +43,7 @@ describe('Order model unit tests:', function() {
     it('should create and save an order', function(done) {
       var order = new Order({
         customer: 'Test customer',
+        user: user1._id,
         items: [
           item1._id,
           item2._id
@@ -51,6 +61,7 @@ describe('Order model unit tests:', function() {
     it('fails to create an Order with missing field', function(done) {
       var order = new Order({
         customer: 'Test customer',
+        user: user1._id,
         items: [
           item1._id,
           item2._id
@@ -71,7 +82,9 @@ describe('Order model unit tests:', function() {
   });
 
   after(function(done) {
+    User.remove().exec();
     Order.remove().exec();
+    Item.remove().exec();
     done();
   });
 });

@@ -1,5 +1,5 @@
 var passport = require('passport'),
-  util = require('util');
+  	util = require('util');
 
 function MockStrategy(options, verify) {
   this.name = 'mock';
@@ -30,10 +30,8 @@ MockStrategy.prototype.authenticate = function authenticate(req) {
 
 module.exports = function(app, options) {
   // create your verify function on your own -- should do similar things as the "real" one.
-  passport.use(new MockStrategy({
-    callbackURL: '/auth/mock'
-  }, function(req, accessToken, refreshToken, profile, done) {
-    console.log(arguments);
+  passport.use(new MockStrategy(options, function(user, cb) {
+    cb(false, user);
   }));
 
   app.get('/auth/mock', passport.authenticate('mock'));
