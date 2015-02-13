@@ -6,23 +6,12 @@ var passport = require('passport'),
 function MockStrategy(options, verify) {
 	this.name = 'mock';
 	this.passAuthentication = options.passAuthentication || true;
-	this.userId = options.userId || 1;
-	this.user = new User({
-		firstName: 'Test',
-		lastName: 'User',
-		displayName: 'Test User',
-		email: 'testuser@gmail.com',
-		provider: 'local',
-		password: 'testuser',
-		isAdmin: true
-	});
-	this.user.save();
 	this._verify = verify;
 }
 
 util.inherits(MockStrategy, passport.Strategy);
 
-MockStrategy.prototype.authenticate = function(req, options) {
+MockStrategy.prototype.authenticate = function authenticate(req, options) {
 	var self = this;
 	options = options || {};
 
@@ -37,18 +26,28 @@ MockStrategy.prototype.authenticate = function(req, options) {
 			if (err) {
 				return self.error(err);
 			}
+
 			return self.success(user, info);
 		});
 	}
 
-	try {
-		if (self._passReqToCallback) {
-			this._verify(req, self.user, verified);
-		} else {
-			this._verify(self.user, verified);
-		}
-	} catch (e) {
-		return self.error(e);
+	if (options.user) {
+		this.user = new User(options.user);
+		this.user.save(function(err) {
+			if (err) {
+				return self.error(err);
+			}
+
+			try {
+				if (self._passReqToCallback) {
+					self._verify(req, self.user, verified);
+				} else {
+					self._verify(self.user, verified);
+				}
+			} catch (e) {
+				return self.error(e);
+			}
+		});
 	}
 };
 

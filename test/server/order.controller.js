@@ -22,7 +22,7 @@ var itemID,
 describe('Order controller unit tests:', function() {
   before(function(done) {
     var item = new Item({
-      title: 'A delicious test item',
+      title: 'User controller test item',
       description: 'A description',
       price: 4.5,
       active: true
@@ -30,29 +30,32 @@ describe('Order controller unit tests:', function() {
 
     itemID = item._id;
 
-    user = new User({
-      firstName: 'Test',
-      lastName: 'User',
-      displayName: 'Test User',
-      email: 'testuser@gmail.com',
-      provider: 'local'
-    });
-
     item.save(done);
   });
 
   before(function(done) {
+    this.timeout(3000);
+
     agent
-      .get('/auth/mock')
+      .post('/auth/mock')
+      .send({
+    		firstName: 'Test',
+    		lastName: 'User',
+    		displayName: 'Test User',
+    		email: 'testuser@gmail.com',
+    		provider: 'local',
+    		password: 'testuser',
+    		isAdmin: true
+    	})
       .expect(200)
       .end(function(err, res) {
         if (err) {
           return done(err);
         }
 
-        res.body.should.eql({
-          success: true
-        });
+        res.body.should.have.property('success', true);
+
+        user = res.body.user;
 
         done();
       });
@@ -92,6 +95,8 @@ describe('Order controller unit tests:', function() {
       .expect(200)
       .end(function(err, res) {
         if (err) {
+          console.log(res.body);
+
           return done(err);
         }
 
@@ -178,6 +183,7 @@ describe('Order controller unit tests:', function() {
   });
 
   after(function(done) {
+    User.remove().exec();
     Item.remove().exec();
     Order.remove().exec();
     done();

@@ -32,20 +32,21 @@ router.route('/auth/google').get(function(req, res) {
 });
 
 if (process.env.NODE_ENV === 'test') {
-  router.route('/auth/mock').get(function(req, res, next) {
-    (passport.authenticate('mock', function(err, user, info) {
-      if (err) {
-        return next(err);
-      }
-      if (!user) {
-        return res.status(500).json({
-          success: false
-        });
-      }
+  router.route('/auth/mock').post(function(req, res) {
+    (passport.authenticate('mock', {
+			user: req.body
+		}, function(err, user, info) {
+			if (err || !user) {
+				return res.status(500).json({
+					success: false
+				});
+			}
+
       res.json({
-        success: true
+        success: true,
+				user: user
       });
-    }))(req, res, next);
+    }))(req, res);
   });
 }
 
