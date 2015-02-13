@@ -39,19 +39,17 @@ var server = http.createServer(function(request, response) {
 						console.log(error);
 						console.log(stderr);
 					} else {
-						console.log(response.writeHead.toString());
-
 						response.writeHead(200, {
 							'Content-Type': 'application/json'
 						});
 
 						if (stdout === commitSHA) {
 							console.log('Nothing new to deploy.');
-							response.write({updated: false});
+							response.write('{"updated": false}');
 							response.end();
 						} else {
 							console.log('%s: updating deployment', (new Date()).toLocaleString());
-							response.write({updated: true});
+							response.write('{"updated": true}');
 							response.end();
 
 							exec('./scripts/update.sh', function(error, stdout, stderr) {
