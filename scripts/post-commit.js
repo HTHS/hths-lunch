@@ -4,6 +4,7 @@ var http = require('http'),
 	exec = require('child_process').exec;
 
 process.on('uncaughtException', function(error) {
+	console.error('Error: ', error);
 	console.error('Uncaught exception: ' + error.message);
 	console.trace();
 });
@@ -38,6 +39,8 @@ var server = http.createServer(function(request, response) {
 						console.log(error);
 						console.log(stderr);
 					} else {
+						console.log(response.writeHead.toString());
+
 						response.writeHead(200, {
 							'Content-Type': 'application/json'
 						});
@@ -48,7 +51,6 @@ var server = http.createServer(function(request, response) {
 							response.end();
 						} else {
 							console.log('%s: updating deployment', (new Date()).toLocaleString());
-
 							response.write({updated: true});
 							response.end();
 
