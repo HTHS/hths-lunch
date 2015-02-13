@@ -44,6 +44,7 @@ var server = http.createServer(function(request, response) {
 						});
 
 						if (stdout === commitSHA) {
+							console.log('stdout: %s, commit SHA: %s', stdout, commitSHA);
 							console.log('Nothing new to deploy.');
 							response.write('{"updated": false}');
 							response.end();
