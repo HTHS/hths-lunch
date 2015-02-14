@@ -208,6 +208,7 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 			if (rawSchedule.startDate) {
 				$scope.newSchedule.startDate = new Date(rawSchedule.startDate);
 				$scope.newSchedule.fakeEndDate = new Date(rawSchedule.endDate);
+				$scope.newSchedule.submissionTime = new Date(0, 0, 0, rawSchedule.schedules[0].h[0], 0, 0);
 				$scope.newSchedule.fakeEndDate.setDate($scope.newSchedule.fakeEndDate.getDate() - 1);
 				$scope.newSchedule.datesToSkip = undefined;
 			}
