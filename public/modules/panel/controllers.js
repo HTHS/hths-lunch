@@ -1,14 +1,14 @@
 angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '$filter', 'PanelAnalytics', function($scope, $filter, PanelAnalytics) {
 	$scope.menuItems = [{
-		iconClass: 'icon-settings',
+		iconClass: 'icon-dashboard',
 		state: 'dashboard',
 		text: 'Dashboard'
 	}, {
-		iconClass: 'icon-tags',
+		iconClass: 'icon-items',
 		state: 'dashboard.items',
 		text: 'Items'
 	}, {
-		iconClass: 'icon-cart',
+		iconClass: 'icon-orders',
 		state: 'dashboard.orders',
 		text: 'Orders'
 	}, {
@@ -20,7 +20,7 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 		state: 'dashboard.analytics',
 		text: 'Analytics'
 	}, {
-		iconClass: 'icon-stats',
+		iconClass: 'icon-users',
 		state: 'dashboard.users',
 		text: 'Users'
 	}];

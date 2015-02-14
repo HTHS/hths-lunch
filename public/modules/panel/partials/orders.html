@@ -22,7 +22,7 @@
           <p flex>{{order | prettyprint}}</p>
           <p flex="10">{{order.total | currency}}</p>
           <p flex="10">{{order.created | date:'medium'}}</p>
-          <md-button class="md-raised md-warn" ng-click="deleteOrder($index)" aria-label="Delete order" flex="5">&times;</md-button>
+          <md-button class="md-raised md-warn" ng-click="deleteOrder($index)" aria-label="Delete order" flex="5"><md-icon md-font-icon="icon-close" style="font-size: 16px;"></md-icon></md-button>
         </div>
       </md-item-content>
       <md-divider ng-if="!$last"></md-divider>

@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="/modules/panel/styles/dashboard.css">
-
 <div layout="column" layout-fill>
   <section layout="row" flex>
     <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-sm')">
@@ -12,7 +10,7 @@
             <md-item ng-repeat="menuItem in menuItems">
               <md-item-content>
                 <div class="md-tile-left">
-                  <span class="{{menuItem.iconClass}}"></span>
+									<md-icon md-font-icon="{{menuItem.iconClass}}"></md-icon>
                 </div>
 
                 <div class="md-tile-content">
