@@ -29,11 +29,12 @@ var server = http.createServer(function(request, response) {
 		request.on('end', function() {
 			var buildInfo = JSON.parse(body).build;
 			var status = buildInfo.status;
+			var branch = buildInfo.branch;
 			var commitSHA = buildInfo.commit_id;
 			var commitMessage = buildInfo.message;
 			var author = buildInfo.committer;
 
-			if (buildInfo.status === 'success') {
+			if (status === 'success' && branch === 'master') {
 				exec('git log --pretty=format:"%H"', function(error, stdout, stderr) {
 					if (error) {
 						console.log(error);
