@@ -40,7 +40,8 @@ angular.module('hthsLunch.panel')
 
 				var options = {
 					lineSmooth: false,
-					low: 0
+					low: 0,
+					showArea: true
 				};
 
 				if (attrs.gWidth && attrs.gHeight) {
