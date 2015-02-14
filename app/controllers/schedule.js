@@ -331,10 +331,10 @@ function emailCSV(csvContents) {
 	console.log('Today\'s CSVs:\n', csvContents);
 
 	var options = {
-		to: 'ibiala@ctemc.org',
-		subject: 'HTHS-Lunch CSV',
-		text: 'Attached are the CSVs.',
-		html: 'Attached are the CSVs.',
+		to: 'ibiala@ctemc.org, ferullo@ctemc.org, kbals@ctemc.org',
+		subject: 'HTHS Lunch Orders ' + today.toDateString().replace(/\s/g, '-'),
+		text: 'Attached are the CSV files for today\'s orders. To print the orders with borders and nicer formatting, click on the attachment in this email to open the preview, then click the printer icon at the top of the preview. If you have any questions, please feel free to contact ibiala@ctemc.org (Ilan Biala).',
+		html: 'Attached are the CSV files for today\'s orders. To print the orders with cell borders and nice formatting, click on the attachment in this email to open the preview, then click the printer icon at the top of the preview. If you have any questions, please feel free to contact ibiala@ctemc.org (Ilan Biala).',
 		attachments: [{
 			filename: 'HTHS-bcc-' + today.toDateString().replace(/\s/g, '-') + '.csv',
 			content: csvContents.orderCSV
