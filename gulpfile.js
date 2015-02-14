@@ -244,7 +244,7 @@ function nodemon() {
 				'gulpfile.js'
 			]
 		})
-		.on('change', build);
+		.on('change', tasks.build);
 }
 
 /*******************
