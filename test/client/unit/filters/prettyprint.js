@@ -2,7 +2,7 @@ describe('Unit: Testing Filters', function() {
 
   var $filter;
 
-  beforeEach(module('hthsLunch.panel'));
+  beforeEach(module('hthsLunch'));
   beforeEach(inject(function(_$filter_) {
     $filter = _$filter_;
   }));
