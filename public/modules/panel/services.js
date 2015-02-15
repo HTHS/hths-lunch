@@ -101,18 +101,4 @@ angular.module('hthsLunch.panel').factory(
 
     return prettyPrint;
   };
-}]).filter('keys', [function() {
-  return function(obj) {
-    if (angular.isObject(obj)) {
-      return Object.keys(obj);
-    }
-  };
-}]).filter('values', [function() {
-  return function(obj) {
-    if (angular.isObject(obj)) {
-      return Object.keys(obj).map(function(key) {
-        return obj[key];
-      });
-    }
-  };
 }]);
