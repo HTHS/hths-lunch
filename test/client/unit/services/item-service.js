@@ -13,32 +13,32 @@ describe('Unit: Testing Services', function() {
     $httpBackend
 			.expectGET('/api/items')
       .respond([{
-        "_id": "543b032fd11f8c0c04bf73fe",
-        "title": "Breaded Chicken Sandwich",
-        "description": "With ketchup",
-        "price": 5.85,
-        "__v": 0,
-        "created": "2015-02-15T00:40:31.881Z",
-        "numberOrdered": 28,
-        "active": true
+        '_id': '543b032fd11f8c0c04bf73fe',
+        'title': 'Breaded Chicken Sandwich',
+        'description': 'With ketchup',
+        'price': 5.85,
+        '__v': 0,
+        'created': '2015-02-15T00:40:31.881Z',
+        'numberOrdered': 28,
+        'active': true
       }, {
-        "_id": "543b0466d11f8c0c04bf7402",
-        "title": "Buffalo Chicken Wrap",
-        "description": "with Lettuce & Tomato (Ranch on side)",
-        "price": 5.75,
-        "__v": 0,
-        "created": "2015-02-15T00:40:31.881Z",
-        "numberOrdered": 12,
-        "active": true
+        '_id': '543b0466d11f8c0c04bf7402',
+        'title': 'Buffalo Chicken Wrap',
+        'description': 'with Lettuce & Tomato (Ranch on side)',
+        'price': 5.75,
+        '__v': 0,
+        'created': '2015-02-15T00:40:31.881Z',
+        'numberOrdered': 12,
+        'active': true
       }, {
-        "_id": "543b026bcba88ebb0251dcef",
-        "title": "Cheeseburger",
-        "description": "with ketchup",
-        "price": 3.4,
-        "__v": 0,
-        "created": "2015-02-15T00:40:31.881Z",
-        "numberOrdered": 1,
-        "active": true
+        '_id': '543b026bcba88ebb0251dcef',
+        'title': 'Cheeseburger',
+        'description': 'with ketchup',
+        'price': 3.4,
+        '__v': 0,
+        'created': '2015-02-15T00:40:31.881Z',
+        'numberOrdered': 1,
+        'active': true
       }]);
 
     var items = ItemService.query();
@@ -54,14 +54,14 @@ describe('Unit: Testing Services', function() {
 		$httpBackend
 			.expectGET('/api/items/543b032fd11f8c0c04bf73fe')
 			.respond({
-				"_id": "543b032fd11f8c0c04bf73fe",
-				"title": "Breaded Chicken Sandwich",
-				"description": "With ketchup",
-				"price": 5.85,
-				"__v": 0,
-				"created": "2015-02-15T00:40:31.881Z",
-				"numberOrdered": 28,
-				"active": true
+				'_id': '543b032fd11f8c0c04bf73fe',
+				'title': 'Breaded Chicken Sandwich',
+				'description': 'With ketchup',
+				'price': 5.85,
+				'__v': 0,
+				'created': '2015-02-15T00:40:31.881Z',
+				'numberOrdered': 28,
+				'active': true
 			});
 
 		var item = ItemService.get({itemId: '543b032fd11f8c0c04bf73fe'});
