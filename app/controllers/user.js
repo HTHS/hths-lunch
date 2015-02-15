@@ -246,7 +246,8 @@ exports.me = function(req, res) {
 exports.list = function(req, res) {
 	User
 		.find()
-		.sort('-created')
+		.sort('displayName')
+		.sort('email')
 		.exec(function(err, users) {
 			if (err) {
 				return res.status(400).json({
