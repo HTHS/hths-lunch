@@ -1,52 +1,27 @@
-<md-tabs>
-  <md-tab md-selected="true" label="Schedule">
-    <div layout="column" layout-fill layout-align="space-around center">
-      <table>
-        <thead>
-          <tr>
-            <th>Mon.</th>
-            <th>Tues.</th>
-            <th>Wed.</th>
-            <th>Thurs.</th>
-            <th>Fri.</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="week in schedule">
-            <td ng-repeat="day in week track by $index">{{day | date: 'mediumDate'}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </md-tab>
-  <md-tab label="Create Schedule">
-    <div layout="column" layout-fill layout-align="center">
-      <form layout="row">
-        <div flex="40">
-          <h2>Create schedule</h2>
-          <md-input-container>
-            <label>Start date</label>
-            <input type="date" placeholder="Start date" required="required" ng-model="newSchedule.startDate">
-          </md-input-container>
+<md-subheader>Create schedule</md-subheader>
 
-          <md-input-container>
-            <label>End date</label>
-            <input type="date" placeholder="End date" required="required" ng-model="newSchedule.fakeEndDate">
-          </md-input-container>
+<form layout="row">
+  <div flex="15">
+    <md-input-container>
+      <label>Start date</label>
+      <input type="date" placeholder="Start date" required="required" ng-model="newSchedule.startDate">
+    </md-input-container>
 
-          <md-input-container>
-            <label>Submission time</label>
-            <input type="time" placeholder="Submission time" required="required" ng-model="newSchedule.submissionTime">
-          </md-input-container>
+    <md-input-container>
+      <label>End date</label>
+      <input type="date" placeholder="End date" required="required" ng-model="newSchedule.fakeEndDate">
+    </md-input-container>
 
-          <md-input-container>
-            <label>Dates to skip</label>
-            <input type="text" placeholder="mm/dd/yyyy, mm/dd/yyyy" ng-model="newSchedule.datesToSkip">
-          </md-input-container>
+    <md-input-container>
+      <label>Submission time</label>
+      <input type="time" placeholder="Submission time" required="required" ng-model="newSchedule.submissionTime">
+    </md-input-container>
 
-          <md-button class="md-primary md-raised" type="submit" ng-click="createSchedule()">Create Schedule!</md-button>
-        </div>
-      </form>
-    </div>
-  </md-tab>
-</md-tabs>
+    <md-input-container>
+      <label>Dates to skip</label>
+      <input type="text" placeholder="mm/dd/yyyy, mm/dd/yyyy" ng-model="newSchedule.datesToSkip">
+    </md-input-container>
+
+    <md-button class="md-primary md-raised" type="submit" ng-click="createSchedule()">Create Schedule!</md-button>
+  </div>
+</form>
