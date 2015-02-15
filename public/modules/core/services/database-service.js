@@ -27,8 +27,8 @@ angular.module('hthsLunch.core.databaseService', ['hthsLunch.core.itemService', 
       return promise;
     };
 
-    service.updateMe = function() {
-      var promise = User.update(me).$promise;
+    service.updateMe = function(user) {
+      var promise = User.update(user).$promise;
 
       promise.then(function(newMe) {
         me = newMe;
@@ -42,7 +42,7 @@ angular.module('hthsLunch.core.databaseService', ['hthsLunch.core.itemService', 
         .save(order)
         .$promise.then(function(order) {
           me.orderHistory.push(order._id);
-          return service.updateMe();
+          return service.updateMe(me);
         });
     };
 
@@ -51,9 +51,11 @@ angular.module('hthsLunch.core.databaseService', ['hthsLunch.core.itemService', 
 
       return promise;
     };
-
-    service.fetchAll = function() {
-      return $q.all([this.fetchMe()]);
+    
+    service.fetchAll = function () {
+      return $q.all({
+        me: this.fetchMe()
+      });
     };
 
     return service;
