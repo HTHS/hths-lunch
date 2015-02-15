@@ -1,4 +1,5 @@
 var router = require('express').Router(),
+  cache = require('../controllers/cache'),
   panel = require('../controllers/panel');
 
 router.all('*', panel.requiresLogin, panel.requiresAuthentication);
@@ -35,10 +36,10 @@ router.route('/analytics')
   // .get(panel.getTopItems);
 
 router.route('/analytics/top-items')
-  .get(panel.getTopItems);
+  .get(cache.untilNextSubmission, panel.getTopItems);
 
 router.route('/analytics/days')
-  .get(panel.getDays);
+  .get(cache.untilNextSubmission, panel.getDays);
 
 // Users routes
 router.route('/users')

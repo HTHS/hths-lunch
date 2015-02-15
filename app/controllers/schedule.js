@@ -169,6 +169,15 @@ exports.isBetween = function(date) {
 	}
 };
 
+exports.getNextDay = function() {
+	if (!exports.schoolDays) {
+		return false;
+	}
+
+	var now = new Date();
+	return later.schedule(exports.schoolDays).next(1, now);
+};
+
 function findOrdersBetween(d1, d2) {
 	var p = Promise.defer();
 
