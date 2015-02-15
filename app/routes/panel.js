@@ -32,7 +32,7 @@ router.route('/schedule/raw')
 
 // Analytics routes
 router.route('/analytics')
-  .get(panel.getTopItems);
+  // .get(panel.getTopItems);
 
 router.route('/analytics/top-items')
   .get(panel.getTopItems);
