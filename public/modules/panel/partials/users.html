@@ -1,4 +1,4 @@
-<section>
+<md-content class="md-padding">
   <md-subheader class="md-primary">Users</md-subheader>
   <md-list layout="column">
     <md-item>
@@ -58,15 +58,15 @@
       </form>
     </md-item>
   </md-list>
-</section>
 
-<form name="csvForm" layout="row">
-  <div flex="40">
-    <h2>Invite users with CSV</h2>
-    <md-input-container>
-      <label>CSV file</label>
-      <input id="csvFileInput" type="file" required="required">
-    </md-input-container>
-    <md-button class="md-primary md-raised" ng-click="inviteUsersFromCSV()">Invite user!</md-button>
-  </div>
-</form>
+	<form name="csvForm" layout="row">
+	  <div flex="40">
+	    <h2>Invite users with CSV</h2>
+	    <md-input-container>
+	      <label>CSV file</label>
+	      <input id="csvFileInput" type="file" required="required">
+	    </md-input-container>
+	    <md-button class="md-primary md-raised" ng-click="inviteUsersFromCSV()">Invite user!</md-button>
+	  </div>
+	</form>
+</md-content>

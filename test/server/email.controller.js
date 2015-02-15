@@ -65,6 +65,8 @@ describe('Email helper logic unit tests:', function() {
 		});
 
 		it('Sends an email and updates properties in the object', function(done) {
+			this.timeout(3000); // increase timeout to 3s
+
 			var options = {
 				to: 'test@test.co',
 				subject: 'Testing email service',
