@@ -144,17 +144,6 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 	}
 ]).controller('DashboardScheduleController', ['$scope', 'MessageService', 'PanelSchedule', function($scope, MessageService, Schedule) {
 	$scope.newSchedule = {};
-	$scope.today = {
-		'date': new Date()
-	};
-	$scope.today.month = $scope.today.date.getMonth();
-	$scope.today.year = $scope.today.date.getFullYear();
-	$scope.today.daysInMonth = daysInMonth($scope.today.month, $scope.today.year);
-	$scope.schedule = [];
-
-	function daysInMonth(month, year) {
-		return new Date(year, month, 0).getDate();
-	};
 
 	$scope.createSchedule = function() {
 		$scope.newSchedule.endDate = new Date($scope.newSchedule.fakeEndDate);
@@ -173,34 +162,6 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 				debugger;
 			});
 	};
-
-	Schedule
-		.query()
-		.$promise.then(function(schedule) {
-			var startingDayOfWeek = new Date(schedule[0]).getDay();
-
-			if (startingDayOfWeek > 1) {
-				var args = [0, 0];
-				for (var day = 0; day < startingDayOfWeek - 1; day++) {
-					args.push('');
-				}
-				Array.prototype.splice.apply(schedule, args);
-			}
-
-			var endingDayOfWeek = new Date(schedule[schedule.length - 1]).getDay();
-			if (endingDayOfWeek < 5) {
-				schedule.push('');
-			}
-
-			var weeks = Math.round(schedule.length / 5);
-			var schoolDays = 5;
-			for (var i = 0; i < weeks; i++) {
-				$scope.schedule[i] = [];
-				for (var z = 0; z < schoolDays; z++) {
-					$scope.schedule[i][z] = schedule[i * (schoolDays) + z];
-				}
-			}
-		});
 
 	Schedule
 		.getRaw()
