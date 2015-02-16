@@ -6,21 +6,27 @@ angular.module('hthsLunch.panel')
 				data: '='
 			},
 			link: function($scope, element, attrs) {
-				var data = {
-					// A labels array that can contain any sort of values
-					labels: $scope.data.labels,
-					// Our series array that contains series objects or in this case series data arrays
-					series: [$scope.data.data]
-				};
+				function createGraph() {
+					var data = {
+						// A labels array that can contain any sort of values
+						labels: $scope.data.labels,
+						// Our series array that contains series objects or in this case series data arrays
+						series: [$scope.data.data]
+					};
 
-				var options = {};
+					var options = {};
 
-				if (attrs.gWidth && attrs.gHeight) {
-					options.width = attrs.gWidth;
-					options.height = attrs.gHeight;
+					if (attrs.gWidth && attrs.gHeight) {
+						options.width = attrs.gWidth;
+						options.height = attrs.gHeight;
+					}
+
+					$scope.graph = new Chartist.Bar(element[0], data, options);
 				}
 
-				$scope.graph = new Chartist.Bar(element[0], data, options);
+				if ($scope.data.data.length) {
+					createGraph();
+				}
 			}
 		};
 	}])
@@ -31,25 +37,31 @@ angular.module('hthsLunch.panel')
 				data: '='
 			},
 			link: function($scope, element, attrs) {
-				var data = {
-					// A labels array that can contain any sort of values
-					labels: $scope.data.labels,
-					// Our series array that contains series objects or in this case series data arrays
-					series: [$scope.data.data]
-				};
+				function createGraph() {
+					var data = {
+						// A labels array that can contain any sort of values
+						labels: $scope.data.labels,
+						// Our series array that contains series objects or in this case series data arrays
+						series: [$scope.data.data]
+					};
 
-				var options = {
-					lineSmooth: false,
-					low: 0,
-					showArea: true
-				};
+					var options = {
+						lineSmooth: false,
+						low: 0,
+						showArea: true
+					};
 
-				if (attrs.gWidth && attrs.gHeight) {
-					options.width = attrs.gWidth;
-					options.height = attrs.gHeight;
+					if (attrs.gWidth && attrs.gHeight) {
+						options.width = attrs.gWidth;
+						options.height = attrs.gHeight;
+					}
+
+					$scope.graph = new Chartist.Line(element[0], data, options);
 				}
 
-				$scope.graph = new Chartist.Line(element[0], data, options);
+				if ($scope.data.data.length) {
+					createGraph();
+				}
 			}
 		};
 	}]);
