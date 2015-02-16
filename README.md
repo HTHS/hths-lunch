@@ -13,6 +13,6 @@ action
 
 `gulp watch` for development
 
-`gulp build` for production
+`gulp` for production
 
-`npm start`
+`npm start` (or `forever start server.js`)
