@@ -50,8 +50,16 @@ exports.createProfile = function createProfile(req, providerUserProfile, done) {
 							var options = {
 								to: user.email,
 								subject: 'Welcome to HTHS-Lunch',
-								text: 'Welcome to HTHS-Lunch!',
-								html: 'Welcome to HTHS-Lunch!'
+								html: [
+									'<h2>Welcome to HTHS-Lunch!</h2>',
+									'<h4>To get started:</h4>',
+									'<ol>',
+									'<li>Go to <a href="http://hths-lunch.tk">the website</a>. If you are already logged in, you should be immediately redirected to the order form.</li>',
+									'<li>Select whichever items you want and just submit the order by 8 a.m. to receive your food for the next school day.</li>',
+									'<li>Update your order from anywhere or cancel your order if you are sick or leaving early.</li>',
+									'</ol>',
+									'<p>If you have any questions, comments, or feedback, contact <a href="mailto:ilan.biala@gmail.com">Ilan Biala</a>.</p>'
+								].join('')
 							};
 
 							var welcomeEmail = new Email(options);
