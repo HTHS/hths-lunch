@@ -14,6 +14,7 @@ var p1 = new Promise(function(resolve, reject) {
         reject({
           error: err
         });
+        console.log(err);
         throw new Error(err);
       }
 
