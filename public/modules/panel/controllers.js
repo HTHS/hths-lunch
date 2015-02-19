@@ -237,7 +237,10 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 
 	$scope.inviteRequestedUser = function(requestedUser) {
 		User
-			.invite(requestedUser)
+			.invite({
+				email: requestedUser.email,
+				isAdmin: requestedUser.isAdmin
+			})
 			.$promise.then(function(user) {
 				requestedUser.status = 'Invited';
 				MessageService.showSuccessNotification('Successfully invited ' + user.email);
