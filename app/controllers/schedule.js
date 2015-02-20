@@ -325,7 +325,6 @@ function createCSVInput(today) {
 				return item.category === 'Snacks' ? item : null;
 			});
 
-			orderCSVData.push([]);
 			orderCSVData.push(['Hot', '', '', '', '']);
 			for (var i = 0; i < hotItems.length; i++) {
 				var item = hotItems[i];
