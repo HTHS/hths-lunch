@@ -271,6 +271,7 @@ function createCSVInput(today) {
 			.findById(orderID)
 			.populate('items')
 			.populate('user')
+			.sort('customer')
 			.exec(function(err, order) {
 				if (err) {
 					// TODO do something
