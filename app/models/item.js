@@ -20,6 +20,16 @@ var ItemSchema = new Schema({
     type: Number,
     required: true
   },
+  category: {
+    type: String,
+    required: true,
+    enum: [
+			'Hot',
+			'Sandwiches',
+			'Salads',
+      'Snacks'
+		],
+  },
   active: {
     type: Boolean,
     default: true

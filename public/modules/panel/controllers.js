@@ -53,6 +53,13 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 			});
 		});
 }]).controller('DashboardItemsController', ['$scope', '$mdDialog', 'MessageService', 'PanelItem', function($scope, $mdDialog, MessageService, Item) {
+	$scope.categories = [
+		'Hot',
+		'Sandwiches',
+		'Salads',
+		'Snacks'
+	];
+
 	$scope.newItem = {
 		active: true
 	};

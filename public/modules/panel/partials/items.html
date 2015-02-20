@@ -1,66 +1,77 @@
 <md-content class="md-padding">
-  <md-subheader class="md-primary">Items</md-subheader>
-  <md-list layout="column">
-    <md-item>
-      <md-item-content>
-        <div class="md-tile-left" hide-sm></div>
-        <div class="md-tile-content" layout="row">
-          <p flex>Item</p>
-          <p flex>Description</p>
-          <p flex="10">Price</p>
-          <p flex="10">Active</p>
-          <p flex="5">Edit</p>
-        </div>
-      </md-item-content>
-      <md-divider></md-divider>
-    </md-item>
+	<md-subheader class="md-primary">Items</md-subheader>
+	<md-list layout="column">
+		<md-item>
+			<md-item-content>
+				<div class="md-tile-left" hide-sm></div>
+				<div class="md-tile-content" layout="row">
+					<p flex>Item</p>
+					<p flex>Description</p>
+					<p flex="10">Price</p>
+					<p flex="10">Category</p>
+					<p flex="10">Active</p>
+					<p flex="5">Edit</p>
+				</div>
+			</md-item-content>
+			<md-divider></md-divider>
+		</md-item>
 
-    <md-item ng-repeat="item in items">
-      <md-item-content>
-        <div class="md-tile-left" hide-sm></div>
-        <div class="md-tile-content" layout="row">
-          <p flex>{{item.title}}</p>
-          <p flex>{{item.description}}</p>
-          <p flex="10">{{item.price | currency}}</p>
-          <p flex="10"><md-checkbox ng-model="item.active" ng-change="toggleActivity(item)" aria-label="Item status"></md-checkbox></p>
-          <md-button class="md-raised icon-pencil" flex="5" ng-click="editItem(item, $index, $event)" aria-label="Edit item"></md-button>
-        </div>
-      </md-item-content>
-      <md-divider></md-divider>
-    </md-item>
+		<md-item ng-repeat="item in items">
+			<md-item-content>
+				<div class="md-tile-left" hide-sm></div>
+				<div class="md-tile-content" layout="row">
+					<p flex>{{item.title}}</p>
+					<p flex>{{item.description}}</p>
+					<p flex="10">{{item.price | currency}}</p>
+					<p flex="10">
+						<md-select placeholder="Category" ng-model="item.category" ng-change="toggleCategory(item, $index, item.category)">
+							<md-option ng-value="category" ng-repeat="category in categories">{{category}}</md-option>
+						</md-select>
+					</p>
+					<p flex="10"><md-checkbox ng-model="item.active" ng-change="toggleActivity(item)" aria-label="Item status"></md-checkbox></p>
+					<md-button class="md-raised icon-pencil" flex="5" ng-click="editItem(item, $index, $event)" aria-label="Edit item"></md-button>
+				</div>
+			</md-item-content>
+			<md-divider></md-divider>
+		</md-item>
 
-    <md-item>
-      <form name="createItemForm">
-      <md-item-content>
-        <div class="md-tile-left" hide-sm></div>
-        <div class="md-tile-content" layout="row">
-          <h3 flex>
-            <md-input-container>
-              <label>Title</label>
-              <input type="text" placeholder="Pizza" required="required" ng-model="newItem.title">
-            </md-input-container>
-          </h3>
-          <h4 flex>
-            <md-input-container>
-              <label>Description</label>
-              <input type="text" placeholder="2 hot slices" required="required" ng-model="newItem.description">
-            </md-input-container>
-          </h4>
-          <h4 flex="10">
-            <md-input-container>
-              <label>Price</label>
-              <input type="number" min="0" step="any" placeholder="4.00" required="required" ng-model="newItem.price">
-            </md-input-container>
-          </h4>
-          <p flex="10">
-            <md-checkbox ng-model="newItem.active" aria-label="New item status"></md-checkbox>
-          </p>
-          <p flex="5">
-            <md-button type="submit" class="md-button md-raised md-primary" ng-click="createItem()">Create!</md-button>
-          </p>
-        </div>
-      </md-item-content>
-      </form>
-    </md-item>
-  </md-list>
+		<md-item>
+			<form name="createItemForm">
+				<md-item-content>
+					<div class="md-tile-left" hide-sm></div>
+					<div class="md-tile-content" layout="row">
+						<h3 flex>
+							<md-input-container>
+								<label>Title</label>
+								<input type="text" placeholder="Pizza" required="required" ng-model="newItem.title">
+							</md-input-container>
+						</h3>
+						<h4 flex>
+							<md-input-container>
+								<label>Description</label>
+								<input type="text" placeholder="2 hot slices" required="required" ng-model="newItem.description">
+							</md-input-container>
+						</h4>
+						<h4 flex="10">
+							<md-input-container>
+								<label>Price</label>
+								<input type="number" min="0" step="any" placeholder="4.00" required="required" ng-model="newItem.price">
+							</md-input-container>
+						</h4>
+						<p flex="10">
+							<md-select ng-model="newItem.category" placeholder="Category">
+								<md-option ng-value="category" ng-repeat="category in categories">{{category}}</md-option>
+							</md-select>
+						</p>
+						<p flex="10">
+							<md-checkbox ng-model="newItem.active" aria-label="New item status"></md-checkbox>
+						</p>
+						<p flex="5">
+							<md-button type="submit" class="md-button md-raised md-primary" ng-click="createItem()">Create!</md-button>
+						</p>
+					</div>
+				</md-item-content>
+			</form>
+		</md-item>
+	</md-list>
 </md-content>
