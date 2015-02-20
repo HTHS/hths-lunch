@@ -252,9 +252,9 @@ function createCSVInput(today) {
 	};
 
 	var orderCSVData = [
-		['', 'High Technology High School Orders', ''],
+		['', '', 'High Technology High School Orders', '', ''],
 		[],
-		['Items', 'Quantity', 'Total']
+		['', 'Items', 'Quantity', 'Total', '']
 	];
 	var customerCSVData = [
 		['', 'HTHS', ''],
@@ -284,7 +284,8 @@ function createCSVInput(today) {
 							orderData.items[item._id] = {
 								title: item.title,
 								quantity: order.quantity[index],
-								price: item.price
+								price: item.price,
+								category: item.category
 							};
 						}
 					});
@@ -308,19 +309,68 @@ function createCSVInput(today) {
 				return orderData.items[key];
 			});
 
-			for (var i = 0; i < orderData.items.length; i++) {
-				var item = orderData.items[i];
+			var hotItems = orderData.items.filter(function(item) {
+				return item.category === 'Hot' ? item : null;
+			});
+
+			var sandwichItems = orderData.items.filter(function(item) {
+				return item.category === 'Sandwiches' ? item : null;
+			});
+
+			var saladItems = orderData.items.filter(function(item) {
+				return item.category === 'Salads' ? item : null;
+			});
+
+			var snackItems = orderData.items.filter(function(item) {
+				return item.category === 'Snacks' ? item : null;
+			});
+
+			orderCSVData.push([]);
+			orderCSVData.push(['Hot', '', '', '', '']);
+			for (var i = 0; i < hotItems.length; i++) {
+				var item = hotItems[i];
 				var quantity = item.quantity;
 				var itemTotal = item.price * quantity;
-				orderCSVData.push([item.title, quantity, '$' + itemTotal.toFixed(2)]);
+				orderCSVData.push(['', item.title, quantity, '$' + itemTotal.toFixed(2), '']);
 				orderData.total += itemTotal;
 			}
+
 			orderCSVData.push([]);
-			orderCSVData.push(['Grand total:', '', '$' + orderData.total.toFixed(2)]);
+			orderCSVData.push(['Sandwiches', '', '', '', '']);
+			for (var i = 0; i < sandwichItems.length; i++) {
+				var item = sandwichItems[i];
+				var quantity = item.quantity;
+				var itemTotal = item.price * quantity;
+				orderCSVData.push(['', item.title, quantity, '$' + itemTotal.toFixed(2), '']);
+				orderData.total += itemTotal;
+			}
+
 			orderCSVData.push([]);
-			orderCSVData.push(['', 'PLEASE BRING KETCHUP EVERYDAY - THANK YOU', '']);
+			orderCSVData.push(['Salads', '', '', '', '']);
+			for (var i = 0; i < saladItems.length; i++) {
+				var item = saladItems[i];
+				var quantity = item.quantity;
+				var itemTotal = item.price * quantity;
+				orderCSVData.push(['', item.title, quantity, '$' + itemTotal.toFixed(2), '']);
+				orderData.total += itemTotal;
+			}
+
 			orderCSVData.push([]);
-			orderCSVData.push(['', 'Please send condiments today', '']);
+			orderCSVData.push(['Snacks', '', '', '', '']);
+			for (var i = 0; i < snackItems.length; i++) {
+				var item = snackItems[i];
+				var quantity = item.quantity;
+				var itemTotal = item.price * quantity;
+				orderCSVData.push(['', item.title, quantity, '$' + itemTotal.toFixed(2), '']);
+				orderData.total += itemTotal;
+			}
+
+			orderCSVData.push([]);
+			orderCSVData.push(['', 'Grand total:', '', '$' + orderData.total.toFixed(2), '']);
+			orderCSVData.push([]);
+			orderCSVData.push(['', '', 'PLEASE BRING KETCHUP EVERYDAY - THANK YOU', '', '']);
+			orderCSVData.push([]);
+			orderCSVData.push(['', '', 'Please send condiments today', '', '']);
 
 			return Promise.join(csv.generate(orderCSVData).then(function(csv) {
 				return csv;
