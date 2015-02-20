@@ -126,7 +126,7 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 		.$promise.then(function(items) {
 			$scope.items = items;
 		})
-		.catch(function(reponse) {
+		.catch(function(response) {
 			debugger;
 		});
 }]).controller('DashboardOrdersController', ['$scope', 'MessageService', 'PanelOrder',
@@ -301,7 +301,7 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 		.$promise.then(function(users) {
 			$scope.users = users;
 		})
-		.catch(function(reponse) {
+		.catch(function(response) {
 			debugger;
 		});
 }]).controller('EditItemController', ['$scope', '$mdDialog', 'editingItem',
