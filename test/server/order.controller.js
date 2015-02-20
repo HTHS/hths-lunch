@@ -24,6 +24,7 @@ describe('Order controller unit tests:', function() {
     var item = new Item({
       title: 'User controller test item',
       description: 'A description',
+      category: 'Hot',
       price: 4.5,
       active: true
     });

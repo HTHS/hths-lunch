@@ -71,6 +71,7 @@ describe('Panel controller unit tests:', function() {
     item = new Item({
       title: 'A delicious test item',
       description: 'A description',
+      category: 'Hot',
       price: 4.5,
       active: true
     });
