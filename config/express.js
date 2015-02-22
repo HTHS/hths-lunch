@@ -9,6 +9,7 @@ var path = require('path'),
   session = require('express-session'),
   compress = require('compression'),
   morgan = require('morgan'),
+  rollbar = require('rollbar'),
   helmet = require('helmet'),
   MongoStore = require('connect-mongo')(session),
   passport = require('passport'),
@@ -91,6 +92,8 @@ module.exports = function(db, options) {
   // use passport session
   app.use(passport.initialize());
   app.use(passport.session());
+
+  app.use(rollbar.errorHandler('c3352d3a8f1e4526aac01b3913bad18f'));
 
   var waitingForSignup = options.userCount === 0 ? false : true;
   app.use(function(req, res, next) {
