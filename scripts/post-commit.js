@@ -1,7 +1,8 @@
 var port = 9418;
 var http = require('http'),
 	querystring = require('querystring'),
-	exec = require('child_process').exec;
+	exec = require('child_process').exec,
+	request = require('supertest');
 
 process.on('uncaughtException', function(error) {
 	console.error('Error: ', error);
@@ -58,6 +59,16 @@ var server = http.createServer(function(request, response) {
 								if (error) {
 									console.log('Git pull error: ', error, stdout, stderr);
 								} else {
+									request('https://api.rollbar.com')
+										.post('/api/1/deploy/')
+										.send({
+											access_token: 'c3352d3a8f1e4526aac01b3913bad18f',
+											environment: 'production',
+											revision: commitSHA,
+											comment: commitMessage
+										})
+										.end();
+
 									console.log('Commit %s\nAuthor: %s\n\t%s\n', commitSHA, author, commitMessage);
 									console.log('%s: finished updating deployment', (new Date()).toLocaleString());
 								}
