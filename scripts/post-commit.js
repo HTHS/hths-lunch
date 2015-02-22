@@ -65,7 +65,7 @@ var server = http.createServer(function(request, response) {
 											access_token: 'c3352d3a8f1e4526aac01b3913bad18f',
 											environment: 'production',
 											revision: commitSHA,
-											local_username: 'autobot',
+											local_username: author,
 											comment: commitMessage
 										})
 										.end(function(err, res) {
