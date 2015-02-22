@@ -65,9 +65,14 @@ var server = http.createServer(function(request, response) {
 											access_token: 'c3352d3a8f1e4526aac01b3913bad18f',
 											environment: 'production',
 											revision: commitSHA,
+											local_username: 'autobot',
 											comment: commitMessage
 										})
-										.end();
+										.end(function(err, res) {
+											if (!err) {
+												console.log('%s: sent deploy information to Rollbar', (new Date()).toLocaleString());
+											}
+										});
 
 									console.log('Commit %s\nAuthor: %s\n\t%s\n', commitSHA, author, commitMessage);
 									console.log('%s: finished updating deployment', (new Date()).toLocaleString());
