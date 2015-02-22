@@ -7,7 +7,7 @@ var http = require('http'),
 process.on('uncaughtException', function(error) {
 	console.error('Error: ', error);
 	console.error('Uncaught exception: ' + error.message);
-	console.trace();
+	console.error(error.stack);
 });
 
 var server = http.createServer(function(request, response) {
