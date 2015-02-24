@@ -10,24 +10,24 @@ process.on('uncaughtException', function(error) {
 	console.error(error.stack);
 });
 
-var server = http.createServer(function(request, response) {
-	if (request.method === 'GET') {
+var server = http.createServer(function(req, res) {
+	if (req.method === 'GET') {
 		exec('git log -1 --name-only', function(error, stdout, stderr) {
-			response.writeHead(200, {
+			res.writeHead(200, {
 				'Content-Type': 'text/html'
 			});
-			response.write('<html><body><pre>');
-			response.write(stdout);
-			response.write('</pre></body></html>');
-			response.end();
+			res.write('<html><body><pre>');
+			res.write(stdout);
+			res.write('</pre></body></html>');
+			res.end();
 		});
 	} else {
 		var body = '';
-		request.on('data', function(chunk) {
+		req.on('data', function(chunk) {
 			body += chunk.toString();
 		});
 
-		request.on('end', function() {
+		req.on('end', function() {
 			var buildInfo = JSON.parse(body).build;
 			var status = buildInfo.status;
 			var branch = buildInfo.branch;
@@ -41,19 +41,19 @@ var server = http.createServer(function(request, response) {
 						console.log(error);
 						console.log(stderr);
 					} else {
-						response.writeHead(200, {
+						res.writeHead(200, {
 							'Content-Type': 'application/json'
 						});
 
 						if (stdout === commitSHA) {
 							console.log('stdout: %s, commit SHA: %s', stdout, commitSHA);
 							console.log('Nothing new to deploy.');
-							response.write('{"updated": false}');
-							response.end();
+							res.write('{"updated": false}');
+							res.end();
 						} else {
 							console.log('%s: updating deployment', (new Date()).toLocaleString());
-							response.write('{"updated": true}');
-							response.end();
+							res.write('{"updated": true}');
+							res.end();
 
 							exec('./scripts/update.sh', function(error, stdout, stderr) {
 								if (error) {
