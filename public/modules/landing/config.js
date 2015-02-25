@@ -11,5 +11,7 @@ angular.module('hthsLunch.landingPage')
 						}
 					}
 				});
+
+			$urlRouterProvider.otherwise('/');
 		}
 	]);
