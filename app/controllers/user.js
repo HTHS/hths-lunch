@@ -438,7 +438,7 @@ exports.requiresIdentity = function requiresIdentity(req, res, next) {
 };
 
 /**
- * Require Authentication routing middleware
+ * Require admin priviliges routing middleware
  */
 exports.requiresAuthentication = function requiresAuthentication(req, res, next) {
 	if (req.user.isAdmin) {
