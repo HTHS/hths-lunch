@@ -1,40 +1,48 @@
 <div layout="column" layout-fill>
-  <section layout="row" flex>
-    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-sm')">
-      <md-toolbar>
-        <h1 class="md-toolbar-tools">Dashboard</h1>
-      </md-toolbar>
-      <md-content class="md-padding">
-        <md-content>
-          <md-list>
-            <md-item ng-repeat="menuItem in menuItems">
-              <md-item-content>
-                <div class="md-tile-left">
+	<section layout="row" flex>
+		<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-sm')">
+			<md-toolbar>
+				<h1 class="md-toolbar-tools">Dashboard</h1>
+			</md-toolbar>
+			<md-content class="md-padding">
+				<md-content>
+					<md-list>
+						<md-item ng-repeat="menuItem in menuItems">
+							<md-item-content>
+								<div class="md-tile-left">
 									<md-icon md-font-icon="{{menuItem.iconClass}}"></md-icon>
-                </div>
+								</div>
 
-                <div class="md-tile-content">
-                  <a ui-sref="{{menuItem.state}}">{{menuItem.text}}</a>
-                </div>
-              </md-item-content>
-            </md-item>
-          </md-list>
-        </md-content>
-      </md-content>
-    </md-sidenav>
+								<div class="md-tile-content">
+									<a ui-sref="{{menuItem.state}}">{{menuItem.text}}</a>
+								</div>
+							</md-item-content>
+						</md-item>
+					</md-list>
+				</md-content>
+			</md-content>
+		</md-sidenav>
 
-    <md-content flex>
-      <div layout="column" layout-fill layout-align="center" ui-view="dashboard">
-        <div layout="row" layout-fill layout-align="center">
-          <md-whiteframe class="md-whiteframe-z1" flex>
-            <bar-graph class="ct-chart ct-perfect-fourth" data="topItemsData" ng-if="topItemsData"></bar-graph>
-          </md-whiteframe>
+		<md-content flex>
+			<md-toolbar>
+				<div layout="row" flex class="fill-height">
+					<md-button md-no-ink hide-gt-sm aria-label="Menu toggle" ng-click="toggleMenu()">
+						<md-icon md-font-icon="icon-menu"></md-icon>
+					</md-button>
+				</div>
+			</md-toolbar>
 
-          <md-whiteframe class="md-whiteframe-z1" flex>
-            <line-chart class="ct-chart ct-perfect-fourth" data="ordersPerDayData" ng-if="ordersPerDayData"></line-chart>
-          </md-whiteframe>
-        </div>
-      </div>
-    </md-content>
-  </section>
+			<div layout="column" layout-fill layout-align="center" ui-view="dashboard">
+				<div layout="row" layout-fill layout-align="center">
+					<md-whiteframe class="md-whiteframe-z1" flex>
+						<bar-graph class="ct-chart ct-perfect-fourth" data="topItemsData" ng-if="topItemsData"></bar-graph>
+					</md-whiteframe>
+
+					<md-whiteframe class="md-whiteframe-z1" flex>
+						<line-chart class="ct-chart ct-perfect-fourth" data="ordersPerDayData" ng-if="ordersPerDayData"></line-chart>
+					</md-whiteframe>
+				</div>
+			</div>
+		</md-content>
+	</section>
 </div>

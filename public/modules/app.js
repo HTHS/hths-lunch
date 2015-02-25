@@ -39,4 +39,9 @@ angular.module('hthsLunch', [
       .primaryPalette('blue')
       .accentPalette('green');
   }
-]);
+]).run(['$rootScope', '$mdSidenav', function($rootScope, $mdSidenav) {
+  $rootScope.$on('$locationChangeSuccess', function () {
+    $mdSidenav('left').close();
+        console.log('$locationChangeSuccess changed!', new Date());
+    });
+}]);

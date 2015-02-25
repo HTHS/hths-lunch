@@ -1,4 +1,4 @@
-angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '$filter', 'PanelAnalytics', function($scope, $filter, PanelAnalytics) {
+angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '$filter', '$mdSidenav', 'PanelAnalytics', function($scope, $filter, $mdSidenav, PanelAnalytics) {
 	$scope.menuItems = [{
 		iconClass: 'icon-dashboard',
 		state: 'dashboard',
@@ -52,6 +52,10 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 				$scope.ordersPerDayData.labels.push($filter('date')(day.date, 'mediumDate'));
 			});
 		});
+
+		$scope.toggleMenu = function() {
+			$mdSidenav('left').toggle();
+		};
 }]).controller('DashboardItemsController', ['$scope', '$mdDialog', 'MessageService', 'PanelItem', function($scope, $mdDialog, MessageService, Item) {
 	$scope.categories = [
 		'Hot',
