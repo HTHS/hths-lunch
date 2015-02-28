@@ -3,6 +3,7 @@
  */
 var _ = require('lodash'),
   mongoose = require('mongoose'),
+  Promise = require('bluebird'),
   Order = mongoose.model('Order'),
   errorHandler = require('./error');
 
@@ -83,6 +84,31 @@ exports.list = function(req, res) {
         res.json(orders);
       }
     });
+};
+
+/**
+ * Find orders between 2 dates
+ * @param  {Date}       d1 Start date
+ * @param  {Date}       d2 End date
+ * @return {Promise}    Promise that resolves with orders
+ */
+exports.between = function findOrdersBetween(d1, d2) {
+  var p = Promise.defer();
+
+  Order
+		.find({})
+		.where('created').gte(d1).lte(d2)
+		.sort('created')
+		.populate('items')
+		.exec(function(err, orders) {
+			if (err) {
+				p.reject(err);
+			} else {
+				p.resolve(orders);
+			}
+		});
+
+	return p.promise;
 };
 
 /**
