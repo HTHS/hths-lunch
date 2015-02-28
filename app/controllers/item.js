@@ -3,6 +3,7 @@
  */
 var _ = require('lodash'),
 	mongoose = require('mongoose'),
+	Promise = require('bluebird'),
 	Item = mongoose.model('Item'),
 	errorHandler = require('./error');
 
@@ -83,6 +84,41 @@ exports.list = function(req, res) {
 			res.json(items);
 		}
 	});
+};
+
+/**
+ * Get Items grouped by category
+ * @return {Promise}    Promise that resolves with items
+ */
+exports.byCategory = function getItemsByCategory() {
+	var promises = [];
+	var categories = [
+		'Hot',
+		'Sandwiches',
+		'Salads',
+		'Snacks'
+	];
+
+	categories.forEach(function(category) {
+		var p = Promise.defer();
+
+		Item
+			.find()
+			.where('category').equals(category)
+			.sort('title')
+			.exec(function(err, items) {
+				if (err) {
+					console.log(err);
+					return p.reject(err);
+				}
+
+				p.resolve(items);
+			});
+
+		promises.push(p.promise);
+	});
+
+	return Promise.all(promises);
 };
 
 /**
