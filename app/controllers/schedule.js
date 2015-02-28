@@ -9,6 +9,7 @@ var _ = require('lodash'),
 	Order = mongoose.model('Order'),
 	Item = mongoose.model('Item'),
 	Day = mongoose.model('Day'),
+	orders = require('./order'),
 	csv = require('./csv'),
 	Email = require('./email'),
 	errorHandler = require('./error');
@@ -177,25 +178,6 @@ exports.getNextDay = function() {
 	var now = new Date();
 	return later.schedule(exports.schoolDays).next(1, now);
 };
-
-function findOrdersBetween(d1, d2) {
-	var p = Promise.defer();
-
-	Order
-		.find({})
-		.where('created').gte(d1).lte(d2)
-		.sort('created')
-		.populate('items')
-		.exec(function(err, orders) {
-			if (err) {
-				p.reject(err);
-			} else {
-				p.resolve(orders);
-			}
-		});
-
-	return p.promise;
-}
 
 function createDay(orders) {
 	var p = Promise.defer();
@@ -374,7 +356,7 @@ function endSubmissionsForDay() {
 
 	console.log('Ending submissions for this period from %s to %s', yesterday.toUTCString(), today.toUTCString());
 
-	findOrdersBetween(yesterday, today)
+	orders.between(yesterday, today)
 		.then(createDay)
 		.then(createCSVInput)
 		.then(emailCSV)
