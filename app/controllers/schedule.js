@@ -291,78 +291,99 @@ function createCSVInput(today) {
 				return orderData.items[key];
 			});
 
-			var hotItems = orderData.items.filter(function(item) {
-				return item.category === 'Hot' ? item : null;
-			});
+			return items
+				.byCategory()
+				.then(function(items) {
+					items = _.flatten(items);
 
-			var sandwichItems = orderData.items.filter(function(item) {
-				return item.category === 'Sandwiches' ? item : null;
-			});
+					var itemTitles = items.map(function(item) {
+						return item.title;
+					});
 
-			var saladItems = orderData.items.filter(function(item) {
-				return item.category === 'Salads' ? item : null;
-			});
+					for (var i = 0; i < orderData.items.length; i++) {
+						var item = orderData.items[i];
 
-			var snackItems = orderData.items.filter(function(item) {
-				return item.category === 'Snacks' ? item : null;
-			});
+						var newItem = items[itemTitles.indexOf(item.title)];
+						newItem.quantity = item.quantity;
+						newItem.total = item.price * item.quantity;
+					}
 
-			orderCSVData.push(['Hot', '', '', '', '']);
-			for (var i = 0; i < hotItems.length; i++) {
-				var item = hotItems[i];
-				var quantity = item.quantity;
-				var itemTotal = item.price * quantity;
-				orderCSVData.push(['', item.title, quantity, '$' + itemTotal.toFixed(2), '']);
-				orderData.total += itemTotal;
-			}
+					var hotItems = items.filter(function(item) {
+						return item.category === 'Hot' ? item : null;
+					});
 
-			orderCSVData.push([]);
-			orderCSVData.push(['Sandwiches', '', '', '', '']);
-			for (var i = 0; i < sandwichItems.length; i++) {
-				var item = sandwichItems[i];
-				var quantity = item.quantity;
-				var itemTotal = item.price * quantity;
-				orderCSVData.push(['', item.title, quantity, '$' + itemTotal.toFixed(2), '']);
-				orderData.total += itemTotal;
-			}
+					var sandwichItems = items.filter(function(item) {
+						return item.category === 'Sandwiches' ? item : null;
+					});
 
-			orderCSVData.push([]);
-			orderCSVData.push(['Salads', '', '', '', '']);
-			for (var i = 0; i < saladItems.length; i++) {
-				var item = saladItems[i];
-				var quantity = item.quantity;
-				var itemTotal = item.price * quantity;
-				orderCSVData.push(['', item.title, quantity, '$' + itemTotal.toFixed(2), '']);
-				orderData.total += itemTotal;
-			}
+					var saladItems = items.filter(function(item) {
+						return item.category === 'Salads' ? item : null;
+					});
 
-			orderCSVData.push([]);
-			orderCSVData.push(['Snacks', '', '', '', '']);
-			for (var i = 0; i < snackItems.length; i++) {
-				var item = snackItems[i];
-				var quantity = item.quantity;
-				var itemTotal = item.price * quantity;
-				orderCSVData.push(['', item.title, quantity, '$' + itemTotal.toFixed(2), '']);
-				orderData.total += itemTotal;
-			}
+					var snackItems = items.filter(function(item) {
+						return item.category === 'Snacks' ? item : null;
+					});
 
-			orderCSVData.push([]);
-			orderCSVData.push(['', 'Grand total:', '', '$' + orderData.total.toFixed(2), '']);
-			orderCSVData.push([]);
-			orderCSVData.push(['', '', 'PLEASE BRING KETCHUP EVERYDAY - THANK YOU', '', '']);
-			orderCSVData.push([]);
-			orderCSVData.push(['', '', 'Please send condiments today', '', '']);
+					orderCSVData.push(['Hot', '', '', '', '']);
+					for (var i = 0; i < hotItems.length; i++) {
+						var item = hotItems[i];
+						var quantity = item.quantity || 0;
+						var total = item.total || 0;
+						orderCSVData.push(['', item.title, quantity, '$' + total.toFixed(2), '']);
+						orderData.total += total;
+					}
 
-			return Promise.join(csv.generate(orderCSVData).then(function(csv) {
-				return csv;
-			}), csv.generate(customerCSVData).then(function(csv) {
-				return csv;
-			}), function(orderCSV, customerCSV) {
-				return {
-					orderCSV: orderCSV,
-					customerCSV: customerCSV
-				};
-			});
+					orderCSVData.push([]);
+					orderCSVData.push(['Sandwiches', '', '', '', '']);
+					for (var i = 0; i < sandwichItems.length; i++) {
+						var item = sandwichItems[i];
+						var quantity = item.quantity || 0;
+						var total = item.total || 0;
+						orderCSVData.push(['', item.title, quantity, '$' + total.toFixed(2), '']);
+						orderData.total += total;
+					}
+
+					orderCSVData.push([]);
+					orderCSVData.push(['Salads', '', '', '', '']);
+					for (var i = 0; i < saladItems.length; i++) {
+						var item = saladItems[i];
+						var quantity = item.quantity || 0;
+						var total = item.total || 0;
+						orderCSVData.push(['', item.title, quantity, '$' + total.toFixed(2), '']);
+						orderData.total += total;
+					}
+
+					orderCSVData.push([]);
+					orderCSVData.push(['Snacks', '', '', '', '']);
+					for (var i = 0; i < snackItems.length; i++) {
+						var item = snackItems[i];
+						var quantity = item.quantity || 0;
+						var total = item.total || 0;
+						orderCSVData.push(['', item.title, quantity, '$' + total.toFixed(2), '']);
+						orderData.total += total;
+					}
+
+					orderCSVData.push([]);
+					orderCSVData.push(['', 'Grand total:', '', '$' + orderData.total.toFixed(2), '']);
+					orderCSVData.push([]);
+					orderCSVData.push(['', '', 'PLEASE BRING KETCHUP EVERYDAY - THANK YOU', '', '']);
+					orderCSVData.push([]);
+					orderCSVData.push(['', '', 'Please send condiments today', '', '']);
+
+					return Promise.join(csv.generate(orderCSVData).then(function(csv) {
+						return csv;
+					}), csv.generate(customerCSVData).then(function(csv) {
+						return csv;
+					}), function(orderCSV, customerCSV) {
+						return {
+							orderCSV: orderCSV,
+							customerCSV: customerCSV
+						};
+					});
+				})
+				.catch(function() {
+					console.error(arguments);
+				});
 		});
 }
 
