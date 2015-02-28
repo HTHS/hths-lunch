@@ -61,7 +61,7 @@ exports.create = function(req, res) {
 			exports.schoolSchedule = later.schedule(exports.schoolDays)
 				.next(500, startDate, endDate);
 
-			exports.job = later.setInterval(endSubmissionsForDay, exports.schoolDays);
+			exports.job = later.setInterval(exports.endSubmissionsForDay, exports.schoolDays);
 
 			res.json(exports.schoolSchedule);
 		}
@@ -102,7 +102,7 @@ exports.update = function(req, res) {
 				.next(500, exports.schoolDays.startDate, exports.schoolDays.endDate);
 
 			exports.job.clear();
-			exports.job = later.setInterval(endSubmissionsForDay, exports.schoolDays);
+			exports.job = later.setInterval(exports.endSubmissionsForDay, exports.schoolDays);
 
 			res.json(exports.schoolSchedule);
 		}
@@ -145,7 +145,7 @@ exports.init = function scheduleOrderProcessing() {
 			exports.schoolSchedule = later.schedule(exports.schoolDays).next(
 				500,
 				exports.schoolDays.startDate, exports.schoolDays.endDate);
-			exports.job = later.setInterval(endSubmissionsForDay, exports.schoolDays);
+			exports.job = later.setInterval(exports.endSubmissionsForDay, exports.schoolDays);
 		}
 
 		p.resolve();
@@ -234,9 +234,9 @@ function createCSVInput(today) {
 	};
 
 	var orderCSVData = [
-		['', 'High Technology High School Orders', ''],
+		['', '', 'High Technology High School Orders', '', ''],
 		[],
-		['Items', 'Quantity', 'Total']
+		['', 'Items', 'Quantity', 'Total', '']
 	];
 	var customerCSVData = [
 		['', 'HTHS', ''],
@@ -266,7 +266,8 @@ function createCSVInput(today) {
 							orderData.items[item._id] = {
 								title: item.title,
 								quantity: order.quantity[index],
-								price: item.price
+								price: item.price,
+								category: item.category
 							};
 						}
 					});
@@ -299,40 +300,86 @@ function createCSVInput(today) {
 						return item.title;
 					});
 
-			for (var i = 0; i < orderData.items.length; i++) {
-				var item = orderData.items[i];
+					for (var i = 0; i < orderData.items.length; i++) {
+						var item = orderData.items[i];
 
 						var newItem = items[itemTitles.indexOf(item.title)];
 						newItem.quantity = item.quantity;
 						newItem.total = item.price * item.quantity;
-			}
+					}
 
-					for (i = 0; i < items.length; i++) {
-						var item = items[i];
+					var hotItems = items.filter(function(item) {
+						return item.category === 'Hot' ? item : null;
+					});
+
+					var sandwichItems = items.filter(function(item) {
+						return item.category === 'Sandwiches' ? item : null;
+					});
+
+					var saladItems = items.filter(function(item) {
+						return item.category === 'Salads' ? item : null;
+					});
+
+					var snackItems = items.filter(function(item) {
+						return item.category === 'Snacks' ? item : null;
+					});
+
+					orderCSVData.push(['Hot', '', '', '', '']);
+					for (var i = 0; i < hotItems.length; i++) {
+						var item = hotItems[i];
 						var quantity = item.quantity || 0;
 						var total = item.total || 0;
-
-						orderCSVData.push([item.title, quantity, '$' + total.toFixed(2)]);
+						orderCSVData.push(['', item.title, quantity, '$' + total.toFixed(2), '']);
 						orderData.total += total;
 					}
 
-			orderCSVData.push([]);
-			orderCSVData.push(['Grand total:', '', '$' + orderData.total.toFixed(2)]);
-			orderCSVData.push([]);
-			orderCSVData.push(['', 'PLEASE BRING KETCHUP EVERYDAY - THANK YOU', '']);
-			orderCSVData.push([]);
-			orderCSVData.push(['', 'Please send condiments today', '']);
+					orderCSVData.push([]);
+					orderCSVData.push(['Sandwiches', '', '', '', '']);
+					for (var i = 0; i < sandwichItems.length; i++) {
+						var item = sandwichItems[i];
+						var quantity = item.quantity || 0;
+						var total = item.total || 0;
+						orderCSVData.push(['', item.title, quantity, '$' + total.toFixed(2), '']);
+						orderData.total += total;
+					}
 
-			return Promise.join(csv.generate(orderCSVData).then(function(csv) {
-				return csv;
-			}), csv.generate(customerCSVData).then(function(csv) {
-				return csv;
-			}), function(orderCSV, customerCSV) {
-				return {
-					orderCSV: orderCSV,
-					customerCSV: customerCSV
-				};
-			});
+					orderCSVData.push([]);
+					orderCSVData.push(['Salads', '', '', '', '']);
+					for (var i = 0; i < saladItems.length; i++) {
+						var item = saladItems[i];
+						var quantity = item.quantity || 0;
+						var total = item.total || 0;
+						orderCSVData.push(['', item.title, quantity, '$' + total.toFixed(2), '']);
+						orderData.total += total;
+					}
+
+					orderCSVData.push([]);
+					orderCSVData.push(['Snacks', '', '', '', '']);
+					for (var i = 0; i < snackItems.length; i++) {
+						var item = snackItems[i];
+						var quantity = item.quantity || 0;
+						var total = item.total || 0;
+						orderCSVData.push(['', item.title, quantity, '$' + total.toFixed(2), '']);
+						orderData.total += total;
+					}
+
+					orderCSVData.push([]);
+					orderCSVData.push(['', 'Grand total:', '', '$' + orderData.total.toFixed(2), '']);
+					orderCSVData.push([]);
+					orderCSVData.push(['', '', 'PLEASE BRING KETCHUP EVERYDAY - THANK YOU', '', '']);
+					orderCSVData.push([]);
+					orderCSVData.push(['', '', 'Please send condiments today', '', '']);
+
+					return Promise.join(csv.generate(orderCSVData).then(function(csv) {
+						return csv;
+					}), csv.generate(customerCSVData).then(function(csv) {
+						return csv;
+					}), function(orderCSV, customerCSV) {
+						return {
+							orderCSV: orderCSV,
+							customerCSV: customerCSV
+						};
+					});
 				})
 				.catch(function() {
 					console.error(arguments);
@@ -346,7 +393,7 @@ function emailCSV(csvContents) {
 	console.log('Today\'s CSVs:\n', csvContents);
 
 	var options = {
-		to: 'ibiala@ctemc.org, ferullo@ctemc.org, kbals@ctemc.org',
+		to: 'ibiala@ctemc.org',
 		subject: 'HTHS Lunch Orders ' + today.toDateString().replace(/\s/g, '-'),
 		text: 'Attached are the CSV files for today\'s orders. To print the orders with borders and nicer formatting, click on the attachment in this email to open the preview, then click the printer icon at the top of the preview. If you have any questions, please feel free to contact ibiala@ctemc.org (Ilan Biala).',
 		html: 'Attached are the CSV files for today\'s orders. To print the orders with cell borders and nice formatting, click on the attachment in this email to open the preview, then click the printer icon at the top of the preview. If you have any questions, please feel free to contact ibiala@ctemc.org (Ilan Biala).',
@@ -372,14 +419,14 @@ function emailCSV(csvContents) {
 		});
 }
 
-function endSubmissionsForDay() {
+exports.endSubmissionsForDay = function() {
 	var today = new Date();
 	var yesterday = later.schedule(exports.schoolDays).prev(2, today)[1];
 	yesterday.setSeconds(1);
 
 	console.log('Ending submissions for this period from %s to %s', yesterday.toUTCString(), today.toUTCString());
 
-	orders.between(yesterday, today)
+	orders.between(new Date(0), today)
 		.then(createDay)
 		.then(createCSVInput)
 		.then(emailCSV)
