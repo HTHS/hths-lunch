@@ -290,13 +290,32 @@ function createCSVInput(today) {
 				return orderData.items[key];
 			});
 
+			return items
+				.byCategory()
+				.then(function(items) {
+					items = _.flatten(items);
+
+					var itemTitles = items.map(function(item) {
+						return item.title;
+					});
+
 			for (var i = 0; i < orderData.items.length; i++) {
 				var item = orderData.items[i];
-				var quantity = item.quantity;
-				var itemTotal = item.price * quantity;
-				orderCSVData.push([item.title, quantity, '$' + itemTotal.toFixed(2)]);
-				orderData.total += itemTotal;
+
+						var newItem = items[itemTitles.indexOf(item.title)];
+						newItem.quantity = item.quantity;
+						newItem.total = item.price * item.quantity;
 			}
+
+					for (i = 0; i < items.length; i++) {
+						var item = items[i];
+						var quantity = item.quantity || 0;
+						var total = item.total || 0;
+
+						orderCSVData.push([item.title, quantity, '$' + total.toFixed(2)]);
+						orderData.total += total;
+					}
+
 			orderCSVData.push([]);
 			orderCSVData.push(['Grand total:', '', '$' + orderData.total.toFixed(2)]);
 			orderCSVData.push([]);
@@ -314,6 +333,10 @@ function createCSVInput(today) {
 					customerCSV: customerCSV
 				};
 			});
+				})
+				.catch(function() {
+					console.error(arguments);
+				});
 		});
 }
 
