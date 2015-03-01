@@ -19,7 +19,7 @@ exports.topItems = function(req, res) {
     .limit(howMany)
     .exec(function(err, items) {
       if (err) {
-        return res.status(400).send({
+        return res.status(500).send({
           message: errorHandler.getErrorMessage(err)
         });
       } else {
@@ -40,7 +40,7 @@ exports.getDays = function(req, res) {
     .limit(howMany)
     .exec(function(err, days) {
       if (err) {
-        return res.status(400).send({
+        return res.status(500).send({
           message: errorHandler.getErrorMessage(err)
         });
       } else {
