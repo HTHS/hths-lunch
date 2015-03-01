@@ -1,7 +1,13 @@
+var errors = {
+  default: {
+    'en': 'Something went wrong.'
+  }
+};
+
 /**
  * Get unique error field name
  */
-var getUniqueErrorMessage = function(err) {
+function getUniqueErrorMessage(err) {
   var output;
 
   try {
