@@ -13,13 +13,12 @@ function getUniqueErrorMessage(err) {
   try {
     var fieldName = err.err.substring(err.err.lastIndexOf('.$') + 2, err.err.lastIndexOf('_1'));
     output = fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + ' already exists';
-
   } catch (ex) {
     output = 'Unique field already exists';
   }
 
   return output;
-};
+}
 
 /**
  * Get the error message from error object
