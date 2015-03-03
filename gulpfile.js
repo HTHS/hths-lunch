@@ -1,16 +1,4 @@
-var gulp = require('gulp'),
-	glob = require('glob'),
-  del = require('del'),
-  karma = require('karma').server,
-  concat = require('gulp-concat'),
-  rename = require('gulp-rename'),
-  sass = require('gulp-sass'),
-  mocha = require('gulp-mocha'),
-  istanbul = require('gulp-istanbul'),
-  sourcemaps = require('gulp-sourcemaps'),
-  uglify = require('gulp-uglify'),
-  plato = require('gulp-plato'),
-  nodemon = require('gulp-nodemon');
+var gulp = require('gulp');
 
 var assets = {
   test: {
@@ -77,6 +65,8 @@ function testEnv(cb) {
 }
 
 function clean(cb) {
+	var del = require('del');
+
   del.sync('public/app.*');
   del.sync('public/styles/');
   del.sync('public/modules/*/styles/');
@@ -88,6 +78,9 @@ function clean(cb) {
  * CSS *
  *******/
 function scss(cb) {
+	var sass = require('gulp-sass');
+	var rename = require('gulp-rename');
+
   gulp.src('public/sass/**/*.scss')
     .pipe(sass())
     .pipe(gulp.dest('public/styles'));
@@ -106,6 +99,11 @@ function scss(cb) {
  * JavaScript *
  **************/
 function js(cb) {
+	var concat = require('gulp-concat');
+  var rename = require('gulp-rename');
+  var sourcemaps = require('gulp-sourcemaps');
+  var uglify = require('gulp-uglify');
+
   var jsFiles;
 
   switch (process.env.NODE_ENV) {
@@ -141,6 +139,9 @@ function js(cb) {
  * Tests *
  *********/
 function mochaTest(cb) {
+	var mocha = require('gulp-mocha');
+	var istanbul = require('gulp-istanbul');
+
   // gulp.src([
   //     'app/**/*.js',
   //     'config/**/*.js',
@@ -173,6 +174,8 @@ function mochaTest(cb) {
 }
 
 function karmaTest(cb) {
+	var karma = require('karma').server;
+
   return karma.start({
     configFile: __dirname + '/karma.conf.js',
     singleRun: true
@@ -183,11 +186,18 @@ function karmaTest(cb) {
  * Analysis *
  ************/
 function plato(cb) {
+	var glob = require('glob');
+  var plato = require('plato');
+
 	var files = glob.sync('./app/**/*.js')
 	.concat(glob.sync('./config/**/*.js'))
 	.concat(glob.sync('./public/modules/**/*.js'));
 
-	return plato.inspect(files, './report', { title: 'Plato report' }, function(reports) {
+	return plato.inspect([
+		'./app/**/*.js',
+		'./config/**/*.js',
+		'./public/modules/**/*.js'
+	], './report', { title: 'Plato report' }, function(reports) {
 		var overview = plato.getOverviewReport(reports);
 		console.log(overview.summary);
 
@@ -218,6 +228,8 @@ function watch() {
 }
 
 function nodemon() {
+	var nodemon = require('gulp-nodemon');
+
   return nodemon({
       script: 'server.js',
       ext: 'js scss',
