@@ -3,6 +3,7 @@
  */
 var path = require('path'),
   express = require('express'),
+  serveStatic = require('serve-static'),
   bodyParser = require('body-parser'),
   multer = require('multer'),
   cookieParser = require('cookie-parser'),
@@ -67,7 +68,7 @@ module.exports = function(db, options) {
     .disable('x-powered-by');
 
   // Setting the app router and static folder
-  app.use(express.static(path.resolve('./public')));
+  app.use(serveStatic(path.resolve('./public')));
 
   app.use(bodyParser.urlencoded({
       extended: true
