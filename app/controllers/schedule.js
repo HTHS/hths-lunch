@@ -393,7 +393,7 @@ function emailCSV(csvContents) {
 	console.log('Today\'s CSVs:\n', csvContents);
 
 	var options = {
-		to: 'ibiala@ctemc.org',
+		to: 'ibiala@ctemc.org, kbals@ctemc.org, ferullo@ctemc.org',
 		subject: 'HTHS Lunch Orders ' + today.toDateString().replace(/\s/g, '-'),
 		text: 'Attached are the CSV files for today\'s orders. To print the orders with borders and nicer formatting, click on the attachment in this email to open the preview, then click the printer icon at the top of the preview. If you have any questions, please feel free to contact ibiala@ctemc.org (Ilan Biala).',
 		html: 'Attached are the CSV files for today\'s orders. To print the orders with cell borders and nice formatting, click on the attachment in this email to open the preview, then click the printer icon at the top of the preview. If you have any questions, please feel free to contact ibiala@ctemc.org (Ilan Biala).',
@@ -426,7 +426,7 @@ exports.endSubmissionsForDay = function() {
 
 	console.log('Ending submissions for this period from %s to %s', yesterday.toUTCString(), today.toUTCString());
 
-	orders.between(new Date(0), today)
+	orders.between(yesterday, today)
 		.then(createDay)
 		.then(createCSVInput)
 		.then(emailCSV)
