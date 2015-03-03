@@ -233,6 +233,11 @@ function createCSVInput(today) {
 		total: 0
 	};
 
+	var oldOrderCSVData = [
+		['', 'High Technology High School Orders', ''],
+		[],
+		['Items', 'Quantity', 'Total']
+	];
 	var orderCSVData = [
 		['', '', 'High Technology High School Orders', '', ''],
 		[],
@@ -290,6 +295,22 @@ function createCSVInput(today) {
 			orderData.items = Object.keys(orderData.items).map(function(key) {
 				return orderData.items[key];
 			});
+
+			for (var i = 0; i < orderData.items.length; i++) {
+				var item = orderData.items[i];
+				var quantity = item.quantity;
+				var itemTotal = item.price * quantity;
+				oldOrderCSVData.push([item.title, quantity, '$' + itemTotal.toFixed(2)]);
+				orderData.total += itemTotal;
+			}
+			oldOrderCSVData.push([]);
+			oldOrderCSVData.push(['Grand total:', '', '$' + orderData.total.toFixed(2)]);
+			oldOrderCSVData.push([]);
+			oldOrderCSVData.push(['', 'PLEASE BRING KETCHUP EVERYDAY - THANK YOU', '']);
+			oldOrderCSVData.push([]);
+			oldOrderCSVData.push(['', 'Please send condiments today', '']);
+
+			orderData.total = 0;
 
 			return items
 				.byCategory()
@@ -374,8 +395,11 @@ function createCSVInput(today) {
 						return csv;
 					}), csv.generate(customerCSVData).then(function(csv) {
 						return csv;
-					}), function(orderCSV, customerCSV) {
+					}), csv.generate(oldOrderCSVData).then(function(csv) {
+						return csv;
+					}), function(orderCSV, customerCSV, oldOrderCSV) {
 						return {
+							oldOrderCSV: oldOrderCSV,
 							orderCSV: orderCSV,
 							customerCSV: customerCSV
 						};
@@ -399,10 +423,13 @@ function emailCSV(csvContents) {
 		html: 'Attached are the CSV files for today\'s orders. To print the orders with cell borders and nice formatting, click on the attachment in this email to open the preview, then click the printer icon at the top of the preview. If you have any questions, please feel free to contact ibiala@ctemc.org (Ilan Biala).',
 		attachments: [{
 			filename: 'HTHS-bcc-' + today.toDateString().replace(/\s/g, '-') + '.csv',
-			content: csvContents.orderCSV
+			content: csvContents.oldOrderCSV
 		}, {
 			filename: 'HTHS-orders-' + today.toDateString().replace(/\s/g, '-') + '.csv',
 			content: csvContents.customerCSV
+		}, {
+			filename: 'new-' + today.toDateString().replace(/\s/g, '-') + '.csv',
+			content: csvContents.orderCSV
 		}]
 	};
 
