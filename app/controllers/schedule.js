@@ -236,12 +236,12 @@ function createCSVInput(today) {
 	var oldOrderCSVData = [
 		['', 'High Technology High School Orders', ''],
 		[],
-		['Items', 'Quantity', 'Total']
+		['Quantity', 'Items', 'Total']
 	];
 	var orderCSVData = [
 		['', '', 'High Technology High School Orders', '', ''],
 		[],
-		['', 'Items', 'Quantity', 'Total', '']
+		['', 'Quantity', 'Items', 'Total', '']
 	];
 	var customerCSVData = [
 		['', 'HTHS', ''],
@@ -300,7 +300,7 @@ function createCSVInput(today) {
 				var item = orderData.items[i];
 				var quantity = item.quantity;
 				var itemTotal = item.price * quantity;
-				oldOrderCSVData.push([item.title, quantity, '$' + itemTotal.toFixed(2)]);
+				oldOrderCSVData.push([quantity, item.title, '$' + itemTotal.toFixed(2)]);
 				orderData.total += itemTotal;
 			}
 			oldOrderCSVData.push([]);
@@ -350,7 +350,7 @@ function createCSVInput(today) {
 						var item = hotItems[i];
 						var quantity = item.quantity || 0;
 						var total = item.total || 0;
-						orderCSVData.push(['', item.title, quantity, '$' + total.toFixed(2), '']);
+						orderCSVData.push(['', quantity, item.title, '$' + total.toFixed(2), '']);
 						orderData.total += total;
 					}
 
@@ -360,7 +360,7 @@ function createCSVInput(today) {
 						var item = sandwichItems[i];
 						var quantity = item.quantity || 0;
 						var total = item.total || 0;
-						orderCSVData.push(['', item.title, quantity, '$' + total.toFixed(2), '']);
+						orderCSVData.push(['', quantity, item.title, '$' + total.toFixed(2), '']);
 						orderData.total += total;
 					}
 
@@ -370,7 +370,7 @@ function createCSVInput(today) {
 						var item = saladItems[i];
 						var quantity = item.quantity || 0;
 						var total = item.total || 0;
-						orderCSVData.push(['', item.title, quantity, '$' + total.toFixed(2), '']);
+						orderCSVData.push(['', quantity, item.title, '$' + total.toFixed(2), '']);
 						orderData.total += total;
 					}
 
@@ -380,7 +380,7 @@ function createCSVInput(today) {
 						var item = snackItems[i];
 						var quantity = item.quantity || 0;
 						var total = item.total || 0;
-						orderCSVData.push(['', item.title, quantity, '$' + total.toFixed(2), '']);
+						orderCSVData.push(['', quantity, item.title, '$' + total.toFixed(2), '']);
 						orderData.total += total;
 					}
 
