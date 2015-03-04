@@ -46,8 +46,7 @@ module.exports = function(db, options) {
   // Should be placed before express.static
   app.use(compress({
     filter: function(req, res) {
-      return (/json|text|javascript|css/).test(res.getHeader(
-        'Content-Type'));
+      return (/json|text|javascript|css/).test(res.getHeader('Content-Type'));
     },
     threshold: '5kb',
     level: 8
