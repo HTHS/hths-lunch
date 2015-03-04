@@ -44,17 +44,10 @@ module.exports = function(db, options) {
     app.locals.cache = 'memory';
   }
 
-  // Passing the request url to environment locals
-  app.use(function(req, res, next) {
-    res.locals.url = req.protocol + '://' + req.headers.host + req.url;
-    next();
-  });
-
   // Should be placed before express.static
   app.use(compress({
     filter: function(req, res) {
-      return (/json|text|javascript|css/).test(res.getHeader(
-        'Content-Type'));
+      return (/json|text|javascript|css/).test(res.getHeader('Content-Type'));
     },
     threshold: '5kb',
     level: 8
