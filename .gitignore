@@ -19,3 +19,4 @@ report
 config/env/all.js
 config/env/development.js
 config/env/production.js
+config/env/test.js
