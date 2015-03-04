@@ -3,6 +3,7 @@
  */
 var path = require('path'),
   express = require('express'),
+  serveStatic = require('serve-static'),
   bodyParser = require('body-parser'),
   multer = require('multer'),
   cookieParser = require('cookie-parser'),
@@ -53,15 +54,12 @@ module.exports = function(db, options) {
   }));
 
   // Use helmet to secure Express headers
-  app.use(helmet.frameguard())
-    .use(helmet.xssFilter())
-    .use(helmet.nosniff())
-    .use(helmet.ienoopen())
-    .disable('x-powered-by');
+  app.use(helmet());
 
-  // Setting the app router and static folder
-  app.use(express.static(path.resolve('./public')));
+  // Setting the static folder
+  app.use(serveStatic(path.resolve('./public')));
 
+  // JSON parser, File parser, and Cookie parser
   app.use(bodyParser.urlencoded({
       extended: true
     }))
