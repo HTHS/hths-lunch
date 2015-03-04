@@ -36,7 +36,7 @@ if (argv._.indexOf('encrypt') !== -1) {
 function decrypt(password) {
 	console.log('Decrypting the keys.');
 
-  var secretFiles = glob.sync('./config/env/!(test|sample).txt');
+  var secretFiles = glob.sync('./config/env/!(sample).txt');
 
   for (var i = 0; i < secretFiles.length; i++) {
   	// input file
@@ -61,7 +61,7 @@ function decrypt(password) {
 function encrypt(password) {
 	console.log('Encrypting the keys.');
 
-  var secretFiles = glob.sync('./config/env/!(test|sample).js');
+  var secretFiles = glob.sync('./config/env/!(sample).js');
 
   for (var i = 0; i < secretFiles.length; i++) {
   	// input file
