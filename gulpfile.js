@@ -65,7 +65,7 @@ function testEnv(cb) {
 }
 
 function clean(cb) {
-	var del = require('del');
+  var del = require('del');
 
   del.sync('public/app.*');
   del.sync('public/styles/');
@@ -78,8 +78,8 @@ function clean(cb) {
  * CSS *
  *******/
 function scss(cb) {
-	var sass = require('gulp-sass');
-	var rename = require('gulp-rename');
+  var sass = require('gulp-sass');
+  var rename = require('gulp-rename');
 
   gulp.src('public/sass/**/*.scss')
     .pipe(sass())
@@ -99,7 +99,7 @@ function scss(cb) {
  * JavaScript *
  **************/
 function js(cb) {
-	var concat = require('gulp-concat');
+  var concat = require('gulp-concat');
   var rename = require('gulp-rename');
   var sourcemaps = require('gulp-sourcemaps');
   var uglify = require('gulp-uglify');
@@ -139,8 +139,8 @@ function js(cb) {
  * Tests *
  *********/
 function mochaTest(cb) {
-	var mocha = require('gulp-mocha');
-	var istanbul = require('gulp-istanbul');
+  var mocha = require('gulp-mocha');
+  var istanbul = require('gulp-istanbul');
 
   // gulp.src([
   //     'app/**/*.js',
@@ -174,7 +174,7 @@ function mochaTest(cb) {
 }
 
 function karmaTest(cb) {
-	var karma = require('karma').server;
+  var karma = require('karma').server;
 
   return karma.start({
     configFile: __dirname + '/karma.conf.js',
@@ -186,25 +186,27 @@ function karmaTest(cb) {
  * Analysis *
  ************/
 function plato(cb) {
-	var glob = require('glob');
+  var glob = require('glob');
   var plato = require('plato');
 
-	var files = glob.sync('./app/**/*.js')
-	.concat(glob.sync('./config/**/*.js'))
-	.concat(glob.sync('./public/modules/**/*.js'));
+  var files = glob.sync('./app/**/*.js')
+    .concat(glob.sync('./config/**/*.js'))
+    .concat(glob.sync('./public/modules/**/*.js'));
 
-	return plato.inspect([
-		'./app/**/*.js',
-		'./config/**/*.js',
-		'./public/modules/**/*.js'
-	], './report', { title: 'Plato report' }, function(reports) {
-		var overview = plato.getOverviewReport(reports);
-		console.log(overview.summary);
+  return plato.inspect([
+    './app/**/*.js',
+    './config/**/*.js',
+    './public/modules/**/*.js'
+  ], './report', {
+    title: 'Plato report'
+  }, function(reports) {
+    var overview = plato.getOverviewReport(reports);
+    console.log(overview.summary);
 
-		if (cb) {
-			cb();
-		}
-	});
+    if (cb) {
+      cb();
+    }
+  });
 }
 
 /*****************
@@ -228,7 +230,7 @@ function watch() {
 }
 
 function nodemon() {
-	var nodemon = require('gulp-nodemon');
+  var nodemon = require('gulp-nodemon');
 
   return nodemon({
       script: 'server.js',
