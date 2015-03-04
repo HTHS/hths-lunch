@@ -2,6 +2,7 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
+	schedule = require('../controllers/schedule'),
 	Schema = mongoose.Schema;
 
 /**
@@ -66,6 +67,11 @@ var UserSchema = new Schema({
 		virtuals: true
 	}
 });
+
+UserSchema.virtual('nextDay').get(function() {
+	return schedule.getNextDay();
+});
+
 
 /**
  * Hook a pre save method to hash the password

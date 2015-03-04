@@ -1,5 +1,5 @@
-angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$state', 'Database', 'MessageService', 'Item', 'Order', 'User', 'Auth',
-	function($scope, $state, Database, MessageService, Item, Order, User, Auth) {
+angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$state', '$filter', 'Database', 'MessageService', 'Item', 'Order', 'User', 'Auth',
+	function($scope, $state, $filter, Database, MessageService, Item, Order, User, Auth) {
 		$scope.user = Database.getMe();
 		var BLANK_ORDER;
 
@@ -14,6 +14,7 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 			};
 
 			$scope.newOrder = BLANK_ORDER;
+			$scope.user.nextDay = $filter('date')($scope.user.nextDay, 'EEE MMM d');
 
 			Item
 				.query()
