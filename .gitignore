@@ -14,3 +14,8 @@ public/app.*
 # Coverage/Analysis files
 coverage
 report
+
+# Secret files
+config/env/all.js
+config/env/development.js
+config/env/production.js
