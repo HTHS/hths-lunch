@@ -10,7 +10,6 @@ angular.module('hthsLunch.panel')
 							templateUrl: '/modules/panel/partials/dashboard.html'
 						},
 						'dashboard': {
-							controller: 'DashboardController',
 							templateUrl: '/modules/panel/partials/index.html'
 						}
 					},
@@ -67,18 +66,6 @@ angular.module('hthsLunch.panel')
 						'dashboard': {
 							controller: 'DashboardScheduleController',
 							templateUrl: '/modules/panel/partials/schedule.html'
-						}
-					}
-				}).state('dashboard.analytics', {
-					url: '/analytics',
-					views: {
-						'main': {
-							controller: 'DashboardController',
-							templateUrl: '/modules/panel/partials/dashboard.html'
-						},
-						'dashboard': {
-							controller: 'DashboardAnalyticsController',
-							templateUrl: '/modules/panel/partials/analytics.html'
 						}
 					}
 				}).state('dashboard.users', {
