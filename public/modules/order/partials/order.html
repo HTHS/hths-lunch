@@ -53,6 +53,10 @@
               <h3>{{item.title}}</h3>
               <h4 hide-sm>{{item.description}}</h4>
               <p>{{item.price | currency}}</p>
+
+              <md-select ng-model="someVal" ng-if="item.choices.length && item.checked">
+                <md-option ng-value="options" ng-repeat="option in item.choices">{{option}}</md-option>
+              </md-select>
             </div>
           	<md-input-container>
           		<label>Quantity</label>

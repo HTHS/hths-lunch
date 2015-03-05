@@ -30,6 +30,10 @@ var ItemSchema = new Schema({
       'Snacks'
 		],
   },
+  choices: { // for things like a salad dressing that come with the salad
+    type: Array,
+    default: []
+  },
   active: {
     type: Boolean,
     default: true
