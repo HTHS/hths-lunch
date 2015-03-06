@@ -13,7 +13,7 @@ angular.module('hthsLunch.landingPage').controller('LandingPageController', ['$s
 				.$promise.then(function(result) {
 					if (result.hasAccount && !result.pending) {
 						// TODO better routing here
-						$window.location.href += 'auth/google';
+						$window.location.href += 'auth/google?email=' + $scope.email;
 					} else if (!result.hasAccount) {
 						User
 							.requestInvite({

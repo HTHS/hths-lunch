@@ -119,7 +119,7 @@ exports.requestInvite = function requestInvite(req, res) {
 exports.invite = function(email, url, status) {
 	var p = Promise.defer();
 
-	url += '/auth/google';
+	url += '/auth/google?email=' + email;
 	var stateParams = encodeURIComponent(JSON.stringify({
 		isAdmin: status
 	}));

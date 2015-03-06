@@ -27,6 +27,7 @@ router.route('/auth/google').get(function(req, res) {
       'https://www.googleapis.com/auth/userinfo.email',
       'https://www.googleapis.com/auth/plus.login'
     ],
+    loginHint: req.query.email,
     state: req.query.state
   }))(req, res);
 });
