@@ -7,6 +7,7 @@
       <!-- fill up the space between left and right area -->
       <span flex></span>
       <md-button ng-if="user.isAdmin" ng-click="goToDashboard()">Panel</md-button>
+      <!-- <span>{{user.displayName}}</span> -->
       <md-button ng-click="signout()">Sign out</md-button>
     </div>
   </md-toolbar>
@@ -38,15 +39,12 @@
   </nav> -->
   <form name="orderForm">
     <div layout="column" layout-margin layout-align="center center">
-      <md-input-container>
-        <label>Name</label>
-        <input type="text" placeholder="Johnny Appleseed" required="required" ng-model="newOrder.customer">
-      </md-input-container>
+      <h4>{{user.displayName}}</h4>
       <md-list>
         <md-item ng-repeat="item in menu" ng-show="item.active">
           <md-item-content>
             <div class="md-tile-left">
-							<md-checkbox ng-model="item.checked" ng-change="toggleItemInOrder($index)" aria-label="Select item?">
+              <md-checkbox ng-model="item.checked" ng-change="toggleItemInOrder($index)" aria-label="Select item?">
               <!-- <md-switch ng-model="newOrder.items[\$index]" ng-true-value="item" ng-false-value="null" ng-change="recalculateTotal()" aria-label="Toggle item"></md-switch> -->
             </div>
             <div class="md-tile-content">
@@ -54,9 +52,9 @@
               <h4 hide-sm>{{item.description}}</h4>
               <p>{{item.price | currency}}</p>
             </div>
-          	<md-input-container>
-          		<label>Quantity</label>
-            	<input type="number" size="4" min="0" step="1" pattern="\d*" required ng-disabled="!item.checked" ng-model="item.quantity" ng-change="recalculateTotal()" ng-blur="checkIfBlank($index)">
+            <md-input-container>
+              <label>Quantity</label>
+              <input type="number" size="4" min="0" step="1" pattern="\d*" required ng-disabled="!item.checked" ng-model="item.quantity" ng-change="recalculateTotal()" ng-blur="checkIfBlank($index)">
             </md-input-container>
           </md-item-content>
         </md-item>
