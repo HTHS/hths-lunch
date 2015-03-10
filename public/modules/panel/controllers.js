@@ -16,10 +16,6 @@ angular.module('hthsLunch.panel').controller('DashboardController', ['$scope', '
 		state: 'dashboard.schedule',
 		text: 'Schedule'
 	}, {
-		iconClass: 'icon-analytics',
-		state: 'dashboard.analytics',
-		text: 'Analytics'
-	}, {
 		iconClass: 'icon-users',
 		state: 'dashboard.users',
 		text: 'Users'
