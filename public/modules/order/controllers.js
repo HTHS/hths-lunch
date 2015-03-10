@@ -127,7 +127,7 @@ angular.module('hthsLunch.order').controller('OrderController', ['$scope', '$sta
 		};
 
 		$scope.submitOrder = function() {
-			if ($scope.newOrder.customer && $scope.newOrder.total > 0) {
+			if ($scope.newOrder.total > 0) {
 				$scope.newOrder.quantity = [];
 				$scope.newOrder.items = $scope.menu.slice(0); // easy way to clone an Array by value
 
