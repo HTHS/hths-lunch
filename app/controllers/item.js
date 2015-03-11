@@ -81,9 +81,59 @@ exports.list = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
+			if (req.itemPriorities) {
+				var sortedItems = [];
+
+				for (var i = 0; i < req.itemPriorities.length; i++) {
+					var item = items.filter(function(item) {
+						return item ? item._id == req.itemPriorities[i] : null;
+					});
+
+					sortedItems.push(item[0]); // filter returns an array, there should only be 1 match
+				}
+
+				var lodash = _.runInContext(this);
+				lodash.mixin({
+					'indexOf': lodash.wrap(lodash.indexOf, function(fn, array, value, fromIndex) {
+						// use original `lodash.indexOf` if the value is a primitive
+						if (!lodash.isObject(value)) {
+							return fn(array, value, fromIndex);
+						}
+						return lodash.findIndex(fromIndex ? array.slice(fromIndex) : array, function(other) {
+							return value._id == other._id;
+						});
+					})
+				});
+
+				items = lodash.union(sortedItems, items);
+			}
+
 			res.json(items);
 		}
 	});
+};
+
+exports.sortByUserTendency = function sortItemsByUserTendency(req, res, next) {
+	if (req.user) {
+    var items = {};
+
+    for (var i = 0; i < req.user.orderHistory.length; i++) {
+      var order = req.user.orderHistory[i];
+      for (var z = 0; z < order.items.length; z++) {
+        if (items[order.items[z]._id]) {
+          items[order.items[z]._id] += order.quantity[z];
+        } else {
+          items[order.items[z]] = order.quantity[z];
+				}
+      }
+    }
+
+    req.itemPriorities = Object.keys(items).sort(function(a, b) {
+			return items[b] - items[a];
+		});
+  }
+
+	next();
 };
 
 /**

@@ -3,7 +3,7 @@ var router = require('express').Router(),
 
 // Item Routes
 router.route('/')
-  .get(item.list);
+  .get(item.sortByUserTendency, item.list);
 
 router.route('/:itemId')
   .get(item.read);
