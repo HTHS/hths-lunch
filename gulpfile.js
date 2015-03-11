@@ -241,7 +241,11 @@ function nodemon() {
         'report/',
         'test/',
         'public/lib/',
-        'gulpfile.js'
+        'gulpfile.js',
+        'public/app.js',
+        'public/app.js.map',
+        'public/app.min.js',
+        'public/app.min.js.map'
       ]
     })
     .on('change', tasks.build);
