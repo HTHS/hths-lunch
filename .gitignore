@@ -18,5 +18,6 @@ report
 # Secret files
 config/env/all.js
 config/env/development.js
+config/env/staging.js
 config/env/production.js
 config/env/test.js
